@@ -145,9 +145,9 @@ nonisolated enum FreeRDP {
             "/u:\(target.username)",
             "/t:\(target.name)",
             "/size:\(windowSize)",
-            // Scale the picture when the window is resized. Dynamic resolution made the
-            // window resize itself repeatedly on Retina screens.
-            "+smart-sizing",
+            // Ask the server for a new resolution when the window is resized, instead of
+            // stretching the picture.
+            "+dynamic-resolution",
             "+clipboard",
             // tofu: trust a new certificate on first use, like ssh's accept-new.
             "/cert:\(target.ignoreCertificateErrors ? "ignore" : "tofu")",
