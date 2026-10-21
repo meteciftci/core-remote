@@ -23,6 +23,17 @@
         }
       }
     },
+    "%@ could not be found": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ bulunamadı"
+          }
+        }
+      }
+    },
     "%@ is not installed": {
       "extractionState": "manual",
       "localizations": {
@@ -931,6 +942,17 @@
         }
       }
     },
+    "Install another terminal": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Başka bir terminal kur"
+          }
+        }
+      }
+    },
     "Invalid port": {
       "extractionState": "manual",
       "localizations": {
@@ -1514,6 +1536,17 @@
         }
       }
     },
+    "SSH terminal": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH terminali"
+          }
+        }
+      }
+    },
     "Save": {
       "extractionState": "manual",
       "localizations": {
@@ -1679,17 +1712,6 @@
         }
       }
     },
-    "Terminal could not be found": {
-      "extractionState": "manual",
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Terminal bulunamadı"
-          }
-        }
-      }
-    },
     "The file is encrypted with your passphrase. Without it the backup can't be opened.": {
       "extractionState": "manual",
       "localizations": {
@@ -1741,6 +1763,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Şifre Anahtar Zinciri’nde saklanır ve bağlanırken FreeRDP’ye iletilir."
+          }
+        }
+      }
+    },
+    "The saved password is entered automatically in every terminal. If the chosen app is removed, connections open in Terminal.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kayıtlı şifre her terminalde otomatik girilir. Seçilen uygulama kaldırılırsa bağlantılar Terminal’de açılır."
           }
         }
       }

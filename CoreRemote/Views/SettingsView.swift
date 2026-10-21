@@ -4,6 +4,8 @@ import SwiftData
 import SwiftUI
 
 struct SettingsView: View {
+    @AppStorage(TerminalApp.storageKey) private var terminalApp: TerminalApp = TerminalApp.defaultApp
+    @State private var installedTerminals: Set<TerminalApp> = [.terminal]
     @AppStorage(RDPClient.storageKey) private var rdpClient: RDPClient = RDPClient.defaultClient
     @AppStorage(WindowsApp.minimizeStorageKey) private var minimizesMainWindow = true
     @State private var isAccessibilityTrusted = WindowsAppWindowMinimizer.isTrusted
@@ -19,6 +21,36 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
+            Section {
+                Picker("SSH terminal", selection: $terminalApp) {
+                    ForEach(TerminalApp.allCases) { app in
+                        Text(verbatim: app.title)
+                            .tag(app)
+                            .disabled(!installedTerminals.contains(app))
+                    }
+                }
+                .pickerStyle(.radioGroup)
+
+                let missing = TerminalApp.allCases.filter { !installedTerminals.contains($0) }
+                if !missing.isEmpty {
+                    LabeledContent("Install another terminal") {
+                        Menu("Copy brew Command") {
+                            ForEach(missing) { app in
+                                Button(app.title) {
+                                    NSPasteboard.general.clearContents()
+                                    NSPasteboard.general.setString(app.brewCommand ?? "", forType: .string)
+                                }
+                            }
+                        }
+                        .fixedSize()
+                    }
+                }
+            } footer: {
+                Text("The saved password is entered automatically in every terminal. If the chosen app is removed, connections open in Terminal.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
             Section {
                 Picker("RDP client", selection: $rdpClient) {
                     ForEach(RDPClient.allCases) { client in
@@ -127,6 +159,7 @@ struct SettingsView: View {
             while !Task.isCancelled {
                 isAccessibilityTrusted = WindowsAppWindowMinimizer.isTrusted
                 installed = Set(RDPClient.allCases.filter(\.isInstalled))
+                installedTerminals = Set(TerminalApp.allCases.filter(\.isInstalled))
                 try? await Task.sleep(for: .seconds(2))
             }
         }
