@@ -22,7 +22,7 @@ struct ConnectionRow: View {
 
             if let lastConnectedAt = connection.lastConnectedAt {
                 // Refreshes once a minute so "2 minutes ago" keeps counting.
-                TimelineView(.periodic(from: .now, by: 60)) { _ in
+                TimelineView(.everyMinute) { _ in
                     Text(lastConnectedAt, format: .relative(presentation: .named))
                 }
                 .font(.caption)
