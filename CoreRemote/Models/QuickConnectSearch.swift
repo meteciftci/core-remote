@@ -4,7 +4,7 @@ import Foundation
 enum QuickConnectSearch {
     /// With an empty query: recently used first, then favorites, then the rest by name.
     /// With a query: best match first (name prefix, word in the name, anywhere in the name,
-    /// then host, user or group), ties broken by recent use and name.
+    /// then host, user, group, tags or notes), ties broken by recent use and name.
     static func results(for query: String, in connections: [Connection]) -> [Connection] {
         let query = query.trimmingCharacters(in: .whitespacesAndNewlines)
         let scored = connections.compactMap { connection -> (Connection, Int)? in
@@ -33,7 +33,7 @@ enum QuickConnectSearch {
             return 1
         }
         if name.localizedStandardContains(query) { return 2 }
-        let others = [connection.host, connection.username, connection.group?.name ?? ""]
+        let others = [connection.host, connection.username, connection.group?.name ?? "", connection.notes] + connection.tags
         if others.contains(where: { $0.localizedStandardContains(query) }) { return 3 }
         return nil
     }

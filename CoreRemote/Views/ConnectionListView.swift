@@ -22,8 +22,8 @@ struct ConnectionListView: View {
         let query = searchText.trimmingCharacters(in: .whitespaces)
         return filter.filter(allConnections).filter { connection in
             guard !query.isEmpty else { return true }
-            return [connection.name, connection.host, connection.username, connection.group?.name ?? ""]
-                .contains { $0.localizedStandardContains(query) }
+            let fields = [connection.name, connection.host, connection.username, connection.group?.name ?? "", connection.notes]
+            return (fields + connection.tags).contains { $0.localizedStandardContains(query) }
         }
     }
 
@@ -164,6 +164,8 @@ struct ConnectionListView: View {
             username: connection.username,
             keyFilePath: connection.keyFilePath,
             ignoreCertificateErrors: connection.ignoreCertificateErrors,
+            notes: connection.notes,
+            tags: connection.tags,
             isFavorite: connection.isFavorite,
             group: connection.group
         )

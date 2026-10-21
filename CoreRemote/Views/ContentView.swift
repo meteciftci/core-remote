@@ -172,6 +172,7 @@ struct ContentView: View {
         case .recent: String(localized: "Recent")
         case .type(let type): type.title
         case .group(let id): groups.first { $0.id == id }?.name ?? String(localized: "Group")
+        case .tag(let tag): "#\(tag)"
         }
     }
 
