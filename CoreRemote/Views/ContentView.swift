@@ -6,13 +6,13 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.openURL) private var openURL
     @Environment(\.openSettings) private var openSettings
+    @Environment(\.openWindow) private var openWindow
     @Query private var connections: [Connection]
     @Query(sort: \ConnectionGroup.name) private var groups: [ConnectionGroup]
 
     @Environment(ConnectionLauncher.self) private var launcher
     @State private var reachability = ReachabilityMonitor()
     @State private var sidebarSelection: SidebarItem? = .all
-    @State private var editor: EditorRequest?
     @State private var alert: AlertContent?
     @State private var missingClient: RDPClient?
 
@@ -37,7 +37,7 @@ struct ContentView: View {
                 filter: filter,
                 title: title(for: filter),
                 onConnect: { connection in Task { await launcher.open(connection) } },
-                onEdit: { editor = EditorRequest(connection: $0) },
+                onEdit: openEditor,
                 onNewGroup: { requestGroupName(for: nil) },
                 onCopyCommand: launcher.copySSHCommand,
                 onImport: { showsImporter = true },
@@ -62,7 +62,7 @@ struct ContentView: View {
         .task {
             #if DEBUG
             if DemoData.opensEditor {
-                editor = EditorRequest(connection: connections.first { $0.name == DemoData.editorConnectionName })
+                openEditor(connections.first { $0.name == DemoData.editorConnectionName })
             }
             if DemoData.opensSettings {
                 openSettings()
@@ -75,14 +75,11 @@ struct ContentView: View {
             #endif
         }
         .focusedSceneValue(\.appActions, AppActions(
-            newConnection: { editor = EditorRequest(connection: nil) },
+            newConnection: { openEditor(nil) },
             newGroup: { requestGroupName(for: nil) },
             importBackup: { showsImporter = true },
             exportBackup: { if !connections.isEmpty { showsExportOptions = true } }
         ))
-        .sheet(item: $editor) { request in
-            ConnectionEditor(connection: request.connection, defaultGroupID: currentGroupID)
-        }
         .sheet(isPresented: $showsExportOptions) {
             ExportSheet(connectionCount: connections.count, onExport: export)
         }
@@ -157,6 +154,13 @@ struct ContentView: View {
                 .padding(.bottom, 20)
                 .transition(.move(edge: .bottom).combined(with: .opacity))
         }
+    }
+
+    // MARK: - Editor
+
+    /// Opens the editor in its own window; `nil` creates a connection in the selected group.
+    private func openEditor(_ connection: Connection?) {
+        openWindow(id: EditorWindow.id, value: connection.map(EditorTarget.edit) ?? .new(in: currentGroupID))
     }
 
     // MARK: - Groups
@@ -247,11 +251,6 @@ struct ContentView: View {
             }
         }
     }
-}
-
-private struct EditorRequest: Identifiable {
-    let id = UUID()
-    var connection: Connection?
 }
 
 private struct GroupNameRequest {

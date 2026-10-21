@@ -63,6 +63,16 @@ struct CoreRemoteApp: App {
             }
         }
 
+        WindowGroup(id: EditorWindow.id, for: EditorTarget.self) { $target in
+            EditorWindowContent(target: target)
+        }
+        .modelContainer(container)
+        .windowStyle(.hiddenTitleBar)
+        .windowResizability(.contentSize)
+        .windowBackgroundDragBehavior(.enabled)
+        .restorationBehavior(.disabled)
+        .defaultLaunchBehavior(.suppressed)
+
         Settings {
             SettingsView()
         }
