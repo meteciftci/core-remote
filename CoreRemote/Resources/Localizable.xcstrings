@@ -440,6 +440,17 @@
         }
       }
     },
+    "Connect by ID": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kimlikle Bağlan"
+          }
+        }
+      }
+    },
     "Connect to ${target}": {
       "extractionState": "manual",
       "localizations": {
@@ -447,6 +458,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "${target} bağlantısını aç"
+          }
+        }
+      }
+    },
+    "Connect to %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ bağlantısını aç"
           }
         }
       }
@@ -480,6 +502,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bağlantı"
+          }
+        }
+      }
+    },
+    "Connection ID": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlantı Kimliği"
           }
         }
       }

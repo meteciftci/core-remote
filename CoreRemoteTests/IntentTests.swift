@@ -60,15 +60,27 @@ struct ConnectURLTests {
         #expect(ConnectURL.connectionID(from: URL(string: "coreremote://connect/not-a-uuid")!) == nil)
     }
 
-    @Test func shortcutOpensTheConnectURL() throws {
+    @Test func shortcutRunsTheConnectByIDAction() throws {
         let id = UUID()
-        let workflow = ShortcutExport.workflow(for: id)
+        let workflow = ShortcutExport.workflow(for: id, bundleID: "com.example.app", teamID: "TEAM123")
         let actions = try #require(workflow["WFWorkflowActions"] as? [[String: Any]])
         #expect(actions.count == 1)
-        #expect(actions.first?["WFWorkflowActionIdentifier"] as? String == "is.workflow.actions.openurl")
+        #expect(actions.first?["WFWorkflowActionIdentifier"] as? String == "com.example.app.ConnectByIDIntent")
         let parameters = try #require(actions.first?["WFWorkflowActionParameters"] as? [String: Any])
-        #expect(parameters["WFInput"] as? String == ConnectURL.url(for: id).absoluteString)
+        #expect(parameters["connectionID"] as? String == id.uuidString)
+        let descriptor = try #require(parameters["AppIntentDescriptor"] as? [String: Any])
+        #expect(descriptor["AppIntentIdentifier"] as? String == "ConnectByIDIntent")
+        #expect(descriptor["BundleIdentifier"] as? String == "com.example.app")
+        #expect(descriptor["TeamIdentifier"] as? String == "TEAM123")
         // Must serialize as a property list for `shortcuts sign`.
         _ = try PropertyListSerialization.data(fromPropertyList: workflow, format: .binary, options: 0)
+    }
+
+    @Test func adHocBuildsLeaveOutTheTeam() throws {
+        let workflow = ShortcutExport.workflow(for: UUID(), bundleID: "com.example.app", teamID: nil)
+        let actions = try #require(workflow["WFWorkflowActions"] as? [[String: Any]])
+        let parameters = try #require(actions.first?["WFWorkflowActionParameters"] as? [String: Any])
+        let descriptor = try #require(parameters["AppIntentDescriptor"] as? [String: Any])
+        #expect(descriptor["TeamIdentifier"] == nil)
     }
 }
