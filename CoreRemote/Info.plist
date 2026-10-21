@@ -53,6 +53,8 @@
 	<string>3</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.developer-tools</string>
+	<key>NSAppleEventsUsageDescription</key>
+	<string>CoreRemote opens SSH connections in a new iTerm2 window.</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>© 2026 Mete Çiftçi</string>
 	<key>UTExportedTypeDeclarations</key>

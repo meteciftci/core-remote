@@ -103,3 +103,34 @@ nonisolated enum WarpTabConfig {
         return "\"\(escaped)\""
     }
 }
+
+/// Opening a script file makes iTerm2 ask "OK to run …?" every time. Asking it over AppleScript
+/// to run the script in a new window doesn't; macOS asks once whether CoreRemote may control iTerm2.
+enum ITerm2Session {
+    /// `errAEEventNotPermitted`: the user denied CoreRemote control of iTerm2.
+    static let notPermittedError = -1743
+
+    nonisolated static func source(scriptPath: String) -> String {
+        let command = "/bin/zsh \(scriptPath.shellQuoted)"
+        return """
+            tell application id "\(TerminalApp.iTerm2.bundleIdentifier)"
+                activate
+                create window with default profile command \(appleScriptString(command))
+            end tell
+            """
+    }
+
+    static func open(script url: URL) throws {
+        var error: NSDictionary?
+        NSAppleScript(source: source(scriptPath: url.path))?.executeAndReturnError(&error)
+        guard let error else { return }
+        if error[NSAppleScript.errorNumber] as? Int == notPermittedError {
+            throw LaunchError.automationDenied(.iTerm2)
+        }
+        throw LaunchError.scriptFailed(error[NSAppleScript.errorMessage] as? String ?? "")
+    }
+
+    nonisolated private static func appleScriptString(_ value: String) -> String {
+        "\"" + value.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\"") + "\""
+    }
+}

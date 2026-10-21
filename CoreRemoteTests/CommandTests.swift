@@ -203,3 +203,11 @@ struct SSHScriptTests {
         #expect(!FileManager.default.fileExists(atPath: url.path))
     }
 }
+
+struct ITerm2SessionTests {
+    @Test func runsTheScriptInANewWindow() {
+        let source = ITerm2Session.source(scriptPath: "/tmp/CoreRemote/Bir Hayat \"VPS\".command")
+        #expect(source.contains(#"tell application id "com.googlecode.iterm2""#))
+        #expect(source.contains(#"create window with default profile command "/bin/zsh '/tmp/CoreRemote/Bir Hayat \"VPS\".command'""#))
+    }
+}

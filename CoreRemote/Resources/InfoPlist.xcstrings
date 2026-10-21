@@ -1,0 +1,23 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "NSAppleEventsUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CoreRemote opens SSH connections in a new iTerm2 window."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CoreRemote, SSH bağlantılarını yeni bir iTerm2 penceresinde açar."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
