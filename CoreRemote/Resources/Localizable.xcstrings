@@ -334,6 +334,17 @@
         }
       }
     },
+    "Connect to favorites, recent connections and groups from the menu bar. CoreRemote keeps running there after you close its window.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favorilere, son bağlantılara ve gruplara menü çubuğundan bağlanın. Pencere kapatılınca CoreRemote menü çubuğunda çalışmaya devam eder."
+          }
+        }
+      }
+    },
     "Copy SSH Command": {
       "extractionState": "manual",
       "localizations": {
@@ -814,6 +825,17 @@
         }
       }
     },
+    "No Group": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grupsuz"
+          }
+        }
+      }
+    },
     "No connections match this filter.": {
       "extractionState": "manual",
       "localizations": {
@@ -865,6 +887,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "App Store’u Aç"
+          }
+        }
+      }
+    },
+    "Open CoreRemote": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CoreRemote’u Aç"
           }
         }
       }
@@ -975,6 +1008,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Canlı sunucu"
+          }
+        }
+      }
+    },
+    "Quit CoreRemote": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CoreRemote’tan Çık"
           }
         }
       }
@@ -1162,6 +1206,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ayarlar (⌘,)"
+          }
+        }
+      }
+    },
+    "Settings…": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayarlar…"
+          }
+        }
+      }
+    },
+    "Show in menu bar": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menü çubuğunda göster"
           }
         }
       }
