@@ -6,6 +6,8 @@ import SwiftUI
 struct SettingsView: View {
     @AppStorage(TerminalApp.storageKey) private var terminalApp: TerminalApp = TerminalApp.defaultApp
     @State private var installedTerminals: Set<TerminalApp> = [.terminal]
+    @AppStorage(FileTransferClient.storageKey) private var fileTransferClient = ""
+    @State private var fileTransferApps: [FileTransferApp] = []
     @AppStorage(RDPClient.storageKey) private var rdpClient: RDPClient = RDPClient.defaultClient
     @AppStorage(WindowsApp.minimizeStorageKey) private var minimizesMainWindow = true
     @State private var isAccessibilityTrusted = WindowsAppWindowMinimizer.isTrusted
@@ -44,6 +46,35 @@ struct SettingsView: View {
                 }
             } footer: {
                 Text("The saved password is entered automatically in both. The first iTerm2 connection asks once for permission to control iTerm2. If iTerm2 is removed, connections open in Terminal.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Section {
+                Picker("File transfer", selection: $fileTransferClient) {
+                    Text("Automatic").tag(FileTransferClient.automatic.storedValue)
+                    Text("sftp in the SSH terminal").tag(FileTransferClient.terminal.storedValue)
+                    if !fileTransferApps.isEmpty {
+                        Divider()
+                        ForEach(fileTransferApps) { app in
+                            Text(verbatim: app.name).tag(FileTransferClient.app(app.bundleIdentifier).storedValue)
+                        }
+                    }
+                }
+
+                if fileTransferApps.isEmpty {
+                    LabeledContent {
+                        Button("Copy brew Command") {
+                            NSPasteboard.general.clearContents()
+                            NSPasteboard.general.setString("brew install --cask cyberduck", forType: .string)
+                        }
+                    } label: {
+                        Label("No file transfer app such as Cyberduck is installed", systemImage: "info.circle")
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            } footer: {
+                Text("\"File Transfer\" in an SSH connection's menu opens its files here. Automatic picks an installed file transfer app, or sftp in the terminal if there is none. Apps get the server and user name; the saved password is copied to the clipboard for 30 seconds.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -157,6 +188,7 @@ struct SettingsView: View {
                 isAccessibilityTrusted = WindowsAppWindowMinimizer.isTrusted
                 installed = Set(RDPClient.allCases.filter(\.isInstalled))
                 installedTerminals = Set(TerminalApp.allCases.filter(\.isInstalled))
+                fileTransferApps = FileTransferApp.installed
                 try? await Task.sleep(for: .seconds(2))
             }
         }

@@ -195,3 +195,25 @@ struct ITerm2SessionTests {
         #expect(source.contains(#"create window with default profile command "/bin/zsh '/tmp/CoreRemote/Bir Hayat \"VPS\".command'""#))
     }
 }
+
+struct FileTransferTests {
+    @Test func sftpUsesCapitalPAndBracketsIPv6() {
+        #expect(SSHCommand.arguments(for: target(port: 2222), program: .sftp) == [
+            "sftp", "-P", "2222", "-o", "StrictHostKeyChecking=accept-new", "--", "mete@10.0.0.5",
+        ])
+        #expect(SSHCommand.arguments(for: target(host: "fe80::1"), program: .sftp).last == "mete@[fe80::1]")
+        #expect(SSHCommand.arguments(for: target(host: "fe80::1")).last == "mete@fe80::1")
+    }
+
+    @Test func linkHasNoPassword() throws {
+        let url = try #require(SFTPLink.url(for: target(port: 2222, username: "EXAMPLE\\mete")))
+        #expect(url.absoluteString == "sftp://EXAMPLE%5Cmete@10.0.0.5:2222/")
+        #expect(SFTPLink.url(for: target(host: "fe80::1"))?.absoluteString == "sftp://mete@[fe80::1]:22/")
+    }
+
+    @Test func storedChoiceRoundTrips() {
+        for client in [FileTransferClient.automatic, .terminal, .app("ch.sudo.cyberduck")] {
+            #expect(FileTransferClient(storedValue: client.storedValue) == client)
+        }
+    }
+}

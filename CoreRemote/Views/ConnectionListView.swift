@@ -8,6 +8,7 @@ struct ConnectionListView: View {
     var onEdit: (Connection?) -> Void
     var onNewGroup: () -> Void
     var onCopyCommand: (Connection) -> Void
+    var onFileTransfer: (Connection) -> Void
     var onImport: () -> Void
     var onExport: () -> Void
     var onImportSSHConfig: () -> Void
@@ -137,6 +138,7 @@ struct ConnectionListView: View {
             Button("Edit…", systemImage: "pencil") { onEdit(connection) }
             Button("Duplicate", systemImage: "plus.square.on.square") { duplicate(connection) }
             if connection.type == .ssh {
+                Button("File Transfer", systemImage: "folder") { onFileTransfer(connection) }
                 Button("Copy SSH Command", systemImage: "doc.on.doc") { onCopyCommand(connection) }
             }
 
