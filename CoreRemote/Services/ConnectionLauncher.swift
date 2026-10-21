@@ -3,12 +3,12 @@ import Foundation
 
 enum LaunchError: LocalizedError {
     case clientMissing(RDPClient)
-    case terminalMissing
+    case terminalMissing(TerminalApp)
 
     var errorDescription: String? {
         switch self {
         case .clientMissing(let client): String(localized: "\(client.title) is not installed")
-        case .terminalMissing: String(localized: "Terminal could not be found")
+        case .terminalMissing(let app): String(localized: "\(app.title) could not be found")
         }
     }
 }
@@ -18,7 +18,7 @@ enum LaunchProblem: Equatable {
     case failed(name: String, message: String)
 }
 
-/// Opens connections: SSH in Terminal, RDP in Windows App or FreeRDP.
+/// Opens connections: SSH in the chosen terminal app, RDP in Windows App or FreeRDP.
 @Observable
 final class ConnectionLauncher {
     /// Short message shown as a toast, such as "Password copied".
@@ -27,7 +27,6 @@ final class ConnectionLauncher {
     private let passwords: PasswordStore
     private var noticeTask: Task<Void, Never>?
 
-    static let terminalBundleIdentifier = "com.apple.Terminal"
     static let clipboardClearDelay: Duration = .seconds(30)
 
     init(passwords: PasswordStore = KeychainPasswordStore.shared) {
@@ -68,8 +67,9 @@ final class ConnectionLauncher {
     // MARK: - SSH
 
     private func connectSSH(_ target: ConnectionTarget) async throws {
-        guard let terminalURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: Self.terminalBundleIdentifier) else {
-            throw LaunchError.terminalMissing
+        let terminal = TerminalApp.current
+        guard let terminalURL = terminal.url else {
+            throw LaunchError.terminalMissing(terminal)
         }
 
         var askpass: AskpassEnvironment?
@@ -96,7 +96,20 @@ final class ConnectionLauncher {
 
         let configuration = NSWorkspace.OpenConfiguration()
         configuration.activates = true
-        try await NSWorkspace.shared.open([scriptURL], withApplicationAt: terminalURL, configuration: configuration)
+        if terminal == .warp {
+            // The script deletes itself; the Tab Config only has to outlive Warp reading it.
+            let stem = "coreremote-\(UUID().uuidString.lowercased())"
+            let tabConfig = try LaunchFiles.write(
+                WarpTabConfig.contents(title: target.name, command: scriptURL.path.shellQuoted),
+                named: "\(stem).toml",
+                in: WarpTabConfig.directory
+            )
+            LaunchFiles.remove(tabConfig, after: .seconds(30))
+            try await NSWorkspace.shared.open([WarpTabConfig.url(forConfigNamed: stem)], withApplicationAt: terminalURL, configuration: configuration)
+        } else {
+            // Terminal, iTerm2 and Ghostty run a `.command` file they're asked to open.
+            try await NSWorkspace.shared.open([scriptURL], withApplicationAt: terminalURL, configuration: configuration)
+        }
     }
 
     // MARK: - RDP

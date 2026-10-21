@@ -8,7 +8,7 @@ A simple SSH and RDP connection manager for macOS. Save your connections and ope
 
 ## Features
 
-- **SSH**: Connections open in Terminal. A saved password is entered for you; an SSH key file can be chosen per connection.
+- **SSH**: Connections open in Terminal, iTerm2, Ghostty or Warp, chosen in Settings. A saved password is entered for you; an SSH key file can be chosen per connection.
 - **RDP**: The default client is [FreeRDP](https://www.freerdp.com), which receives the password directly. [Microsoft Windows App](https://apps.apple.com/app/id1295203466) can be chosen in Settings instead.
 - **Groups and favorites**: Sort connections into groups, mark the ones you use most, and search by name, host or user.
 - **Notes and tags**: Add notes and tags such as `prod` or `linux` to any connection. Tags are listed in the sidebar, and search covers notes and tags too.

@@ -151,3 +151,27 @@ struct FreeRDPWindowSizeTests {
         #expect(!args.contains("+dynamic-resolution"))
     }
 }
+
+struct TerminalAppTests {
+    @Test func defaultsToTerminal() {
+        #expect(TerminalApp.defaultApp == .terminal)
+        #expect(TerminalApp.terminal.brewCommand == nil)
+        #expect(TerminalApp.allCases.filter { $0 != .terminal }.allSatisfy { $0.brewCommand?.hasPrefix("brew install --cask ") == true })
+    }
+
+    @Test func warpTabConfigRunsTheScript() {
+        let contents = WarpTabConfig.contents(title: "DC \"1\"", command: "/tmp/Core Remote/DC-1.command".shellQuoted)
+        #expect(contents.contains(#"name = "DC \"1\"""#))
+        #expect(contents.contains(#"commands = ["'/tmp/Core Remote/DC-1.command'"]"#))
+        #expect(contents.contains(#"type = "terminal""#))
+    }
+
+    @Test func warpTabConfigEscapesControlCharacters() {
+        let contents = WarpTabConfig.contents(title: "a\\b\nc", command: "x")
+        #expect(contents.contains(#"name = "a\\b\nc""#))
+    }
+
+    @Test func warpURLOpensTabConfigByName() {
+        #expect(WarpTabConfig.url(forConfigNamed: "coreremote-abc").absoluteString == "warp://tab_config/coreremote-abc")
+    }
+}
