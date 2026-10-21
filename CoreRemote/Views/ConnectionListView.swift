@@ -12,6 +12,7 @@ struct ConnectionListView: View {
     var onExport: () -> Void
 
     @Environment(\.modelContext) private var modelContext
+    @Environment(ReachabilityMonitor.self) private var reachability
     @Query(sort: \Connection.name, order: .forward) private var allConnections: [Connection]
     @State private var selection = Set<UUID>()
     @State private var searchText = ""
@@ -107,7 +108,7 @@ struct ConnectionListView: View {
         } else {
             List(selection: $selection) {
                 ForEach(connections) { connection in
-                    ConnectionRow(connection: connection)
+                    ConnectionRow(connection: connection, status: reachability.status(for: connection))
                         .tag(connection.id)
                 }
             }

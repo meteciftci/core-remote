@@ -2,10 +2,18 @@ import SwiftUI
 
 struct ConnectionRow: View {
     @Bindable var connection: Connection
+    var status: ReachabilityMonitor.Status?
 
     var body: some View {
         HStack(spacing: 12) {
             TypeBadge(type: connection.type)
+                .overlay(alignment: .bottomTrailing) {
+                    if let status {
+                        StatusDot(status: status)
+                            .offset(x: 3, y: 3)
+                    }
+                }
+                .help(status.map(StatusDot.description) ?? "")
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(connection.name)
@@ -64,5 +72,37 @@ struct TypeBadge: View {
             .frame(width: size, height: size)
             .glassEffect(.regular.tint(type.tint.opacity(0.18)), in: .rect(cornerRadius: size * 0.28))
             .accessibilityLabel(type.title)
+    }
+}
+
+/// Green when the server's port answers, red when it doesn't, gray while checking.
+struct StatusDot: View {
+    var status: ReachabilityMonitor.Status
+
+    var body: some View {
+        Circle()
+            .fill(color)
+            .frame(width: 10, height: 10)
+            .overlay(Circle().strokeBorder(.background, lineWidth: 1.5))
+            .accessibilityLabel(Self.description(status))
+    }
+
+    private var color: Color {
+        switch status {
+        case .checking: .gray
+        case .reachable: .green
+        case .unreachable: .red
+        }
+    }
+
+    static func description(_ status: ReachabilityMonitor.Status) -> String {
+        switch status {
+        case .checking:
+            String(localized: "Checking…")
+        case .reachable(let latency):
+            String(localized: "Reachable · \(Int(latency.timeInterval * 1000)) ms")
+        case .unreachable(let reason):
+            String(localized: "Unreachable: \(reason)")
+        }
     }
 }

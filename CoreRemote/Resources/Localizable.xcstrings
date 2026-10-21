@@ -224,6 +224,17 @@
         }
       }
     },
+    "Checking…": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kontrol ediliyor…"
+          }
+        }
+      }
+    },
     "Choose SSH Key": {
       "extractionState": "manual",
       "localizations": {
@@ -352,6 +363,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bağlan…"
+          }
+        }
+      }
+    },
+    "Connection refused": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlantı reddedildi"
           }
         }
       }
@@ -638,6 +660,28 @@
         }
       }
     },
+    "Host not found": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunucu bulunamadı"
+          }
+        }
+      }
+    },
+    "Host unreachable": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunucuya ulaşılamıyor"
+          }
+        }
+      }
+    },
     "Ignore certificate warnings": {
       "extractionState": "manual",
       "localizations": {
@@ -711,6 +755,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Şifreleri dahil et"
+          }
+        }
+      }
+    },
+    "Invalid port": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçersiz port"
           }
         }
       }
@@ -1111,6 +1166,17 @@
         }
       }
     },
+    "Reachable · %lld ms": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ulaşılabilir · %lld ms"
+          }
+        }
+      }
+    },
     "Recent": {
       "extractionState": "manual",
       "localizations": {
@@ -1287,6 +1353,17 @@
         }
       }
     },
+    "Show server status": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunucu durumunu göster"
+          }
+        }
+      }
+    },
     "Terminal could not be found": {
       "extractionState": "manual",
       "localizations": {
@@ -1386,6 +1463,17 @@
         }
       }
     },
+    "Timed out": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zaman aşımı"
+          }
+        }
+      }
+    },
     "Type": {
       "extractionState": "manual",
       "localizations": {
@@ -1408,6 +1496,17 @@
         }
       }
     },
+    "Unreachable: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ulaşılamıyor: %@"
+          }
+        }
+      }
+    },
     "Username": {
       "extractionState": "manual",
       "localizations": {
@@ -1415,6 +1514,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kullanıcı adı"
+          }
+        }
+      }
+    },
+    "While the window is open, CoreRemote tries each server's port every minute and shows a green or red dot.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pencere açıkken CoreRemote her sunucunun portunu dakikada bir dener ve yeşil ya da kırmızı bir nokta gösterir."
           }
         }
       }
