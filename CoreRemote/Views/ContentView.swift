@@ -146,6 +146,8 @@ struct ContentView: View {
         Task {
             do {
                 try await launcher.connect(connection)
+                connection.lastConnectedAt = .now
+                try? modelContext.save()
             } catch LaunchError.clientMissing(let client) {
                 missingClient = client
             } catch {
@@ -167,6 +169,7 @@ struct ContentView: View {
         switch item {
         case .all: String(localized: "All Connections")
         case .favorites: String(localized: "Favorites")
+        case .recent: String(localized: "Recent")
         case .type(let type): type.title
         case .group(let id): groups.first { $0.id == id }?.name ?? String(localized: "Group")
         }

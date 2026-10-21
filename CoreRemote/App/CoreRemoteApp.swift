@@ -52,6 +52,7 @@ struct CoreRemoteApp: App {
         Settings {
             SettingsView()
         }
+        .modelContainer(container)
     }
 }
 
