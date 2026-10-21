@@ -52,6 +52,9 @@ struct ContentView: View {
         }
         .overlay(alignment: .bottom) { toast }
         .modifier(ReachabilityRefresh(monitor: reachability, connections: connections))
+        .task(id: spotlightSignature) {
+            await SpotlightIndex.update(connections)
+        }
         // Launches from the menu bar report here too, so this also runs when the window opens.
         .onChange(of: launcher.launchProblem, initial: true) {
             guard let problem = launcher.launchProblem else { return }
@@ -175,6 +178,11 @@ struct ContentView: View {
                 .padding(.bottom, 20)
                 .transition(.move(edge: .bottom).combined(with: .opacity))
         }
+    }
+
+    /// Changes whenever something Spotlight shows changes.
+    private var spotlightSignature: [String] {
+        connections.map { "\($0.id)|\($0.name)|\($0.summary)|\($0.typeRaw)" }.sorted()
     }
 
     // MARK: - Editor

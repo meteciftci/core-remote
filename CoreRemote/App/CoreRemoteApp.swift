@@ -1,3 +1,4 @@
+import AppIntents
 import AppKit
 import SwiftData
 import SwiftUI
@@ -17,6 +18,10 @@ struct CoreRemoteApp: App {
         let launcher = ConnectionLauncher()
         _launcher = State(initialValue: launcher)
         QuickConnectPanel.shared.configure(container: container, launcher: launcher)
+        // Shortcuts, Siri and Spotlight use the same store and launcher as the windows.
+        let container = container
+        AppDependencyManager.shared.add(dependency: container)
+        AppDependencyManager.shared.add(dependency: launcher)
     }
 
     private static func makeContainer() -> ModelContainer {

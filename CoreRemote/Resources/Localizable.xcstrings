@@ -1,6 +1,17 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "%@": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@"
+          }
+        }
+      }
+    },
     "%@ Copy": {
       "extractionState": "manual",
       "localizations": {
@@ -407,6 +418,17 @@
         }
       }
     },
+    "Connect to ${target}": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "${target} bağlantısını aç"
+          }
+        }
+      }
+    },
     "Connect to favorites, recent connections and groups from the menu bar. CoreRemote keeps running there after you close its window.": {
       "extractionState": "manual",
       "localizations": {
@@ -425,6 +447,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bağlan…"
+          }
+        }
+      }
+    },
+    "Connection": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlantı"
           }
         }
       }
@@ -1173,6 +1206,17 @@
         }
       }
     },
+    "Opens a saved SSH or RDP connection.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kayıtlı bir SSH veya RDP bağlantısını açar."
+          }
+        }
+      }
+    },
     "Opens a search box from any app: type a name, host or user and press Return to connect.": {
       "extractionState": "manual",
       "localizations": {
@@ -1675,6 +1719,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bu yedek CoreRemote’un daha yeni bir sürümüyle oluşturulmuş (format %lld)."
+          }
+        }
+      }
+    },
+    "This connection no longer exists.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu bağlantı artık yok."
           }
         }
       }
