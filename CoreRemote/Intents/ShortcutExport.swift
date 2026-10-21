@@ -1,9 +1,9 @@
 import AppKit
 import Foundation
+import Security
 import SwiftData
 
-/// `coreremote://connect/<connection id>` opens a saved connection. Kestirmeler (Shortcuts)
-/// files made by `ShortcutExport` use it.
+/// `coreremote://connect/<connection id>` opens a saved connection, for links and scripts.
 enum ConnectURL {
     nonisolated static let scheme = "coreremote"
 
@@ -33,9 +33,9 @@ enum ConnectURL {
     }
 }
 
-/// Makes a one-step shortcut ("open coreremote://connect/…") for a connection, signs it with
-/// macOS's `shortcuts` tool and opens it, so Kestirmeler only asks to confirm adding it.
-/// macOS has no API to add a shortcut directly, and it refuses unsigned shortcut files.
+/// Makes a one-step shortcut that runs CoreRemote's hidden "Connect by ID" action for a
+/// connection, signs it with macOS's `shortcuts` tool and opens it, so Kestirmeler only asks to
+/// confirm adding it. macOS has no API to add a shortcut directly, and it refuses unsigned files.
 enum ShortcutExport {
     enum ExportError: LocalizedError {
         case signingFailed(String)
@@ -49,14 +49,24 @@ enum ShortcutExport {
     }
 
     static let shortcutsTool = URL(filePath: "/usr/bin/shortcuts")
+    nonisolated static let intentIdentifier = "ConnectByIDIntent"
 
-    /// The unsigned shortcut, as a property list.
-    nonisolated static func workflow(for id: UUID) -> [String: Any] {
-        [
+    /// The unsigned shortcut, as a property list. `teamID` is nil for ad-hoc signed builds.
+    nonisolated static func workflow(for id: UUID, bundleID: String, teamID: String?) -> [String: Any] {
+        var descriptor: [String: Any] = [
+            "AppIntentIdentifier": intentIdentifier,
+            "BundleIdentifier": bundleID,
+            "Name": "CoreRemote",
+        ]
+        descriptor["TeamIdentifier"] = teamID
+        return [
             "WFWorkflowActions": [
                 [
-                    "WFWorkflowActionIdentifier": "is.workflow.actions.openurl",
-                    "WFWorkflowActionParameters": ["WFInput": ConnectURL.url(for: id).absoluteString],
+                    "WFWorkflowActionIdentifier": "\(bundleID).\(intentIdentifier)",
+                    "WFWorkflowActionParameters": [
+                        "AppIntentDescriptor": descriptor,
+                        "connectionID": id.uuidString,
+                    ],
                 ],
             ],
             "WFWorkflowClientVersion": "2607.0.2",
@@ -71,15 +81,33 @@ enum ShortcutExport {
         ]
     }
 
+    /// The shortcut's name, phrased so it can be said to Siri: "DC-1 bağlantısını aç".
+    static func shortcutName(for connection: Connection) -> String {
+        String(localized: "Connect to \(connection.name)")
+    }
+
+    /// The team that signed this build, or nil for ad-hoc signing.
+    static var teamIdentifier: String? {
+        var code: SecCode?
+        var staticCode: SecStaticCode?
+        var info: CFDictionary?
+        guard SecCodeCopySelf([], &code) == errSecSuccess, let code,
+              SecCodeCopyStaticCode(code, [], &staticCode) == errSecSuccess, let staticCode,
+              SecCodeCopySigningInformation(staticCode, SecCSFlags(rawValue: kSecCSSigningInformation), &info) == errSecSuccess
+        else { return nil }
+        return (info as? [String: Any])?[kSecCodeInfoTeamIdentifier as String] as? String
+    }
+
     static func addToShortcuts(_ connection: Connection) async throws {
         let directory = LaunchFiles.directory.appending(path: UUID().uuidString, directoryHint: .isDirectory)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         // Kestirmeler names the imported shortcut after the file.
-        let fileName = LaunchFiles.fileName(for: connection.name, extension: "shortcut")
+        let fileName = LaunchFiles.fileName(for: shortcutName(for: connection), extension: "shortcut")
         let unsigned = directory.appending(path: "unsigned.shortcut")
         let signed = directory.appending(path: fileName)
 
-        let data = try PropertyListSerialization.data(fromPropertyList: workflow(for: connection.id), format: .binary, options: 0)
+        let workflow = workflow(for: connection.id, bundleID: Bundle.main.bundleIdentifier ?? "com.meteciftci.CoreRemote", teamID: teamIdentifier)
+        let data = try PropertyListSerialization.data(fromPropertyList: workflow, format: .binary, options: 0)
         try data.write(to: unsigned)
         try await sign(unsigned, to: signed)
         LaunchFiles.remove(directory, after: .seconds(300))

@@ -80,7 +80,37 @@ struct ConnectIntent: OpenIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult {
-        let id = target.id
+        try await IntentConnector.open(target.id, container: container, launcher: launcher)
+        return .result()
+    }
+}
+
+/// The action inside shortcuts made with "Add to Shortcuts…". It takes the connection ID as
+/// plain text because that is the parameter type shortcut files can carry reliably; it's hidden
+/// from the action list, where `ConnectIntent` is the one to use.
+struct ConnectByIDIntent: AppIntent {
+    static let title: LocalizedStringResource = "Connect by ID"
+    static let isDiscoverable = false
+
+    @Parameter(title: "Connection ID")
+    var connectionID: String
+
+    @Dependency private var container: ModelContainer
+    @Dependency private var launcher: ConnectionLauncher
+
+    @MainActor
+    func perform() async throws -> some IntentResult {
+        guard let id = UUID(uuidString: connectionID.trimmingCharacters(in: .whitespaces)) else {
+            throw ConnectIntentError.notFound
+        }
+        try await IntentConnector.open(id, container: container, launcher: launcher)
+        return .result()
+    }
+}
+
+enum IntentConnector {
+    @MainActor
+    static func open(_ id: UUID, container: ModelContainer, launcher: ConnectionLauncher) async throws {
         guard let connection = try container.mainContext.fetch(FetchDescriptor<Connection>(predicate: #Predicate { $0.id == id })).first else {
             throw ConnectIntentError.notFound
         }
@@ -89,7 +119,6 @@ struct ConnectIntent: OpenIntent {
             launcher.launchProblem = nil
             throw ConnectIntentError.launchFailed(problem)
         }
-        return .result()
     }
 }
 
