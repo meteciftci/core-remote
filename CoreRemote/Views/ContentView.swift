@@ -9,7 +9,7 @@ struct ContentView: View {
     @Query private var connections: [Connection]
     @Query(sort: \ConnectionGroup.name) private var groups: [ConnectionGroup]
 
-    @State private var launcher = ConnectionLauncher()
+    @Environment(ConnectionLauncher.self) private var launcher
     @State private var sidebarSelection: SidebarItem? = .all
     @State private var editor: EditorRequest?
     @State private var alert: AlertContent?
@@ -35,7 +35,7 @@ struct ContentView: View {
             ConnectionListView(
                 filter: filter,
                 title: title(for: filter),
-                onConnect: connect,
+                onConnect: { connection in Task { await launcher.open(connection) } },
                 onEdit: { editor = EditorRequest(connection: $0) },
                 onNewGroup: { requestGroupName(for: nil) },
                 onCopyCommand: launcher.copySSHCommand,
@@ -45,6 +45,17 @@ struct ContentView: View {
             .id(filter)
         }
         .overlay(alignment: .bottom) { toast }
+        // Launches from the menu bar report here too, so this also runs when the window opens.
+        .onChange(of: launcher.launchProblem, initial: true) {
+            guard let problem = launcher.launchProblem else { return }
+            switch problem {
+            case .missingClient(let client):
+                missingClient = client
+            case .failed(let name, let message):
+                alert = AlertContent(title: String(localized: "Couldn't connect to “\(name)”"), message: message)
+            }
+            launcher.launchProblem = nil
+        }
         .task {
             #if DEBUG
             if DemoData.opensEditor {
@@ -137,25 +148,6 @@ struct ContentView: View {
                 .glassEffect(.regular, in: .capsule)
                 .padding(.bottom, 20)
                 .transition(.move(edge: .bottom).combined(with: .opacity))
-        }
-    }
-
-    // MARK: - Connecting
-
-    private func connect(_ connection: Connection) {
-        Task {
-            do {
-                try await launcher.connect(connection)
-                connection.lastConnectedAt = .now
-                try? modelContext.save()
-            } catch LaunchError.clientMissing(let client) {
-                missingClient = client
-            } catch {
-                alert = AlertContent(
-                    title: String(localized: "Couldn't connect to “\(connection.name)”"),
-                    message: error.localizedDescription
-                )
-            }
         }
     }
 

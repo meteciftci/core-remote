@@ -13,6 +13,11 @@ enum LaunchError: LocalizedError {
     }
 }
 
+enum LaunchProblem: Equatable {
+    case missingClient(RDPClient)
+    case failed(name: String, message: String)
+}
+
 /// Opens connections: SSH in Terminal, RDP in Windows App or FreeRDP.
 @Observable
 final class ConnectionLauncher {
@@ -27,6 +32,23 @@ final class ConnectionLauncher {
 
     init(passwords: PasswordStore = KeychainPasswordStore.shared) {
         self.passwords = passwords
+    }
+
+    /// A problem from the last launch, waiting for the main window to show it.
+    var launchProblem: LaunchProblem?
+
+    /// Opens a connection from anywhere in the app (main window, menu bar) and remembers when.
+    /// Failures are kept in `launchProblem` rather than thrown, since the caller may have no UI.
+    func open(_ connection: Connection) async {
+        do {
+            try await connect(connection)
+            connection.lastConnectedAt = .now
+            try? connection.modelContext?.save()
+        } catch LaunchError.clientMissing(let client) {
+            launchProblem = .missingClient(client)
+        } catch {
+            launchProblem = .failed(name: connection.name, message: error.localizedDescription)
+        }
     }
 
     func connect(_ connection: Connection) async throws {

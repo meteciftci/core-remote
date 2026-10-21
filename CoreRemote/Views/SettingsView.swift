@@ -8,6 +8,7 @@ struct SettingsView: View {
     @State private var isAccessibilityTrusted = WindowsAppWindowMinimizer.isTrusted
     @State private var installed: Set<RDPClient> = []
     @State private var confirmsClearHistory = false
+    @AppStorage(MenuBarContent.visibilityKey) private var showsMenuBarIcon = true
 
     @Environment(\.modelContext) private var modelContext
     @Query(filter: #Predicate<Connection> { $0.lastConnectedAt != nil }) private var recentConnections: [Connection]
@@ -64,6 +65,14 @@ struct SettingsView: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
+            }
+
+            Section {
+                Toggle("Show in menu bar", isOn: $showsMenuBarIcon)
+            } footer: {
+                Text("Connect to favorites, recent connections and groups from the menu bar. CoreRemote keeps running there after you close its window.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
 
             Section {

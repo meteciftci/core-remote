@@ -1,9 +1,13 @@
+import AppKit
 import SwiftData
 import SwiftUI
 
 @main
 struct CoreRemoteApp: App {
+    @NSApplicationDelegateAdaptor private var appDelegate: AppDelegate
     @FocusedValue(\.appActions) private var actions
+    @AppStorage(MenuBarContent.visibilityKey) private var showsMenuBarIcon = true
+    @State private var launcher = ConnectionLauncher()
 
     private let container: ModelContainer
 
@@ -23,9 +27,11 @@ struct CoreRemoteApp: App {
     }
 
     var body: some Scene {
-        WindowGroup {
+        // A single window, so the menu bar's "Open CoreRemote" brings it back instead of adding another.
+        Window("CoreRemote", id: MainWindow.id) {
             ContentView()
                 .frame(minWidth: 720, minHeight: 440)
+                .environment(launcher)
         }
         .defaultSize(width: 960, height: 600)
         .modelContainer(container)
@@ -53,6 +59,23 @@ struct CoreRemoteApp: App {
             SettingsView()
         }
         .modelContainer(container)
+
+        MenuBarExtra("CoreRemote", systemImage: "network", isInserted: $showsMenuBarIcon) {
+            MenuBarContent()
+                .environment(launcher)
+        }
+        .modelContainer(container)
+    }
+}
+
+enum MainWindow {
+    static let id = "main"
+}
+
+final class AppDelegate: NSObject, NSApplicationDelegate {
+    /// Keep running in the menu bar after the window is closed.
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        false
     }
 }
 
