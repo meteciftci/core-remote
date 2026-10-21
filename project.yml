@@ -6,6 +6,11 @@ options:
   developmentLanguage: en
   createIntermediateGroups: true
 
+packages:
+  KeyboardShortcuts:
+    url: https://github.com/sindresorhus/KeyboardShortcuts
+    exactVersion: 3.1.0
+
 # Signing lives in Config/Signing.xcconfig (+ optional, untracked Config/Local.xcconfig).
 configFiles:
   Debug: Config/Signing.xcconfig
@@ -26,6 +31,8 @@ targets:
     platform: macOS
     sources:
       - path: CoreRemote
+    dependencies:
+      - package: KeyboardShortcuts
     info:
       path: CoreRemote/Info.plist
       properties:

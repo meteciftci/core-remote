@@ -3,11 +3,13 @@ import Foundation
 import SwiftData
 
 /// Sample connections for screenshots. Launch a Debug build with `-DemoData` to use an
-/// in-memory store filled with these; `-DemoEditor` or `-DemoSettings` also opens that screen.
+/// in-memory store filled with these; `-DemoEditor`, `-DemoSettings` or `-DemoQuickConnect`
+/// also opens that screen.
 enum DemoData {
     static var isEnabled: Bool { arguments.contains("-DemoData") }
     static var opensEditor: Bool { arguments.contains("-DemoEditor") }
     static var opensSettings: Bool { arguments.contains("-DemoSettings") }
+    static var opensQuickConnect: Bool { arguments.contains("-DemoQuickConnect") }
 
     static let editorConnectionName = "File Server"
 

@@ -13,10 +13,13 @@ macOS için sade bir SSH ve RDP bağlantı yöneticisi. Bağlantılarınızı ka
 - **Gruplar ve favoriler**: Bağlantıları gruplara ayırın, sık kullandıklarınızı favorilere ekleyin, ad, host veya kullanıcıya göre arayın.
 - **Son Kullanılanlar**: En son açtığınız 10 bağlantı kenar çubuğunda listelenir; her satırda ne zaman bağlandığınız görünür. Geçmiş Ayarlar'dan temizlenebilir.
 - **Menü çubuğu**: Favorilere, son 5 bağlantıya ve gruplara menü çubuğundan tek tıkla bağlanın. Pencere kapatılınca CoreRemote menü çubuğunda çalışmaya devam eder; simge Ayarlar'dan gizlenebilir.
+- **Hızlı bağlan**: Hangi uygulamada olursanız olun **⌃⌥Space** ile bir arama kutusu açın, ad, host veya kullanıcı yazıp Return ile bağlanın. Kısayol Ayarlar'dan değiştirilebilir.
 - **Yedekleme**: Bağlantılarınızı `.coreremote` dosyasına dışa aktarın, başka bir Mac'e içe aktarın. Şifreler yalnızca parolayla şifrelenmiş yedeğe eklenir.
 - **Liquid Glass** arayüzü, Türkçe ve İngilizce dil desteği.
 
 ![Bağlantı formu](docs/screenshots/tr/editor.png)
+
+![Hızlı bağlan](docs/screenshots/tr/quick-connect.png)
 
 ## Güvenlik
 
@@ -95,6 +98,7 @@ Ardından `Config/Local.xcconfig` içindeki `DEVELOPMENT_TEAM` değerini kendi e
 | Kısayol | İşlem |
 | --- | --- |
 | Çift tıklama veya Return | Seçili bağlantıya bağlan |
+| ⌃⌥Space | Hızlı bağlan (her uygulamadan) |
 | ⌘N | Yeni bağlantı |
 | ⇧⌘N | Yeni grup |
 | ⌘F | Ara |

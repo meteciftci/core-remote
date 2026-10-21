@@ -345,6 +345,17 @@
         }
       }
     },
+    "Connect to…": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlan…"
+          }
+        }
+      }
+    },
     "Copy SSH Command": {
       "extractionState": "manual",
       "localizations": {
@@ -836,6 +847,17 @@
         }
       }
     },
+    "No Matches": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eşleşme Yok"
+          }
+        }
+      }
+    },
     "No connections match this filter.": {
       "extractionState": "manual",
       "localizations": {
@@ -909,6 +931,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sistem Ayarları’nı Aç…"
+          }
+        }
+      }
+    },
+    "Opens a search box from any app: type a name, host or user and press Return to connect.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hangi uygulamada olursanız olun bir arama kutusu açar: ad, host veya kullanıcı yazın, bağlanmak için Return’e basın."
           }
         }
       }
@@ -1008,6 +1041,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Canlı sunucu"
+          }
+        }
+      }
+    },
+    "Quick Connect…": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hızlı Bağlan…"
+          }
+        }
+      }
+    },
+    "Quick connect": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hızlı bağlan"
           }
         }
       }

@@ -1,4 +1,5 @@
 import AppKit
+import KeyboardShortcuts
 import SwiftData
 import SwiftUI
 
@@ -65,6 +66,14 @@ struct SettingsView: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
+            }
+
+            Section {
+                KeyboardShortcuts.Recorder("Quick connect", name: .quickConnect)
+            } footer: {
+                Text("Opens a search box from any app: type a name, host or user and press Return to connect.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
 
             Section {
