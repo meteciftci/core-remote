@@ -78,11 +78,11 @@ struct SettingsView: View {
             }
 
             Section {
-                LabeledContent("Shortcuts and Siri") {
+                LabeledContent("Shortcuts and Spotlight") {
                     Button("Open Shortcuts", systemImage: "square.2.layers.3d", action: ShortcutsApp.open)
                 }
             } footer: {
-                Text("Every connection is available in the Shortcuts app as \"Connect to <name>\", ready to run, add to the menu bar, give a keyboard shortcut or say to Siri.")
+                Text("Search a connection's name in Spotlight to connect. In the Shortcuts app, add CoreRemote's \"Connect\" action to a new shortcut and pick a connection.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
