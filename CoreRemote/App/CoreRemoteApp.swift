@@ -60,6 +60,11 @@ struct CoreRemoteApp: App {
                 Button("Export…") { actions?.exportBackup() }
                     .keyboardShortcut("e", modifiers: [.command, .shift])
                     .disabled(actions == nil)
+                Divider()
+                Button("Import from SSH Config…") { actions?.importSSHConfig() }
+                    .disabled(actions == nil)
+                Button("Import .rdp Files…") { actions?.importRDPFiles() }
+                    .disabled(actions == nil)
             }
         }
 
@@ -102,6 +107,8 @@ struct AppActions {
     var newConnection: () -> Void
     var newGroup: () -> Void
     var importBackup: () -> Void
+    var importSSHConfig: () -> Void
+    var importRDPFiles: () -> Void
     var exportBackup: () -> Void
 }
 

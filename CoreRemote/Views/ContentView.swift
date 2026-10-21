@@ -1,6 +1,7 @@
 import AppKit
 import SwiftData
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
@@ -23,6 +24,7 @@ struct ContentView: View {
     @State private var exportDocument: BackupDocument?
     @State private var showsImporter = false
     @State private var pendingImport: PendingImport?
+    @State private var importPreview: ImportPreview?
 
     private var filter: SidebarItem { sidebarSelection ?? .all }
 
@@ -41,7 +43,9 @@ struct ContentView: View {
                 onNewGroup: { requestGroupName(for: nil) },
                 onCopyCommand: launcher.copySSHCommand,
                 onImport: { showsImporter = true },
-                onExport: { showsExportOptions = true }
+                onExport: { showsExportOptions = true },
+                onImportSSHConfig: importSSHConfig,
+                onImportRDPFiles: chooseRDPFiles
             )
             .id(filter)
             .environment(reachability)
@@ -67,6 +71,9 @@ struct ContentView: View {
             if DemoData.opensSettings {
                 openSettings()
             }
+            if DemoData.opensImport {
+                showPreview(title: String(localized: "Import from SSH Config"), candidates: SSHConfigParser.parse(DemoData.sshConfig), emptyMessage: "")
+            }
             if DemoData.opensQuickConnect {
                 // Wait until the main window has taken focus, or the panel closes right away.
                 try? await Task.sleep(for: .seconds(1))
@@ -78,8 +85,22 @@ struct ContentView: View {
             newConnection: { openEditor(nil) },
             newGroup: { requestGroupName(for: nil) },
             importBackup: { showsImporter = true },
+            importSSHConfig: importSSHConfig,
+            importRDPFiles: chooseRDPFiles,
             exportBackup: { if !connections.isEmpty { showsExportOptions = true } }
         ))
+        .sheet(item: $importPreview) { preview in
+            ImportPreviewSheet(title: preview.title, candidates: preview.candidates) { count in
+                launcher.show(String(localized: "\(count) connections imported"))
+            }
+        }
+        // Drop .rdp files anywhere on the window to import them.
+        .dropDestination(for: URL.self) { urls, _ in
+            let rdpFiles = urls.filter { $0.pathExtension.lowercased() == "rdp" }
+            guard !rdpFiles.isEmpty else { return false }
+            importRDPFiles(rdpFiles)
+            return true
+        }
         .sheet(isPresented: $showsExportOptions) {
             ExportSheet(connectionCount: connections.count, onExport: export)
         }
@@ -199,6 +220,56 @@ struct ContentView: View {
         groupNameRequest = nil
     }
 
+    // MARK: - Importing other formats
+
+    private func importSSHConfig() {
+        let url = SSHConfigParser.defaultURL
+        guard let text = try? String(contentsOf: url, encoding: .utf8) else {
+            alert = AlertContent(
+                title: String(localized: "No SSH Config Found"),
+                message: String(localized: "CoreRemote looks for ~/.ssh/config, which doesn't exist or can't be read.")
+            )
+            return
+        }
+        showPreview(
+            title: String(localized: "Import from SSH Config"),
+            candidates: SSHConfigParser.parse(text),
+            emptyMessage: String(localized: "~/.ssh/config has no Host entries to import. Entries with wildcards are skipped.")
+        )
+    }
+
+    private func chooseRDPFiles() {
+        let panel = NSOpenPanel()
+        panel.title = String(localized: "Import .rdp Files")
+        panel.allowedContentTypes = [UTType(filenameExtension: "rdp") ?? .data]
+        panel.allowsMultipleSelection = true
+        if panel.runModal() == .OK {
+            importRDPFiles(panel.urls)
+        }
+    }
+
+    private func importRDPFiles(_ urls: [URL]) {
+        let candidates = urls.compactMap { url -> ImportCandidate? in
+            let accessing = url.startAccessingSecurityScopedResource()
+            defer { if accessing { url.stopAccessingSecurityScopedResource() } }
+            guard let data = try? Data(contentsOf: url) else { return nil }
+            return RDPFileParser.parse(data, name: url.deletingPathExtension().lastPathComponent)
+        }
+        showPreview(
+            title: String(localized: "Import .rdp Files"),
+            candidates: candidates,
+            emptyMessage: String(localized: "None of the selected files has a server address.")
+        )
+    }
+
+    private func showPreview(title: String, candidates: [ImportCandidate], emptyMessage: String) {
+        guard !candidates.isEmpty else {
+            alert = AlertContent(title: String(localized: "Nothing to Import"), message: emptyMessage)
+            return
+        }
+        importPreview = ImportPreview(title: title, candidates: candidates)
+    }
+
     // MARK: - Backup
 
     private func export(passphrase: String?) {
@@ -264,6 +335,12 @@ private struct GroupNameRequest {
 private struct AlertContent {
     var title: String
     var message: String
+}
+
+private struct ImportPreview: Identifiable {
+    let id = UUID()
+    var title: String
+    var candidates: [ImportCandidate]
 }
 
 private struct PendingImport: Identifiable {

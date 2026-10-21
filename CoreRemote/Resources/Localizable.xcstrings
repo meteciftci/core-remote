@@ -103,6 +103,35 @@
         }
       }
     },
+    "%lld connections imported": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld connection imported"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld connections imported"
+                }
+              }
+            }
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld bağlantı içe aktarıldı"
+          }
+        }
+      }
+    },
     "192.168.1.10 or server.example.com": {
       "extractionState": "manual",
       "localizations": {
@@ -147,6 +176,17 @@
         }
       }
     },
+    "Add to group": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gruba ekle"
+          }
+        }
+      }
+    },
     "Add your first SSH or RDP connection.": {
       "extractionState": "manual",
       "localizations": {
@@ -176,6 +216,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "İzin verildi"
+          }
+        }
+      }
+    },
+    "Already exists": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zaten var"
           }
         }
       }
@@ -242,6 +293,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "SSH Anahtarı Seç"
+          }
+        }
+      }
+    },
+    "Choose the connections to add. Ones that already exist are unchecked.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eklenecek bağlantıları seçin. Zaten var olanlar seçili gelmez."
           }
         }
       }
@@ -396,6 +458,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "brew Komutunu Kopyala"
+          }
+        }
+      }
+    },
+    "CoreRemote looks for ~/.ssh/config, which doesn't exist or can't be read.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CoreRemote ~/.ssh/config dosyasını arar; dosya yok ya da okunamıyor."
           }
         }
       }
@@ -704,6 +777,39 @@
         }
       }
     },
+    "Import %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Bağlantıyı Aktar"
+          }
+        }
+      }
+    },
+    "Import .rdp Files": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ".rdp Dosyalarını İçe Aktar"
+          }
+        }
+      }
+    },
+    "Import .rdp Files…": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ".rdp Dosyalarını İçe Aktar…"
+          }
+        }
+      }
+    },
     "Import Complete": {
       "extractionState": "manual",
       "localizations": {
@@ -722,6 +828,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "İçe Aktarma Başarısız"
+          }
+        }
+      }
+    },
+    "Import from SSH Config": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH Yapılandırmasından İçe Aktar"
+          }
+        }
+      }
+    },
+    "Import from SSH Config…": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH Yapılandırmasından İçe Aktar…"
           }
         }
       }
@@ -913,6 +1041,17 @@
         }
       }
     },
+    "No SSH Config Found": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH Yapılandırması Bulunamadı"
+          }
+        }
+      }
+    },
     "No connections match this filter.": {
       "extractionState": "manual",
       "localizations": {
@@ -924,6 +1063,17 @@
         }
       }
     },
+    "No username": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kullanıcı adı yok"
+          }
+        }
+      }
+    },
     "None": {
       "extractionState": "manual",
       "localizations": {
@@ -931,6 +1081,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yok"
+          }
+        }
+      }
+    },
+    "None of the selected files has a server address.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçilen dosyaların hiçbirinde sunucu adresi yok."
           }
         }
       }
@@ -953,6 +1114,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Burada Bir Şey Yok"
+          }
+        }
+      }
+    },
+    "Nothing to Import": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İçe Aktarılacak Bir Şey Yok"
           }
         }
       }
@@ -1309,6 +1481,28 @@
         }
       }
     },
+    "Select All": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tümünü Seç"
+          }
+        }
+      }
+    },
+    "Select None": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hiçbirini Seçme"
+          }
+        }
+      }
+    },
     "Separate tags with commas.": {
       "extractionState": "manual",
       "localizations": {
@@ -1580,6 +1774,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "prod, linux, dc"
+          }
+        }
+      }
+    },
+    "~/.ssh/config has no Host entries to import. Entries with wildcards are skipped.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "~/.ssh/config içinde içe aktarılacak Host girdisi yok. Joker karakter içeren girdiler atlanır."
           }
         }
       }

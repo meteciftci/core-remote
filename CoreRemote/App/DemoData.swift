@@ -10,6 +10,24 @@ enum DemoData {
     static var opensEditor: Bool { arguments.contains("-DemoEditor") }
     static var opensSettings: Bool { arguments.contains("-DemoSettings") }
     static var opensQuickConnect: Bool { arguments.contains("-DemoQuickConnect") }
+    static var opensImport: Bool { arguments.contains("-DemoImport") }
+
+    /// A small `~/.ssh/config` for the import preview screenshot.
+    static let sshConfig = """
+        Host web-01
+            HostName web-01.example.com
+            User deploy
+        Host db-01
+            HostName db-01.example.com
+            Port 2222
+            User postgres
+        Host staging
+            HostName staging.example.com
+            User deploy
+        Host bastion
+            HostName 203.0.113.10
+            User admin
+        """
 
     static let editorConnectionName = "File Server"
 

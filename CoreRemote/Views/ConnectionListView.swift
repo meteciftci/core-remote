@@ -10,6 +10,8 @@ struct ConnectionListView: View {
     var onCopyCommand: (Connection) -> Void
     var onImport: () -> Void
     var onExport: () -> Void
+    var onImportSSHConfig: () -> Void
+    var onImportRDPFiles: () -> Void
 
     @Environment(\.modelContext) private var modelContext
     @Environment(ReachabilityMonitor.self) private var reachability
@@ -48,6 +50,9 @@ struct ConnectionListView: View {
                         Button("Import…", systemImage: "square.and.arrow.down", action: onImport)
                         Button("Export…", systemImage: "square.and.arrow.up", action: onExport)
                             .disabled(allConnections.isEmpty)
+                        Divider()
+                        Button("Import from SSH Config…", systemImage: "terminal", action: onImportSSHConfig)
+                        Button("Import .rdp Files…", systemImage: "display", action: onImportRDPFiles)
                     } label: {
                         Label("Backup", systemImage: "arrow.up.arrow.down.circle")
                     }
