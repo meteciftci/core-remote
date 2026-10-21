@@ -81,15 +81,13 @@ final class ConnectionLauncher {
             askpass = AskpassEnvironment(helperPath: helper.path, passwordFilePath: passwordFile.path)
         }
 
-        let script = """
-            #!/bin/zsh
-            rm -f -- "$0"
-            clear
-            \(SSHCommand.commandLine(for: target, askpass: askpass))
-
-            """
         let scriptURL = try LaunchFiles.write(
-            script,
+            SSHCommand.script(
+                for: target,
+                askpass: askpass,
+                failureMessage: String(localized: "Connection closed. Exit code:"),
+                closePrompt: String(localized: "Press any key to close this window.")
+            ),
             named: LaunchFiles.fileName(for: target.name, extension: "command"),
             permissions: 0o700
         )

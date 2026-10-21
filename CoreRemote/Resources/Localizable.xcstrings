@@ -473,6 +473,17 @@
         }
       }
     },
+    "Connection closed. Exit code:": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlantı kapandı. Çıkış kodu:"
+          }
+        }
+      }
+    },
     "Connection refused": {
       "extractionState": "manual",
       "localizations": {
@@ -1356,6 +1367,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Port 1 ile 65535 arasında olmalı."
+          }
+        }
+      }
+    },
+    "Press any key to close this window.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pencereyi kapatmak için bir tuşa basın."
           }
         }
       }

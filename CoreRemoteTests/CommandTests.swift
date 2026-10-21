@@ -175,3 +175,31 @@ struct TerminalAppTests {
         #expect(WarpTabConfig.url(forConfigNamed: "coreremote-abc").absoluteString == "warp://tab_config/coreremote-abc")
     }
 }
+
+struct SSHScriptTests {
+    @Test func waitsWhenSSHFails() throws {
+        let script = SSHCommand.script(
+            for: target(host: "127.0.0.1", port: 1),
+            askpass: nil,
+            failureMessage: "Closed. Code:",
+            closePrompt: "Press a key."
+        )
+        let url = FileManager.default.temporaryDirectory.appending(path: "\(UUID().uuidString).command")
+        try script.write(to: url, atomically: true, encoding: .utf8)
+
+        let process = Process()
+        process.executableURL = URL(filePath: "/bin/zsh")
+        process.arguments = [url.path]
+        process.standardInput = FileHandle.nullDevice
+        let pipe = Pipe()
+        process.standardOutput = pipe
+        process.standardError = pipe
+        try process.run()
+        process.waitUntilExit()
+
+        let output = String(decoding: pipe.fileHandleForReading.readDataToEndOfFile(), as: UTF8.self)
+        #expect(output.contains("Closed. Code: 255"))
+        #expect(output.contains("Press a key."))
+        #expect(!FileManager.default.fileExists(atPath: url.path))
+    }
+}
