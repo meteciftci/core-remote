@@ -59,37 +59,4 @@ struct ConnectURLTests {
         #expect(ConnectURL.connectionID(from: URL(string: "https://connect/\(UUID().uuidString)")!) == nil)
         #expect(ConnectURL.connectionID(from: URL(string: "coreremote://connect/not-a-uuid")!) == nil)
     }
-
-    @Test func shortcutRunsConnectWithThePickedConnection() throws {
-        let connection = Connection(name: "SAS-DB", host: "db.example.com", type: .ssh, username: "sa")
-        let workflow = ShortcutExport.workflow(for: ConnectionEntity(connection), bundleID: "com.example.app", teamID: "TEAM123")
-        let actions = try #require(workflow["WFWorkflowActions"] as? [[String: Any]])
-        #expect(actions.count == 1)
-        #expect(actions.first?["WFWorkflowActionIdentifier"] as? String == "com.example.app.ConnectIntent")
-
-        let parameters = try #require(actions.first?["WFWorkflowActionParameters"] as? [String: Any])
-        let descriptor = try #require(parameters["AppIntentDescriptor"] as? [String: Any])
-        #expect(descriptor["AppIntentIdentifier"] as? String == "ConnectIntent")
-        #expect(descriptor["BundleIdentifier"] as? String == "com.example.app")
-        #expect(descriptor["TeamIdentifier"] as? String == "TEAM123")
-
-        // Same shape Kestirmeler writes when the connection is picked by hand.
-        let target = try #require(parameters["target"] as? [String: Any])
-        #expect(target["identifier"] as? String == connection.id.uuidString)
-        #expect((target["title"] as? [String: String])?["key"] == "SAS-DB")
-        #expect((target["subtitle"] as? [String: String])?["key"] == "sa@db.example.com:22")
-        #expect((target["symbol"] as? [String: String])?["systemName"] == "terminal")
-
-        // Must serialize as a property list for `shortcuts sign`.
-        _ = try PropertyListSerialization.data(fromPropertyList: workflow, format: .binary, options: 0)
-    }
-
-    @Test func adHocBuildsLeaveOutTheTeam() throws {
-        let connection = Connection(name: "A", host: "a", type: .rdp, username: "u")
-        let workflow = ShortcutExport.workflow(for: ConnectionEntity(connection), bundleID: "com.example.app", teamID: nil)
-        let actions = try #require(workflow["WFWorkflowActions"] as? [[String: Any]])
-        let parameters = try #require(actions.first?["WFWorkflowActionParameters"] as? [String: Any])
-        let descriptor = try #require(parameters["AppIntentDescriptor"] as? [String: Any])
-        #expect(descriptor["TeamIdentifier"] == nil)
-    }
 }

@@ -187,17 +187,6 @@
         }
       }
     },
-    "Add to Shortcuts…": {
-      "extractionState": "manual",
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kestirmelere Ekle…"
-          }
-        }
-      }
-    },
     "Add to group": {
       "extractionState": "manual",
       "localizations": {
@@ -216,17 +205,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "İlk SSH veya RDP bağlantını ekle."
-          }
-        }
-      }
-    },
-    "Adds a shortcut that opens this connection to the Shortcuts app.": {
-      "extractionState": "manual",
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bu bağlantıyı açan bir kestirmeyi Kestirmeler uygulamasına ekler."
           }
         }
       }
@@ -451,17 +429,6 @@
         }
       }
     },
-    "Connect to %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ bağlantısını aç"
-          }
-        }
-      }
-    },
     "Connect to favorites, recent connections and groups from the menu bar. CoreRemote keeps running there after you close its window.": {
       "extractionState": "manual",
       "localizations": {
@@ -557,17 +524,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bağlanılamadı"
-          }
-        }
-      }
-    },
-    "Couldn't Create Shortcut": {
-      "extractionState": "manual",
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kestirme Oluşturulamadı"
           }
         }
       }
@@ -707,6 +663,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bu yedek dışa aktarılırken kullanılan parolayı girin."
+          }
+        }
+      }
+    },
+    "Every connection is available in the Shortcuts app as \"Connect to <name>\", ready to run, add to the menu bar, give a keyboard shortcut or say to Siri.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her bağlantı Kestirmeler uygulamasında “<ad> bağlantısını aç” olarak hazır bulunur: çalıştırabilir, menü çubuğuna ekleyebilir, klavye kısayolu atayabilir ya da Siri’ye söyleyebilirsiniz."
           }
         }
       }
@@ -1250,6 +1217,17 @@
         }
       }
     },
+    "Open Shortcuts": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kestirmeler’i Aç"
+          }
+        }
+      }
+    },
     "Open System Settings…": {
       "extractionState": "manual",
       "localizations": {
@@ -1367,17 +1345,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Port 1 ile 65535 arasında olmalı."
-          }
-        }
-      }
-    },
-    "Preparing the shortcut…": {
-      "extractionState": "manual",
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kestirme hazırlanıyor…"
           }
         }
       }
@@ -1668,6 +1635,17 @@
         }
       }
     },
+    "Shortcuts and Siri": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kestirmeler ve Siri"
+          }
+        }
+      }
+    },
     "Show in menu bar": {
       "extractionState": "manual",
       "localizations": {
@@ -1763,17 +1741,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Şifre Anahtar Zinciri’nde saklanır ve bağlanırken FreeRDP’ye iletilir."
-          }
-        }
-      }
-    },
-    "The shortcut couldn't be signed. Signing needs an internet connection and an iCloud account.\n\n%@": {
-      "extractionState": "manual",
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kestirme imzalanamadı. İmzalama için internet bağlantısı ve iCloud hesabı gerekir.\n\n%@"
           }
         }
       }

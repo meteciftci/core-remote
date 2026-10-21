@@ -130,19 +130,20 @@ struct CoreRemoteShortcuts: AppShortcutsProvider {
     }
 }
 
-/// Keeps Spotlight's copy of the connection list current.
+/// Keeps what the system knows about connections current: one App Shortcut per connection in
+/// Kestirmeler (Shortcuts) and Siri, and Spotlight's index.
 enum SpotlightIndex {
     static func update(_ connections: [Connection]) async {
         #if DEBUG
         // Sample data must not replace the user's real connections in Spotlight.
         if DemoData.isEnabled { return }
         #endif
+        // Refreshes "Connect to <name>" for each connection. Independent of Spotlight, which can fail.
+        CoreRemoteShortcuts.updateAppShortcutParameters()
         let entities = connections.map(ConnectionEntity.init)
         do {
             try await CSSearchableIndex.default().deleteAppEntities(ofType: ConnectionEntity.self)
             try await CSSearchableIndex.default().indexAppEntities(entities)
-            // Lets Siri and Spotlight offer "Connect to <name>" for each connection.
-            CoreRemoteShortcuts.updateAppShortcutParameters()
         } catch {
             // Spotlight is a convenience; the app works the same without it.
         }

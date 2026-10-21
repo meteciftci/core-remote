@@ -78,6 +78,16 @@ struct SettingsView: View {
             }
 
             Section {
+                LabeledContent("Shortcuts and Siri") {
+                    Button("Open Shortcuts", systemImage: "square.2.layers.3d", action: ShortcutsApp.open)
+                }
+            } footer: {
+                Text("Every connection is available in the Shortcuts app as \"Connect to <name>\", ready to run, add to the menu bar, give a keyboard shortcut or say to Siri.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Section {
                 Toggle("Show in menu bar", isOn: $showsMenuBarIcon)
             } footer: {
                 Text("Connect to favorites, recent connections and groups from the menu bar. CoreRemote keeps running there after you close its window.")
