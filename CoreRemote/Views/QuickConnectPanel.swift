@@ -47,6 +47,13 @@ final class QuickConnectPanel {
         )
         position(panel)
         panel.makeKeyAndOrderFront(nil)
+        // SwiftUI's focus request arrives before the panel is key, so put the cursor in the search
+        // field once it is.
+        DispatchQueue.main.async {
+            if let field = panel.contentView?.firstDescendant(of: NSTextField.self) {
+                panel.makeFirstResponder(field)
+            }
+        }
     }
 
     func close() {
@@ -81,6 +88,17 @@ final class QuickConnectPanel {
             y: frame.minY + frame.height * 0.62 - Self.size.height / 2
         )
         panel.setFrame(CGRect(origin: origin, size: Self.size), display: false)
+    }
+}
+
+private extension NSView {
+    func firstDescendant<T: NSView>(of type: T.Type) -> T? {
+        for subview in subviews {
+            if let match = subview as? T ?? subview.firstDescendant(of: type) {
+                return match
+            }
+        }
+        return nil
     }
 }
 
