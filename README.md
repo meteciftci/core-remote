@@ -16,7 +16,7 @@ macOS için sade bir SSH ve RDP bağlantı yöneticisi. Bağlantılarınızı ka
 - **Menü çubuğu**: Favorilere, son 5 bağlantıya ve gruplara menü çubuğundan tek tıkla bağlanın. Pencere kapatılınca CoreRemote menü çubuğunda çalışmaya devam eder; simge Ayarlar'dan gizlenebilir.
 - **Hızlı bağlan**: Hangi uygulamada olursanız olun **⌃⌥Space** ile bir arama kutusu açın, ad, host veya kullanıcı yazıp Return ile bağlanın. Kısayol Ayarlar'dan değiştirilebilir.
 - **Sunucu durumu**: Pencere açıkken her sunucunun portu dakikada bir denenir; satırda yeşil (ulaşılabilir) ya da kırmızı (ulaşılamıyor) bir nokta görünür, üzerine gelince nedeni yazar. Ayarlar'dan kapatılabilir.
-- **Kestirmeler, Siri ve Spotlight**: Bir bağlantıya sağ tıklayıp **Kestirmelere Ekle…** deyin; o bağlantıyı açan kestirme Kestirmeler'e eklenir. Kestirmeler'deki "Bağlan" eylemini de kullanabilir, Siri'ye "CoreRemote ile DC-1 bağlantısını aç" diyebilir ya da Spotlight'ta bağlantının adını yazabilirsiniz.
+- **Kestirmeler, Siri ve Spotlight**: Her bağlantı Kestirmeler uygulamasında CoreRemote altında "DC-1 bağlantısını aç" gibi hazır bir kestirme olarak bulunur; çalıştırabilir, menü çubuğuna ekleyebilir ya da Siri'ye söyleyebilirsiniz. Kendi kestirmelerinizde "Bağlan" eylemini de kullanabilirsiniz.
 - **İçe aktarma**: `~/.ssh/config` içindeki Host girdilerini ya da `.rdp` dosyalarını (seçerek veya pencereye sürükleyip bırakarak) içe aktarın. Önce bir önizleme gösterilir; zaten var olan bağlantılar seçili gelmez.
 - **Yedekleme**: Bağlantılarınızı `.coreremote` dosyasına dışa aktarın, başka bir Mac'e içe aktarın. Şifreler yalnızca parolayla şifrelenmiş yedeğe eklenir.
 - **Liquid Glass** arayüzü, Türkçe ve İngilizce dil desteği.

@@ -12,7 +12,6 @@ struct ConnectionListView: View {
     var onExport: () -> Void
     var onImportSSHConfig: () -> Void
     var onImportRDPFiles: () -> Void
-    var onAddToShortcuts: (Connection) -> Void
 
     @Environment(\.modelContext) private var modelContext
     @Environment(ReachabilityMonitor.self) private var reachability
@@ -140,7 +139,7 @@ struct ConnectionListView: View {
             if connection.type == .ssh {
                 Button("Copy SSH Command", systemImage: "doc.on.doc") { onCopyCommand(connection) }
             }
-            Button("Add to Shortcuts…", systemImage: "square.2.layers.3d") { onAddToShortcuts(connection) }
+
             Divider()
             Button(
                 connection.isFavorite ? "Remove from Favorites" : "Add to Favorites",
