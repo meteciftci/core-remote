@@ -72,11 +72,38 @@ struct RDPFileTests {
         let contents = RDPFile.contents(for: target(host: "win.local", type: .rdp, username: "admin"))
         #expect(contents.contains("full address:s:win.local:3389\r\n"))
         #expect(contents.contains("username:s:admin\r\n"))
+        #expect(contents.contains("screen mode id:i:1\r\n"))
+    }
+
+    @Test func certificateWarningsFollowOption() {
+        var rdp = target(type: .rdp)
+        #expect(RDPFile.contents(for: rdp).contains("authentication level:i:2\r\n"))
+        rdp.ignoreCertificateErrors = true
+        #expect(RDPFile.contents(for: rdp).contains("authentication level:i:0\r\n"))
     }
 
     @Test func wrapsIPv6Hosts() {
         let contents = RDPFile.contents(for: target(host: "fe80::1", type: .rdp, port: 3390))
         #expect(contents.contains("full address:s:[fe80::1]:3390"))
+    }
+}
+
+struct FreeRDPTests {
+    @Test func argumentsWithPassword() {
+        let args = FreeRDP.arguments(for: target(host: "win", type: .rdp, username: "CORP\\admin"), password: "p@ss word")
+        #expect(args.contains("/v:win:3389"))
+        #expect(args.contains("/u:CORP\\admin"))
+        #expect(args.contains("/cert:tofu"))
+        #expect(args.last == "/p:p@ss word")
+    }
+
+    @Test func noPasswordArgumentWithoutPassword() {
+        var rdp = target(host: "fe80::1", type: .rdp)
+        rdp.ignoreCertificateErrors = true
+        let args = FreeRDP.arguments(for: rdp, password: nil)
+        #expect(args.contains("/v:[fe80::1]:3389"))
+        #expect(args.contains("/cert:ignore"))
+        #expect(!args.contains { $0.hasPrefix("/p:") })
     }
 }
 
@@ -113,5 +140,14 @@ struct LaunchFilesTests {
         let output = String(decoding: pipe.fileHandleForReading.readDataToEndOfFile(), as: UTF8.self)
         #expect(output == "p@ss word")
         #expect(!FileManager.default.fileExists(atPath: passwordFile.path))
+    }
+}
+
+struct FreeRDPWindowSizeTests {
+    @Test func usesFixedSizeWithSmartSizing() {
+        let args = FreeRDP.arguments(for: target(type: .rdp), password: nil)
+        #expect(args.contains("/size:1280x800"))
+        #expect(args.contains("+smart-sizing"))
+        #expect(!args.contains("+dynamic-resolution"))
     }
 }

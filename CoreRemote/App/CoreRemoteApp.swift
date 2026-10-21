@@ -34,6 +34,10 @@ struct CoreRemoteApp: App {
                     .disabled(actions == nil)
             }
         }
+
+        Settings {
+            SettingsView()
+        }
     }
 }
 
