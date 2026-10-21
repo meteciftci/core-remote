@@ -15,6 +15,7 @@ struct ConnectionEditor: View {
     @State private var errorMessage: String?
     @State private var showsNewGroup = false
     @State private var newGroupName = ""
+    @State private var isExportingShortcut = false
     @FocusState private var focusedField: Field?
 
     private enum Field { case name, host }
@@ -152,6 +153,11 @@ struct ConnectionEditor: View {
             }
 
             HStack {
+                if let connection {
+                    Button("Add to Shortcuts…", systemImage: "square.2.layers.3d") { addToShortcuts(connection) }
+                        .disabled(isExportingShortcut)
+                        .help("Adds a shortcut that opens this connection to the Shortcuts app.")
+                }
                 Spacer()
                 Button("Cancel", role: .cancel) { dismiss() }
                     .keyboardShortcut(.cancelAction)
@@ -193,6 +199,19 @@ struct ConnectionEditor: View {
             draft.groupID = defaultGroupID
         }
         focusedField = .name
+    }
+
+    private func addToShortcuts(_ connection: Connection) {
+        isExportingShortcut = true
+        errorMessage = nil
+        Task {
+            defer { isExportingShortcut = false }
+            do {
+                try await ShortcutExport.addToShortcuts(connection)
+            } catch {
+                errorMessage = error.localizedDescription
+            }
+        }
     }
 
     private func chooseKeyFile() {

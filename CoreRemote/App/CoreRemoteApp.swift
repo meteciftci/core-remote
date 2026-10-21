@@ -22,6 +22,9 @@ struct CoreRemoteApp: App {
         let container = container
         AppDependencyManager.shared.add(dependency: container)
         AppDependencyManager.shared.add(dependency: launcher)
+        AppDelegate.urlHandler = { url in
+            Task { await ConnectURL.handle(url, container: container, launcher: launcher) }
+        }
     }
 
     private static func makeContainer() -> ModelContainer {
@@ -101,6 +104,14 @@ enum MainWindow {
 }
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
+    /// Set by the app once its store and launcher exist.
+    static var urlHandler: ((URL) -> Void)?
+
+    /// `coreremote://connect/…` links, such as the ones in exported shortcuts.
+    func application(_ application: NSApplication, open urls: [URL]) {
+        urls.forEach { Self.urlHandler?($0) }
+    }
+
     /// Keep running in the menu bar after the window is closed.
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         false

@@ -45,7 +45,8 @@ struct ContentView: View {
                 onImport: { showsImporter = true },
                 onExport: { showsExportOptions = true },
                 onImportSSHConfig: importSSHConfig,
-                onImportRDPFiles: chooseRDPFiles
+                onImportRDPFiles: chooseRDPFiles,
+                onAddToShortcuts: addToShortcuts
             )
             .id(filter)
             .environment(reachability)
@@ -226,6 +227,19 @@ struct ContentView: View {
         }
         try? modelContext.save()
         groupNameRequest = nil
+    }
+
+    // MARK: - Shortcuts
+
+    private func addToShortcuts(_ connection: Connection) {
+        launcher.show(String(localized: "Preparing the shortcut…"))
+        Task {
+            do {
+                try await ShortcutExport.addToShortcuts(connection)
+            } catch {
+                alert = AlertContent(title: String(localized: "Couldn't Create Shortcut"), message: error.localizedDescription)
+            }
+        }
     }
 
     // MARK: - Importing other formats

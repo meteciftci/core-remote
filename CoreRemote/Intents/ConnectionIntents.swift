@@ -135,6 +135,8 @@ enum SpotlightIndex {
         do {
             try await CSSearchableIndex.default().deleteAppEntities(ofType: ConnectionEntity.self)
             try await CSSearchableIndex.default().indexAppEntities(entities)
+            // Lets Siri and Spotlight offer "Connect to <name>" for each connection.
+            CoreRemoteShortcuts.updateAppShortcutParameters()
         } catch {
             // Spotlight is a convenience; the app works the same without it.
         }
