@@ -1133,6 +1133,17 @@
         }
       }
     },
+    "The password is kept in your Keychain and passed to FreeRDP when you connect.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Şifre Anahtar Zinciri’nde saklanır ve bağlanırken FreeRDP’ye iletilir."
+          }
+        }
+      }
+    },
     "This backup is encrypted. Enter its passphrase.": {
       "extractionState": "manual",
       "localizations": {

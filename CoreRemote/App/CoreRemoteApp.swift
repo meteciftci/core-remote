@@ -5,8 +5,21 @@ import SwiftUI
 struct CoreRemoteApp: App {
     @FocusedValue(\.appActions) private var actions
 
+    private let container: ModelContainer
+
     init() {
         LaunchFiles.cleanUp()
+        do {
+            #if DEBUG
+            if DemoData.isEnabled {
+                container = try DemoData.makeContainer()
+                return
+            }
+            #endif
+            container = try ModelContainer(for: Connection.self, ConnectionGroup.self)
+        } catch {
+            fatalError("Could not open the connection store: \(error)")
+        }
     }
 
     var body: some Scene {
@@ -14,7 +27,8 @@ struct CoreRemoteApp: App {
             ContentView()
                 .frame(minWidth: 720, minHeight: 440)
         }
-        .modelContainer(for: [Connection.self, ConnectionGroup.self])
+        .defaultSize(width: 960, height: 600)
+        .modelContainer(container)
         .windowToolbarStyle(.unified)
         .commands {
             CommandGroup(replacing: .newItem) {
