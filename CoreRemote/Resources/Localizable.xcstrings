@@ -231,6 +231,17 @@
         }
       }
     },
+    "Allow CoreRemote to control %@ in System Settings > Privacy & Security > Automation.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem Ayarları > Gizlilik ve Güvenlik > Otomasyon’da CoreRemote’un %@ uygulamasını denetlemesine izin verin."
+          }
+        }
+      }
+    },
     "Allowed": {
       "extractionState": "manual",
       "localizations": {

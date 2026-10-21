@@ -4,11 +4,15 @@ import Foundation
 enum LaunchError: LocalizedError {
     case clientMissing(RDPClient)
     case terminalMissing(TerminalApp)
+    case automationDenied(TerminalApp)
+    case scriptFailed(String)
 
     var errorDescription: String? {
         switch self {
         case .clientMissing(let client): String(localized: "\(client.title) is not installed")
         case .terminalMissing(let app): String(localized: "\(app.title) could not be found")
+        case .automationDenied(let app): String(localized: "Allow CoreRemote to control \(app.title) in System Settings > Privacy & Security > Automation.")
+        case .scriptFailed(let message): message
         }
     }
 }
@@ -94,7 +98,10 @@ final class ConnectionLauncher {
 
         let configuration = NSWorkspace.OpenConfiguration()
         configuration.activates = true
-        if terminal == .warp {
+        switch terminal {
+        case .iTerm2:
+            try ITerm2Session.open(script: scriptURL)
+        case .warp:
             // The script deletes itself; the Tab Config only has to outlive Warp reading it.
             let stem = "coreremote-\(UUID().uuidString.lowercased())"
             let tabConfig = try LaunchFiles.write(
@@ -104,8 +111,8 @@ final class ConnectionLauncher {
             )
             LaunchFiles.remove(tabConfig, after: .seconds(30))
             try await NSWorkspace.shared.open([WarpTabConfig.url(forConfigNamed: stem)], withApplicationAt: terminalURL, configuration: configuration)
-        } else {
-            // Terminal, iTerm2 and Ghostty run a `.command` file they're asked to open.
+        case .terminal, .ghostty:
+            // Both run a `.command` file they're asked to open.
             try await NSWorkspace.shared.open([scriptURL], withApplicationAt: terminalURL, configuration: configuration)
         }
     }

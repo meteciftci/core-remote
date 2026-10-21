@@ -37,6 +37,7 @@ targets:
       path: CoreRemote/Info.plist
       properties:
         CFBundleDisplayName: CoreRemote
+        NSAppleEventsUsageDescription: CoreRemote opens SSH connections in a new iTerm2 window.
         CFBundleShortVersionString: "1.2.0"
         CFBundleVersion: "3"
         LSApplicationCategoryType: public.app-category.developer-tools
@@ -56,6 +57,11 @@ targets:
             CFBundleTypeRole: Viewer
             LSHandlerRank: Owner
             LSItemContentTypes: [com.meteciftci.coreremote.backup]
+    entitlements:
+      path: CoreRemote/CoreRemote.entitlements
+      properties:
+        # Lets the hardened runtime send Apple Events, used to open SSH sessions in iTerm2.
+        com.apple.security.automation.apple-events: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.meteciftci.CoreRemote
