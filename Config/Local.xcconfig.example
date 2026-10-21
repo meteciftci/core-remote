@@ -1,0 +1,5 @@
+// Copy to Config/Local.xcconfig (not checked in) to sign with your Apple Development certificate.
+// Find your team ID in Xcode > Settings > Accounts, or in the certificate's "OU" field.
+CODE_SIGN_IDENTITY = Apple Development
+CODE_SIGN_STYLE = Automatic
+DEVELOPMENT_TEAM = YOUR_TEAM_ID

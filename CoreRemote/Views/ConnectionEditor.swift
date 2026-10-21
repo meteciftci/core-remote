@@ -107,6 +107,8 @@ struct ConnectionEditor: View {
                 } footer: {
                     Text(draft.type == .ssh
                          ? "The password is kept in your Keychain and entered for you when ssh asks."
+                         : RDPClient.current == .freeRDP
+                         ? "The password is kept in your Keychain and passed to FreeRDP when you connect."
                          : "The password is kept in your Keychain and copied to the clipboard for 30 seconds when you connect.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
@@ -128,7 +130,7 @@ struct ConnectionEditor: View {
             .formStyle(.grouped)
             .scrollContentBackground(.hidden)
             // A Form in a sheet otherwise collapses to a few rows.
-            .frame(minHeight: 500, idealHeight: 540)
+            .frame(minHeight: 580, idealHeight: 580)
 
             if let errorMessage {
                 Text(errorMessage)

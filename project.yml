@@ -6,6 +6,11 @@ options:
   developmentLanguage: en
   createIntermediateGroups: true
 
+# Signing lives in Config/Signing.xcconfig (+ optional, untracked Config/Local.xcconfig).
+configFiles:
+  Debug: Config/Signing.xcconfig
+  Release: Config/Signing.xcconfig
+
 settings:
   base:
     SWIFT_VERSION: "6.0"
@@ -14,10 +19,6 @@ settings:
     SWIFT_APPROACHABLE_CONCURRENCY: YES
     SWIFT_EMIT_LOC_STRINGS: YES
     LOCALIZATION_PREFERS_STRING_CATALOGS: YES
-    # A stable signature keeps Keychain and Accessibility permissions across rebuilds.
-    CODE_SIGN_IDENTITY: "Apple Development"
-    CODE_SIGN_STYLE: Automatic
-    DEVELOPMENT_TEAM: RU9QDTS4TT
 
 targets:
   CoreRemote:
@@ -29,8 +30,8 @@ targets:
       path: CoreRemote/Info.plist
       properties:
         CFBundleDisplayName: CoreRemote
-        CFBundleShortVersionString: "1.0.0"
-        CFBundleVersion: "1"
+        CFBundleShortVersionString: "1.1.0"
+        CFBundleVersion: "2"
         LSApplicationCategoryType: public.app-category.developer-tools
         NSHumanReadableCopyright: "© 2026 Mete Çiftçi"
         CFBundleLocalizations: [en, tr]

@@ -5,6 +5,7 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.openURL) private var openURL
+    @Environment(\.openSettings) private var openSettings
     @Query private var connections: [Connection]
     @Query(sort: \ConnectionGroup.name) private var groups: [ConnectionGroup]
 
@@ -44,6 +45,16 @@ struct ContentView: View {
             .id(filter)
         }
         .overlay(alignment: .bottom) { toast }
+        .task {
+            #if DEBUG
+            if DemoData.opensEditor {
+                editor = EditorRequest(connection: connections.first { $0.name == DemoData.editorConnectionName })
+            }
+            if DemoData.opensSettings {
+                openSettings()
+            }
+            #endif
+        }
         .focusedSceneValue(\.appActions, AppActions(
             newConnection: { editor = EditorRequest(connection: nil) },
             newGroup: { requestGroupName(for: nil) },

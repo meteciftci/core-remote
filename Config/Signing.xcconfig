@@ -1,0 +1,8 @@
+// Default signing: ad-hoc ("Sign to Run Locally"), so anyone can build without an Apple account.
+// With ad-hoc signing macOS asks again for Keychain and Accessibility access after every rebuild.
+// To keep those permissions, copy Local.xcconfig.example to Local.xcconfig and set your team.
+CODE_SIGN_IDENTITY = -
+CODE_SIGN_STYLE = Manual
+DEVELOPMENT_TEAM =
+
+#include? "Local.xcconfig"
