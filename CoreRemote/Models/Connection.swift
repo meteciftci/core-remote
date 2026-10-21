@@ -15,6 +15,8 @@ final class Connection {
     var ignoreCertificateErrors: Bool = false
     var isFavorite: Bool
     var createdAt: Date
+    /// When the connection was last opened; `nil` if never (or after clearing history).
+    var lastConnectedAt: Date?
     var group: ConnectionGroup?
 
     var type: ConnectionType {
@@ -64,6 +66,17 @@ final class Connection {
             keyFilePath: keyFilePath,
             ignoreCertificateErrors: ignoreCertificateErrors
         )
+    }
+}
+
+extension Connection {
+    /// Forgets when every connection was last opened.
+    static func clearHistory(in context: ModelContext) throws {
+        let descriptor = FetchDescriptor<Connection>(predicate: #Predicate { $0.lastConnectedAt != nil })
+        for connection in try context.fetch(descriptor) {
+            connection.lastConnectedAt = nil
+        }
+        try context.save()
     }
 }
 

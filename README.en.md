@@ -11,6 +11,7 @@ A simple SSH and RDP connection manager for macOS. Save your connections and ope
 - **SSH**: Connections open in Terminal. A saved password is entered for you; an SSH key file can be chosen per connection.
 - **RDP**: The default client is [FreeRDP](https://www.freerdp.com), which receives the password directly. [Microsoft Windows App](https://apps.apple.com/app/id1295203466) can be chosen in Settings instead.
 - **Groups and favorites**: Sort connections into groups, mark the ones you use most, and search by name, host or user.
+- **Recent**: The 10 connections you opened last are listed in the sidebar, and each row shows when you last connected. History can be cleared in Settings.
 - **Backup**: Export your connections to a `.coreremote` file and import them on another Mac. Passwords are only included in passphrase-encrypted backups.
 - **Liquid Glass** interface, in English and Turkish.
 

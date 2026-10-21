@@ -1,4 +1,5 @@
 import AppKit
+import SwiftData
 import SwiftUI
 
 struct SettingsView: View {
@@ -6,6 +7,12 @@ struct SettingsView: View {
     @AppStorage(WindowsApp.minimizeStorageKey) private var minimizesMainWindow = true
     @State private var isAccessibilityTrusted = WindowsAppWindowMinimizer.isTrusted
     @State private var installed: Set<RDPClient> = []
+    @State private var confirmsClearHistory = false
+
+    @Environment(\.modelContext) private var modelContext
+    @Query(filter: #Predicate<Connection> { $0.lastConnectedAt != nil }) private var recentConnections: [Connection]
+
+    private var hasHistory: Bool { !recentConnections.isEmpty }
 
     var body: some View {
         Form {
@@ -57,6 +64,22 @@ struct SettingsView: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
+            }
+
+            Section {
+                LabeledContent("Recent connections") {
+                    Button("Clear History…") { confirmsClearHistory = true }
+                        .disabled(!hasHistory)
+                }
+            } footer: {
+                Text("Removes the Recent list and last-connected times. Connections aren't deleted.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .confirmationDialog("Clear connection history?", isPresented: $confirmsClearHistory) {
+            Button("Clear History", role: .destructive) {
+                try? Connection.clearHistory(in: modelContext)
             }
         }
         .formStyle(.grouped)

@@ -257,6 +257,39 @@
         }
       }
     },
+    "Clear History": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçmişi Temizle"
+          }
+        }
+      }
+    },
+    "Clear History…": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçmişi Temizle…"
+          }
+        }
+      }
+    },
+    "Clear connection history?": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlantı geçmişi temizlensin mi?"
+          }
+        }
+      }
+    },
     "Command copied": {
       "extractionState": "manual",
       "localizations": {
@@ -979,6 +1012,28 @@
         }
       }
     },
+    "Recent": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son Kullanılanlar"
+          }
+        }
+      }
+    },
+    "Recent connections": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son bağlantılar"
+          }
+        }
+      }
+    },
     "Remove from Favorites": {
       "extractionState": "manual",
       "localizations": {
@@ -986,6 +1041,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Favorilerden Çıkar"
+          }
+        }
+      }
+    },
+    "Removes the Recent list and last-connected times. Connections aren't deleted.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son Kullanılanlar listesini ve son bağlanma zamanlarını siler. Bağlantılar silinmez."
           }
         }
       }

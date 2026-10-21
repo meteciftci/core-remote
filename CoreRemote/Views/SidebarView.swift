@@ -4,15 +4,28 @@ import SwiftUI
 enum SidebarItem: Hashable {
     case all
     case favorites
+    case recent
     case type(ConnectionType)
     case group(UUID)
 
-    func includes(_ connection: Connection) -> Bool {
+    static let recentLimit = 10
+
+    /// The connections this item shows, in display order. `connections` is expected sorted by name;
+    /// Recent re-sorts by last connection, newest first.
+    func filter(_ connections: [Connection]) -> [Connection] {
         switch self {
-        case .all: true
-        case .favorites: connection.isFavorite
-        case .type(let type): connection.type == type
-        case .group(let id): connection.group?.id == id
+        case .all: connections
+        case .favorites: connections.filter(\.isFavorite)
+        case .recent:
+            Array(
+                connections
+                    .compactMap { connection in connection.lastConnectedAt.map { (connection, $0) } }
+                    .sorted { $0.1 > $1.1 }
+                    .prefix(Self.recentLimit)
+                    .map(\.0)
+            )
+        case .type(let type): connections.filter { $0.type == type }
+        case .group(let id): connections.filter { $0.group?.id == id }
         }
     }
 }
@@ -30,6 +43,7 @@ struct SidebarView: View {
             Section("Library") {
                 row(.all, title: Text("All Connections"), symbol: "square.stack.3d.up")
                 row(.favorites, title: Text("Favorites"), symbol: "star")
+                row(.recent, title: Text("Recent"), symbol: "clock")
             }
 
             Section("Types") {
@@ -59,7 +73,7 @@ struct SidebarView: View {
             Image(systemName: symbol)
                 .foregroundStyle(tint ?? .accentColor)
         }
-        .badge(connections.count(where: item.includes))
+        .badge(item.filter(connections).count)
         .tag(item)
     }
 

@@ -41,6 +41,9 @@ enum DemoData {
             Connection(name: "Raspberry Pi", host: "raspberrypi.local", type: .ssh, username: "pi"),
         ]
         connections.forEach(context.insert)
+        connections[0].lastConnectedAt = .now.addingTimeInterval(-5 * 60)
+        connections[2].lastConnectedAt = .now.addingTimeInterval(-2 * 3600)
+        connections[3].lastConnectedAt = .now.addingTimeInterval(-26 * 3600)
         try? context.save()
     }
 }

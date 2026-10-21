@@ -19,8 +19,7 @@ struct ConnectionListView: View {
 
     private var connections: [Connection] {
         let query = searchText.trimmingCharacters(in: .whitespaces)
-        return allConnections.filter { connection in
-            guard filter.includes(connection) else { return false }
+        return filter.filter(allConnections).filter { connection in
             guard !query.isEmpty else { return true }
             return [connection.name, connection.host, connection.username, connection.group?.name ?? ""]
                 .contains { $0.localizedStandardContains(query) }
