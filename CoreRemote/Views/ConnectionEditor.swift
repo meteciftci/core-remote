@@ -114,6 +114,10 @@ struct ConnectionEditor: View {
                         .foregroundStyle(.secondary)
                 }
 
+                if draft.type == .rdp {
+                    RDPOverridesSection(overrides: $draft.rdp)
+                }
+
                 Section {
                     Picker("Group", selection: groupBinding) {
                         Text("None").tag(UUID?.none)

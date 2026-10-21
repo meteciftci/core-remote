@@ -126,10 +126,6 @@ nonisolated enum FreeRDP {
     static let executableName = "sdl-freerdp"
     static let searchDirectories = ["/opt/homebrew/bin", "/usr/local/bin"]
 
-    /// Fits the smallest Mac screen (13" MacBook Air, 1440x900 points) with room for the menu bar and Dock.
-    /// The user can resize the window afterwards.
-    static let windowSize = "1280x800"
-
     static var executableURL: URL? {
         searchDirectories
             .map { URL(filePath: $0).appending(path: executableName) }
@@ -144,17 +140,45 @@ nonisolated enum FreeRDP {
             "/v:\(host):\(target.port)",
             "/u:\(target.username)",
             "/t:\(target.name)",
-            "/size:\(windowSize)",
+        ]
+        let options = target.rdp
+        if let size = options.display.size {
+            arguments.append("/size:\(size.width)x\(size.height)")
+        } else {
+            arguments.append("/f")
+        }
+        if options.usesAllScreens {
+            arguments.append("/multimon")
+        }
+        arguments += [
             // Ask the server for a new resolution when the window is resized, instead of
             // stretching the picture.
             "+dynamic-resolution",
-            "+clipboard",
+            options.clipboard ? "+clipboard" : "-clipboard",
             // tofu: trust a new certificate on first use, like ssh's accept-new.
             "/cert:\(target.ignoreCertificateErrors ? "ignore" : "tofu")",
         ]
+        if let drive = drive(for: options.sharedFolder) {
+            arguments.append(drive)
+        }
+        switch options.audio {
+        case .mac: arguments += ["/sound", "/audio-mode:0"]
+        case .server: arguments.append("/audio-mode:1")
+        case .off: arguments.append("/audio-mode:2")
+        }
         if let password, !password.isEmpty {
             arguments.append("/p:\(password)")
         }
         return arguments
+    }
+
+    /// `/drive:<name>,<path>` for a shared folder. FreeRDP splits the value at commas, so a path
+    /// with a comma can't be shared.
+    static func drive(for folder: String?) -> String? {
+        guard let folder, !folder.isEmpty, !folder.contains(",") else { return nil }
+        let path = (folder as NSString).expandingTildeInPath
+        let name = URL(filePath: path).lastPathComponent
+            .filter { $0.isLetter || $0.isNumber || $0 == "-" || $0 == "_" }
+        return "/drive:\(name.isEmpty ? "Mac" : name),\(path)"
     }
 }

@@ -1,6 +1,17 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "\"Default\" follows Settings. All screens needs full screen; a shared folder works with FreeRDP only.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“Varsayılan” Ayarlar’daki değeri kullanır. Tüm ekranlar yalnızca tam ekranda kullanılır; paylaşılan klasör yalnızca FreeRDP’de çalışır."
+          }
+        }
+      }
+    },
     "\"File Transfer\" in an SSH connection's menu opens its files here. Automatic picks an installed file transfer app, or sftp in the terminal if there is none. Apps get the server and user name; the saved password is copied to the clipboard for 30 seconds.": {
       "extractionState": "manual",
       "localizations": {
@@ -352,6 +363,17 @@
         }
       }
     },
+    "Choose a folder to show as a drive on the server.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunucuda sürücü olarak görünecek klasörü seçin."
+          }
+        }
+      }
+    },
     "Choose the connections to add. Ones that already exist are unchecked.": {
       "extractionState": "manual",
       "localizations": {
@@ -594,6 +616,17 @@
         }
       }
     },
+    "Default (%@)": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Varsayılan (%@)"
+          }
+        }
+      }
+    },
     "Delete": {
       "extractionState": "manual",
       "localizations": {
@@ -667,6 +700,17 @@
         }
       }
     },
+    "Display": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Görüntü"
+          }
+        }
+      }
+    },
     "Duplicate": {
       "extractionState": "manual",
       "localizations": {
@@ -674,6 +718,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Çoğalt"
+          }
+        }
+      }
+    },
+    "Each RDP connection can change these in its editor. All screens needs full screen. A shared folder appears as a drive on the server and works with FreeRDP only.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her RDP bağlantısı bunları kendi düzenleme penceresinde değiştirebilir. Tüm ekranlar yalnızca tam ekranda kullanılır. Paylaşılan klasör sunucuda bir sürücü olarak görünür ve yalnızca FreeRDP’de çalışır."
           }
         }
       }
@@ -806,6 +861,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "FreeRDP kayıtlı şifreyi doğrudan alır ve Windows App’in onay pencerelerini göstermez."
+          }
+        }
+      }
+    },
+    "Full Screen": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tam Ekran"
           }
         }
       }
@@ -1272,6 +1338,50 @@
         }
       }
     },
+    "Off": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kapalı"
+          }
+        }
+      }
+    },
+    "On": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Açık"
+          }
+        }
+      }
+    },
+    "On the server": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunucuda"
+          }
+        }
+      }
+    },
+    "On this Mac": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu Mac’te"
+          }
+        }
+      }
+    },
     "Open App Store": {
       "extractionState": "manual",
       "localizations": {
@@ -1477,6 +1587,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "CoreRemote’tan Çık"
+          }
+        }
+      }
+    },
+    "RDP Sessions": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RDP Oturumları"
           }
         }
       }
@@ -1712,6 +1833,17 @@
         }
       }
     },
+    "Session": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oturum"
+          }
+        }
+      }
+    },
     "Settings": {
       "extractionState": "manual",
       "localizations": {
@@ -1745,6 +1877,39 @@
         }
       }
     },
+    "Share": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paylaş"
+          }
+        }
+      }
+    },
+    "Share clipboard": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Panoyu paylaş"
+          }
+        }
+      }
+    },
+    "Shared folder": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paylaşılan klasör"
+          }
+        }
+      }
+    },
     "Shortcuts and Spotlight": {
       "extractionState": "manual",
       "localizations": {
@@ -1774,6 +1939,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sunucu durumunu göster"
+          }
+        }
+      }
+    },
+    "Sound": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ses"
           }
         }
       }
@@ -1954,6 +2130,17 @@
         }
       }
     },
+    "Use all screens": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm ekranları kullan"
+          }
+        }
+      }
+    },
     "Username": {
       "extractionState": "manual",
       "localizations": {
@@ -1972,6 +2159,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Pencere açıkken CoreRemote her sunucunun portunu dakikada bir dener ve yeşil ya da kırmızı bir nokta gösterir."
+          }
+        }
+      }
+    },
+    "Window, %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pencere, %@"
           }
         }
       }

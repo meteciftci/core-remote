@@ -9,7 +9,7 @@ macOS için sade bir SSH ve RDP bağlantı yöneticisi. Bağlantılarınızı ka
 ## Özellikler
 
 - **SSH**: Bağlantı Terminal ya da iTerm2'de açılır; hangisinin kullanılacağı Ayarlar'da seçilir. Kayıtlı şifre otomatik girilir; isteğe bağlı SSH anahtar dosyası seçilebilir. Bağlantı menüsündeki "Dosya Aktarımı" sunucuyu Cyberduck, Transmit ya da ForkLift gibi bir uygulamada, bunlar yoksa terminalde sftp ile açar.
-- **RDP**: Varsayılan istemci [FreeRDP](https://www.freerdp.com)'dir ve şifreyi doğrudan alır. İsterseniz Ayarlar'dan [Microsoft Windows App](https://apps.apple.com/app/id1295203466) seçilebilir.
+- **RDP**: Varsayılan istemci [FreeRDP](https://www.freerdp.com)'dir ve şifreyi doğrudan alır. İsterseniz Ayarlar'dan [Microsoft Windows App](https://apps.apple.com/app/id1295203466) seçilebilir. Görüntü (pencere boyutu ya da tam ekran, tüm ekranlar), pano, paylaşılan klasör ve ses Ayarlar'da varsayılan olarak, her bağlantıda da ayrı ayrı seçilebilir; pencere boyutlandırılınca çözünürlük de güncellenir. Paylaşılan klasör yalnızca FreeRDP'de çalışır.
 - **Gruplar ve favoriler**: Bağlantıları gruplara ayırın, sık kullandıklarınızı favorilere ekleyin, ad, host veya kullanıcıya göre arayın.
 - **Notlar ve etiketler**: Her bağlantıya not ve `prod`, `linux` gibi etiketler ekleyin. Etiketler kenar çubuğunda listelenir; arama notları ve etiketleri de kapsar.
 - **Son Kullanılanlar**: En son açtığınız 10 bağlantı kenar çubuğunda listelenir; her satırda ne zaman bağlandığınız görünür. Geçmiş Ayarlar'dan temizlenebilir.

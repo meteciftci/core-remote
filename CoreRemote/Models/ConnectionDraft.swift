@@ -10,6 +10,7 @@ struct ConnectionDraft: Equatable {
     var password = ""
     var keyFilePath = ""
     var ignoreCertificateErrors = false
+    var rdp = RDPOverrides()
     var notes = ""
     /// Comma-separated, as typed in the editor.
     var tagsText = ""
@@ -27,6 +28,7 @@ struct ConnectionDraft: Equatable {
         self.password = password ?? ""
         keyFilePath = connection.keyFilePath ?? ""
         ignoreCertificateErrors = connection.ignoreCertificateErrors
+        rdp = connection.rdpOverrides
         notes = connection.notes
         tagsText = connection.tags.joined(separator: ", ")
         isFavorite = connection.isFavorite
@@ -72,6 +74,7 @@ struct ConnectionDraft: Equatable {
         connection.username = trimmedUsername
         connection.keyFilePath = trimmedKeyFilePath
         connection.ignoreCertificateErrors = type == .rdp && ignoreCertificateErrors
+        connection.rdpOverrides = type == .rdp ? rdp : RDPOverrides()
         connection.notes = notes.trimmingCharacters(in: .whitespacesAndNewlines)
         connection.tags = Tags.normalize(tagsText)
         connection.isFavorite = isFavorite

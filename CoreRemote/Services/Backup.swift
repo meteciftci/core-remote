@@ -20,6 +20,12 @@ nonisolated struct BackupPayload: Codable, Equatable, Sendable {
         var keyFilePath: String?
         /// Missing in files from before this option existed.
         var ignoreCertificateErrors: Bool?
+        /// RDP settings of this connection; missing means the defaults from Settings.
+        var rdpDisplay: String?
+        var rdpMultiMonitor: Bool?
+        var rdpClipboard: Bool?
+        var rdpSharedFolder: String?
+        var rdpAudio: String?
         var notes: String?
         var tags: [String]?
         var isFavorite: Bool
@@ -180,6 +186,11 @@ enum BackupStore {
                     username: connection.username,
                     keyFilePath: connection.keyFilePath,
                     ignoreCertificateErrors: connection.ignoreCertificateErrors,
+                    rdpDisplay: connection.rdpDisplayRaw,
+                    rdpMultiMonitor: connection.rdpMultiMonitor,
+                    rdpClipboard: connection.rdpClipboard,
+                    rdpSharedFolder: connection.rdpSharedFolder,
+                    rdpAudio: connection.rdpAudioRaw,
                     notes: connection.notes.isEmpty ? nil : connection.notes,
                     tags: connection.tags.isEmpty ? nil : connection.tags,
                     isFavorite: connection.isFavorite,
@@ -233,6 +244,15 @@ enum BackupStore {
                 isFavorite: item.isFavorite,
                 group: group(named: item.group)
             )
+            if item.type == .rdp {
+                connection.rdpOverrides = RDPOverrides(
+                    display: item.rdpDisplay.flatMap(RDPDisplay.init(rawValue:)),
+                    multiMonitor: item.rdpMultiMonitor,
+                    clipboard: item.rdpClipboard,
+                    sharedFolder: item.rdpSharedFolder,
+                    audio: item.rdpAudio.flatMap(RDPAudio.init(rawValue:))
+                )
+            }
             context.insert(connection)
             if let password = item.password {
                 try passwords.setPassword(password, for: item.id)
