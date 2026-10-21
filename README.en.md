@@ -13,10 +13,13 @@ A simple SSH and RDP connection manager for macOS. Save your connections and ope
 - **Groups and favorites**: Sort connections into groups, mark the ones you use most, and search by name, host or user.
 - **Recent**: The 10 connections you opened last are listed in the sidebar, and each row shows when you last connected. History can be cleared in Settings.
 - **Menu bar**: Connect to favorites, the last 5 connections and groups straight from the menu bar. CoreRemote keeps running there after you close its window; the icon can be hidden in Settings.
+- **Quick connect**: Press **⌃⌥Space** in any app to open a search box, type a name, host or user and press Return to connect. The shortcut can be changed in Settings.
 - **Backup**: Export your connections to a `.coreremote` file and import them on another Mac. Passwords are only included in passphrase-encrypted backups.
 - **Liquid Glass** interface, in English and Turkish.
 
 ![Connection editor](docs/screenshots/en/editor.png)
+
+![Quick connect](docs/screenshots/en/quick-connect.png)
 
 ## Security
 
@@ -95,6 +98,7 @@ Then set `DEVELOPMENT_TEAM` in `Config/Local.xcconfig` to your team ID. That fil
 | Shortcut | Action |
 | --- | --- |
 | Double-click or Return | Connect to the selected connection |
+| ⌃⌥Space | Quick connect (from any app) |
 | ⌘N | New connection |
 | ⇧⌘N | New group |
 | ⌘F | Search |

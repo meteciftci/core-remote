@@ -7,20 +7,26 @@ struct CoreRemoteApp: App {
     @NSApplicationDelegateAdaptor private var appDelegate: AppDelegate
     @FocusedValue(\.appActions) private var actions
     @AppStorage(MenuBarContent.visibilityKey) private var showsMenuBarIcon = true
-    @State private var launcher = ConnectionLauncher()
+    @State private var launcher: ConnectionLauncher
 
     private let container: ModelContainer
 
     init() {
         LaunchFiles.cleanUp()
+        container = Self.makeContainer()
+        let launcher = ConnectionLauncher()
+        _launcher = State(initialValue: launcher)
+        QuickConnectPanel.shared.configure(container: container, launcher: launcher)
+    }
+
+    private static func makeContainer() -> ModelContainer {
         do {
             #if DEBUG
             if DemoData.isEnabled {
-                container = try DemoData.makeContainer()
-                return
+                return try DemoData.makeContainer()
             }
             #endif
-            container = try ModelContainer(for: Connection.self, ConnectionGroup.self)
+            return try ModelContainer(for: Connection.self, ConnectionGroup.self)
         } catch {
             fatalError("Could not open the connection store: \(error)")
         }

@@ -54,6 +54,9 @@ struct MenuBarContent: View {
 
         Divider()
 
+        Button("Quick Connect…") {
+            QuickConnectPanel.shared.show()
+        }
         Button("Open CoreRemote") {
             openWindow(id: MainWindow.id)
             NSApp.activate()

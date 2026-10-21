@@ -64,6 +64,11 @@ struct ContentView: View {
             if DemoData.opensSettings {
                 openSettings()
             }
+            if DemoData.opensQuickConnect {
+                // Wait until the main window has taken focus, or the panel closes right away.
+                try? await Task.sleep(for: .seconds(1))
+                QuickConnectPanel.shared.show()
+            }
             #endif
         }
         .focusedSceneValue(\.appActions, AppActions(
