@@ -51,6 +51,8 @@ nonisolated enum SSHCommand {
           print -r -- ""
           print -r -- \(failureMessage.shellQuoted)" $code"
           print -rn -- \(closePrompt.shellQuoted)
+          # Drop keys typed while ssh was connecting, so they don't close the window unread.
+          while read -t 0.2 -sk 1; do :; done
           read -sk 1
         fi
 
