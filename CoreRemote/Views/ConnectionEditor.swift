@@ -104,6 +104,8 @@ struct ConnectionEditor: View {
             }
             .formStyle(.grouped)
             .scrollContentBackground(.hidden)
+            // A Form in a sheet otherwise collapses to a few rows.
+            .frame(minHeight: 500, idealHeight: 540)
 
             if let errorMessage {
                 Text(errorMessage)
