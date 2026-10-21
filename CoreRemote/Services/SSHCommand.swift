@@ -31,4 +31,29 @@ nonisolated enum SSHCommand {
         let environment = askpass?.variables.map { "\($0.0)=\($0.1.shellQuoted)" } ?? []
         return (environment + arguments(for: target).map(\.shellQuoted)).joined(separator: " ")
     }
+
+    /// The script a terminal app runs. When ssh itself fails (exit code 255: refused, timed out,
+    /// wrong password), it waits for a key so the error stays readable. iTerm2, Ghostty and Warp
+    /// close the window as soon as the script ends.
+    static func script(
+        for target: ConnectionTarget,
+        askpass: AskpassEnvironment?,
+        failureMessage: String,
+        closePrompt: String
+    ) -> String {
+        """
+        #!/bin/zsh
+        rm -f -- "$0"
+        clear
+        \(commandLine(for: target, askpass: askpass))
+        code=$?
+        if (( code == 255 )); then
+          print -r -- ""
+          print -r -- \(failureMessage.shellQuoted)" $code"
+          print -rn -- \(closePrompt.shellQuoted)
+          read -sk 1
+        fi
+
+        """
+    }
 }
