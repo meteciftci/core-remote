@@ -1,0 +1,36 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "${applicationName} connect to ${target}": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "${applicationName} ${target} sunucusuna bağlan"
+          }
+        }
+      }
+    },
+    "Connect to ${target} with ${applicationName}": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "${applicationName} ile ${target} bağlantısını aç"
+          }
+        }
+      }
+    },
+    "Open ${target} in ${applicationName}": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "${target} bağlantısını ${applicationName} ile aç"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
