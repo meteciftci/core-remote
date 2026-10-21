@@ -144,10 +144,10 @@ struct LaunchFilesTests {
 }
 
 struct FreeRDPWindowSizeTests {
-    @Test func usesFixedSizeWithSmartSizing() {
+    @Test func startsAtFixedSizeAndFollowsResizes() {
         let args = FreeRDP.arguments(for: target(type: .rdp), password: nil)
         #expect(args.contains("/size:1280x800"))
-        #expect(args.contains("+smart-sizing"))
-        #expect(!args.contains("+dynamic-resolution"))
+        #expect(args.contains("+dynamic-resolution"))
+        #expect(!args.contains("+smart-sizing"))
     }
 }
