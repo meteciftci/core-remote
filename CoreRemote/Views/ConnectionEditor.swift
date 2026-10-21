@@ -125,12 +125,24 @@ struct ConnectionEditor: View {
                         Text("New Group…").tag(UUID?.some(Self.newGroupTag))
                     }
                     Toggle("Favorite", isOn: $draft.isFavorite)
+                    TextField("Tags", text: $draft.tagsText, prompt: Text("prod, linux, dc"))
+                        .autocorrectionDisabled()
+                } footer: {
+                    Text("Separate tags with commas.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+                Section("Notes") {
+                    TextField("Notes", text: $draft.notes, prompt: Text("Optional"), axis: .vertical)
+                        .labelsHidden()
+                        .lineLimit(3...6)
                 }
             }
             .formStyle(.grouped)
             .scrollContentBackground(.hidden)
             // A Form in a sheet otherwise collapses to a few rows.
-            .frame(minHeight: 580, idealHeight: 580)
+            .frame(minHeight: 680, idealHeight: 680)
 
             if let errorMessage {
                 Text(errorMessage)

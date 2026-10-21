@@ -41,14 +41,16 @@ enum DemoData {
 
         let connections = [
             Connection(name: "Web Server", host: "web-01.example.com", type: .ssh, username: "deploy",
-                       isFavorite: true, group: production),
+                       tags: ["prod", "linux"], isFavorite: true, group: production),
             Connection(name: "Database", host: "db-01.example.com", type: .ssh, port: 2222, username: "postgres",
+                       notes: "Primary PostgreSQL 17. Read replica on db-02.", tags: ["prod", "linux", "db"],
                        group: production),
             Connection(name: "File Server", host: "fs-01.example.com", type: .rdp, username: "EXAMPLE\\admin",
+                       notes: "Shares: \\\\fs-01\\projects, \\\\fs-01\\home", tags: ["prod", "windows"],
                        isFavorite: true, group: production),
             Connection(name: "Build Agent", host: "10.0.0.42", type: .ssh, username: "ci",
                        keyFilePath: "~/.ssh/id_ed25519", group: lab),
-            Connection(name: "Windows Desktop", host: "192.0.2.15", type: .rdp, username: "alice", group: lab),
+            Connection(name: "Windows Desktop", host: "192.0.2.15", type: .rdp, username: "alice", tags: ["windows"], group: lab),
             Connection(name: "Raspberry Pi", host: "raspberrypi.local", type: .ssh, username: "pi"),
         ]
         connections.forEach(context.insert)

@@ -20,6 +20,8 @@ nonisolated struct BackupPayload: Codable, Equatable, Sendable {
         var keyFilePath: String?
         /// Missing in files from before this option existed.
         var ignoreCertificateErrors: Bool?
+        var notes: String?
+        var tags: [String]?
         var isFavorite: Bool
         var group: String?
         var password: String?
@@ -178,6 +180,8 @@ enum BackupStore {
                     username: connection.username,
                     keyFilePath: connection.keyFilePath,
                     ignoreCertificateErrors: connection.ignoreCertificateErrors,
+                    notes: connection.notes.isEmpty ? nil : connection.notes,
+                    tags: connection.tags.isEmpty ? nil : connection.tags,
                     isFavorite: connection.isFavorite,
                     group: connection.group?.name,
                     password: includePasswords ? passwords.password(for: connection.id) : nil
@@ -224,6 +228,8 @@ enum BackupStore {
                 username: item.username,
                 keyFilePath: item.type == .ssh ? item.keyFilePath : nil,
                 ignoreCertificateErrors: item.type == .rdp && item.ignoreCertificateErrors == true,
+                notes: item.notes ?? "",
+                tags: Tags.normalize(item.tags ?? []),
                 isFavorite: item.isFavorite,
                 group: group(named: item.group)
             )

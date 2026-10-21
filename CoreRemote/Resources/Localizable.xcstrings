@@ -935,6 +935,17 @@
         }
       }
     },
+    "Notes": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notlar"
+          }
+        }
+      }
+    },
     "Nothing Here": {
       "extractionState": "manual",
       "localizations": {
@@ -1298,6 +1309,17 @@
         }
       }
     },
+    "Separate tags with commas.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etiketleri virgülle ayırın."
+          }
+        }
+      }
+    },
     "Server": {
       "extractionState": "manual",
       "localizations": {
@@ -1360,6 +1382,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sunucu durumunu göster"
+          }
+        }
+      }
+    },
+    "Tags": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etiketler"
           }
         }
       }
@@ -1536,6 +1569,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Windows App şifreyi kendisi sorar; CoreRemote şifreyi 30 saniyeliğine panoya kopyalar."
+          }
+        }
+      }
+    },
+    "prod, linux, dc": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "prod, linux, dc"
           }
         }
       }

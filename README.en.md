@@ -11,6 +11,7 @@ A simple SSH and RDP connection manager for macOS. Save your connections and ope
 - **SSH**: Connections open in Terminal. A saved password is entered for you; an SSH key file can be chosen per connection.
 - **RDP**: The default client is [FreeRDP](https://www.freerdp.com), which receives the password directly. [Microsoft Windows App](https://apps.apple.com/app/id1295203466) can be chosen in Settings instead.
 - **Groups and favorites**: Sort connections into groups, mark the ones you use most, and search by name, host or user.
+- **Notes and tags**: Add notes and tags such as `prod` or `linux` to any connection. Tags are listed in the sidebar, and search covers notes and tags too.
 - **Recent**: The 10 connections you opened last are listed in the sidebar, and each row shows when you last connected. History can be cleared in Settings.
 - **Menu bar**: Connect to favorites, the last 5 connections and groups straight from the menu bar. CoreRemote keeps running there after you close its window; the icon can be hidden in Settings.
 - **Quick connect**: Press **⌃⌥Space** in any app to open a search box, type a name, host or user and press Return to connect. The shortcut can be changed in Settings.

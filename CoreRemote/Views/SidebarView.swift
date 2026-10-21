@@ -7,6 +7,7 @@ enum SidebarItem: Hashable {
     case recent
     case type(ConnectionType)
     case group(UUID)
+    case tag(String)
 
     static let recentLimit = 10
 
@@ -26,6 +27,7 @@ enum SidebarItem: Hashable {
             )
         case .type(let type): connections.filter { $0.type == type }
         case .group(let id): connections.filter { $0.group?.id == id }
+        case .tag(let tag): connections.filter { $0.hasTag(tag) }
         }
     }
 }
@@ -49,6 +51,15 @@ struct SidebarView: View {
             Section("Types") {
                 ForEach(ConnectionType.allCases) { type in
                     row(.type(type), title: Text(verbatim: type.title), symbol: type.symbol, tint: type.tint)
+                }
+            }
+
+            let tags = Tags.counts(in: connections)
+            if !tags.isEmpty {
+                Section("Tags") {
+                    ForEach(tags, id: \.tag) { entry in
+                        row(.tag(entry.tag), title: Text(verbatim: "#\(entry.tag)"), symbol: "tag")
+                    }
                 }
             }
 

@@ -10,6 +10,9 @@ struct ConnectionDraft: Equatable {
     var password = ""
     var keyFilePath = ""
     var ignoreCertificateErrors = false
+    var notes = ""
+    /// Comma-separated, as typed in the editor.
+    var tagsText = ""
     var isFavorite = false
     var groupID: UUID?
 
@@ -24,6 +27,8 @@ struct ConnectionDraft: Equatable {
         self.password = password ?? ""
         keyFilePath = connection.keyFilePath ?? ""
         ignoreCertificateErrors = connection.ignoreCertificateErrors
+        notes = connection.notes
+        tagsText = connection.tags.joined(separator: ", ")
         isFavorite = connection.isFavorite
         groupID = connection.group?.id
     }
@@ -67,6 +72,8 @@ struct ConnectionDraft: Equatable {
         connection.username = trimmedUsername
         connection.keyFilePath = trimmedKeyFilePath
         connection.ignoreCertificateErrors = type == .rdp && ignoreCertificateErrors
+        connection.notes = notes.trimmingCharacters(in: .whitespacesAndNewlines)
+        connection.tags = Tags.normalize(tagsText)
         connection.isFavorite = isFavorite
         connection.group = group
     }

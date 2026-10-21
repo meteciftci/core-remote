@@ -4,6 +4,8 @@ struct ConnectionRow: View {
     @Bindable var connection: Connection
     var status: ReachabilityMonitor.Status?
 
+    static let visibleTagCount = 3
+
     var body: some View {
         HStack(spacing: 12) {
             TypeBadge(type: connection.type)
@@ -36,6 +38,24 @@ struct ConnectionRow: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .help(lastConnectedAt.formatted(date: .abbreviated, time: .shortened))
+            }
+
+            if !connection.notes.isEmpty {
+                Image(systemName: "note.text")
+                    .foregroundStyle(.secondary)
+                    .help(connection.notes)
+            }
+
+            ForEach(connection.tags.prefix(Self.visibleTagCount), id: \.self) { tag in
+                Text(verbatim: "#\(tag)")
+                    .font(.caption)
+                    .foregroundStyle(.tint)
+            }
+            if connection.tags.count > Self.visibleTagCount {
+                Text(verbatim: "+\(connection.tags.count - Self.visibleTagCount)")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .help(connection.tags.dropFirst(Self.visibleTagCount).map { "#\($0)" }.joined(separator: " "))
             }
 
             if let group = connection.group {

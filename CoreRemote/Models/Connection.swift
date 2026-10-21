@@ -13,6 +13,10 @@ final class Connection {
     var keyFilePath: String?
     /// RDP only: connect even when the server certificate can't be verified.
     var ignoreCertificateErrors: Bool = false
+    /// Free-form notes shown in the editor and searched.
+    var notes: String = ""
+    /// Labels such as "prod" or "dc"; see `Tags.normalize`.
+    var tags: [String] = []
     var isFavorite: Bool
     var createdAt: Date
     /// When the connection was last opened; `nil` if never (or after clearing history).
@@ -33,6 +37,8 @@ final class Connection {
         username: String,
         keyFilePath: String? = nil,
         ignoreCertificateErrors: Bool = false,
+        notes: String = "",
+        tags: [String] = [],
         isFavorite: Bool = false,
         createdAt: Date = .now,
         group: ConnectionGroup? = nil
@@ -45,6 +51,8 @@ final class Connection {
         self.username = username
         self.keyFilePath = keyFilePath
         self.ignoreCertificateErrors = ignoreCertificateErrors
+        self.notes = notes
+        self.tags = tags
         self.isFavorite = isFavorite
         self.createdAt = createdAt
         self.group = group
