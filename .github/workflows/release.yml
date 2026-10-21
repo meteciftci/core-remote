@@ -1,4 +1,5 @@
 name: Release
+run-name: "release: ${{ github.ref_name }}"
 
 # Push a tag such as v1.1.0 to build a Universal, ad-hoc signed app and publish it.
 on:
