@@ -38,6 +38,12 @@ struct ConnectionListView: View {
             .searchable(text: $searchText, placement: .toolbar, prompt: Text("Search name, host or user"))
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
+                    SettingsLink {
+                        Label("Settings", systemImage: "gearshape")
+                    }
+                    .help("Settings (⌘,)")
+                }
+                ToolbarItem(placement: .primaryAction) {
                     Menu {
                         Button("Import…", systemImage: "square.and.arrow.down", action: onImport)
                         Button("Export…", systemImage: "square.and.arrow.up", action: onExport)
