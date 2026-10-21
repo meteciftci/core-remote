@@ -9,6 +9,7 @@ struct ConnectionDraft: Equatable {
     var username = ""
     var password = ""
     var keyFilePath = ""
+    var ignoreCertificateErrors = false
     var isFavorite = false
     var groupID: UUID?
 
@@ -22,6 +23,7 @@ struct ConnectionDraft: Equatable {
         username = connection.username
         self.password = password ?? ""
         keyFilePath = connection.keyFilePath ?? ""
+        ignoreCertificateErrors = connection.ignoreCertificateErrors
         isFavorite = connection.isFavorite
         groupID = connection.group?.id
     }
@@ -64,6 +66,7 @@ struct ConnectionDraft: Equatable {
         connection.port = port ?? type.defaultPort
         connection.username = trimmedUsername
         connection.keyFilePath = trimmedKeyFilePath
+        connection.ignoreCertificateErrors = type == .rdp && ignoreCertificateErrors
         connection.isFavorite = isFavorite
         connection.group = group
     }

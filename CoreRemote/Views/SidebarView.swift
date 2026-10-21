@@ -19,7 +19,6 @@ enum SidebarItem: Hashable {
 
 struct SidebarView: View {
     @Binding var selection: SidebarItem?
-    var onNewGroup: () -> Void
     var onRenameGroup: (ConnectionGroup) -> Void
 
     @Environment(\.modelContext) private var modelContext
@@ -50,15 +49,6 @@ struct SidebarView: View {
             }
         }
         .listStyle(.sidebar)
-        .safeAreaInset(edge: .bottom) {
-            Button(action: onNewGroup) {
-                Label("New Group", systemImage: "folder.badge.plus")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            .buttonStyle(.borderless)
-            .padding(.horizontal, 16)
-            .padding(.vertical, 10)
-        }
         .navigationSplitViewColumnWidth(min: 190, ideal: 220, max: 300)
     }
 

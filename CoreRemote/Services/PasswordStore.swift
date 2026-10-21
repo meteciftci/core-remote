@@ -32,7 +32,11 @@ struct KeychainPasswordStore: PasswordStore {
         ]
     }
 
+    /// Passwords already read in this run, so the Keychain is asked at most once per connection.
+    private static var cache: [UUID: String] = [:]
+
     func password(for id: UUID) -> String? {
+        if let cached = Self.cache[id] { return cached }
         var query = baseQuery(for: id)
         query[kSecReturnData as String] = true
         query[kSecMatchLimit as String] = kSecMatchLimitOne
@@ -41,12 +45,15 @@ struct KeychainPasswordStore: PasswordStore {
         guard SecItemCopyMatching(query as CFDictionary, &result) == errSecSuccess,
               let data = result as? Data
         else { return nil }
-        return String(data: data, encoding: .utf8)
+        let password = String(data: data, encoding: .utf8)
+        Self.cache[id] = password
+        return password
     }
 
     /// Saves the password; `nil` or an empty string removes it.
     func setPassword(_ password: String?, for id: UUID) throws {
         let query = baseQuery(for: id)
+        Self.cache[id] = nil
 
         guard let password, !password.isEmpty else {
             let status = SecItemDelete(query as CFDictionary)
@@ -67,6 +74,7 @@ struct KeychainPasswordStore: PasswordStore {
         } else if updateStatus != errSecSuccess {
             throw KeychainError.unexpectedStatus(updateStatus)
         }
+        Self.cache[id] = password
     }
 }
 

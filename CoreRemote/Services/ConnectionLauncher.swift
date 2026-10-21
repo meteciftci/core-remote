@@ -2,28 +2,18 @@ import AppKit
 import Foundation
 
 enum LaunchError: LocalizedError {
-    case windowsAppMissing
+    case clientMissing(RDPClient)
     case terminalMissing
 
     var errorDescription: String? {
         switch self {
-        case .windowsAppMissing: String(localized: "Windows App is not installed")
+        case .clientMissing(let client): String(localized: "\(client.title) is not installed")
         case .terminalMissing: String(localized: "Terminal could not be found")
         }
     }
 }
 
-enum WindowsApp {
-    static let bundleIdentifier = "com.microsoft.rdc.macos"
-    static let appStoreURL = URL(string: "macappstore://apps.apple.com/app/id1295203466")!
-    static let brewCommand = "brew install --cask windows-app"
-
-    static var url: URL? {
-        NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundleIdentifier)
-    }
-}
-
-/// Opens connections: SSH in Terminal, RDP in Windows App.
+/// Opens connections: SSH in Terminal, RDP in Windows App or FreeRDP.
 @Observable
 final class ConnectionLauncher {
     /// Short message shown as a toast, such as "Password copied".
@@ -90,7 +80,14 @@ final class ConnectionLauncher {
     // MARK: - RDP
 
     private func connectRDP(_ target: ConnectionTarget) async throws {
-        guard let appURL = WindowsApp.url else { throw LaunchError.windowsAppMissing }
+        switch RDPClient.current {
+        case .windowsApp: try await connectWindowsApp(target)
+        case .freeRDP: try connectFreeRDP(target)
+        }
+    }
+
+    private func connectWindowsApp(_ target: ConnectionTarget) async throws {
+        guard let appURL = WindowsApp.url else { throw LaunchError.clientMissing(.windowsApp) }
 
         let fileURL = try LaunchFiles.write(
             RDPFile.contents(for: target),
@@ -106,6 +103,43 @@ final class ConnectionLauncher {
         let configuration = NSWorkspace.OpenConfiguration()
         configuration.activates = true
         try await NSWorkspace.shared.open([fileURL], withApplicationAt: appURL, configuration: configuration)
+
+        if WindowsApp.minimizesMainWindow {
+            WindowsAppWindowMinimizer.requestAccessIfNeeded()
+            let hints = [target.host, fileURL.deletingPathExtension().lastPathComponent]
+            Task { await WindowsAppWindowMinimizer.minimizeMainWindow(sessionHints: hints) }
+        }
+    }
+
+    private func connectFreeRDP(_ target: ConnectionTarget) throws {
+        guard let executable = FreeRDP.executableURL else { throw LaunchError.clientMissing(.freeRDP) }
+
+        let logURL = try LaunchFiles.write("", named: "\(UUID().uuidString).freerdp.log")
+        let log = try FileHandle(forWritingTo: logURL)
+        let input = Pipe()
+
+        let process = Process()
+        process.executableURL = executable
+        process.arguments = ["/args-from:stdin"]
+        process.standardInput = input
+        process.standardOutput = log
+        process.standardError = log
+        var environment = ProcessInfo.processInfo.environment
+        // SDL otherwise passes through a fullscreen Space when it creates the window,
+        // which slides the whole screen away and back.
+        environment["SDL_VIDEO_MAC_FULLSCREEN_SPACES"] = "0"
+        process.environment = environment
+
+        // FreeRDP reports connection problems in its own window, so the log is only kept while it runs.
+        process.terminationHandler = { _ in
+            try? FileManager.default.removeItem(at: logURL)
+        }
+
+        try process.run()
+        let arguments = FreeRDP.arguments(for: target, password: passwords.password(for: target.id))
+        input.fileHandleForWriting.write(Data((arguments.joined(separator: "\n") + "\n").utf8))
+        try? input.fileHandleForWriting.close()
+        try? log.close()
     }
 
     // MARK: - Notices

@@ -14,9 +14,10 @@ settings:
     SWIFT_APPROACHABLE_CONCURRENCY: YES
     SWIFT_EMIT_LOC_STRINGS: YES
     LOCALIZATION_PREFERS_STRING_CATALOGS: YES
-    CODE_SIGN_IDENTITY: "-"
-    CODE_SIGN_STYLE: Manual
-    DEVELOPMENT_TEAM: ""
+    # A stable signature keeps Keychain and Accessibility permissions across rebuilds.
+    CODE_SIGN_IDENTITY: "Apple Development"
+    CODE_SIGN_STYLE: Automatic
+    DEVELOPMENT_TEAM: RU9QDTS4TT
 
 targets:
   CoreRemote:

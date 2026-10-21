@@ -18,6 +18,8 @@ nonisolated struct BackupPayload: Codable, Equatable, Sendable {
         var port: Int
         var username: String
         var keyFilePath: String?
+        /// Missing in files from before this option existed.
+        var ignoreCertificateErrors: Bool?
         var isFavorite: Bool
         var group: String?
         var password: String?
@@ -175,6 +177,7 @@ enum BackupStore {
                     port: connection.port,
                     username: connection.username,
                     keyFilePath: connection.keyFilePath,
+                    ignoreCertificateErrors: connection.ignoreCertificateErrors,
                     isFavorite: connection.isFavorite,
                     group: connection.group?.name,
                     password: includePasswords ? passwords.password(for: connection.id) : nil
@@ -220,6 +223,7 @@ enum BackupStore {
                 port: (1...65535).contains(item.port) ? item.port : item.type.defaultPort,
                 username: item.username,
                 keyFilePath: item.type == .ssh ? item.keyFilePath : nil,
+                ignoreCertificateErrors: item.type == .rdp && item.ignoreCertificateErrors == true,
                 isFavorite: item.isFavorite,
                 group: group(named: item.group)
             )
