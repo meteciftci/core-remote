@@ -45,3 +45,30 @@ struct IntentTests {
         #expect(try ConnectionEntityLookup.entities(matching: "", in: context).count == 3)
     }
 }
+
+struct ConnectURLTests {
+    @Test func roundTripsConnectionID() {
+        let id = UUID()
+        let url = ConnectURL.url(for: id)
+        #expect(url.absoluteString == "coreremote://connect/\(id.uuidString)")
+        #expect(ConnectURL.connectionID(from: url) == id)
+    }
+
+    @Test func rejectsOtherURLs() {
+        #expect(ConnectURL.connectionID(from: URL(string: "coreremote://open/\(UUID().uuidString)")!) == nil)
+        #expect(ConnectURL.connectionID(from: URL(string: "https://connect/\(UUID().uuidString)")!) == nil)
+        #expect(ConnectURL.connectionID(from: URL(string: "coreremote://connect/not-a-uuid")!) == nil)
+    }
+
+    @Test func shortcutOpensTheConnectURL() throws {
+        let id = UUID()
+        let workflow = ShortcutExport.workflow(for: id)
+        let actions = try #require(workflow["WFWorkflowActions"] as? [[String: Any]])
+        #expect(actions.count == 1)
+        #expect(actions.first?["WFWorkflowActionIdentifier"] as? String == "is.workflow.actions.openurl")
+        let parameters = try #require(actions.first?["WFWorkflowActionParameters"] as? [String: Any])
+        #expect(parameters["WFInput"] as? String == ConnectURL.url(for: id).absoluteString)
+        // Must serialize as a property list for `shortcuts sign`.
+        _ = try PropertyListSerialization.data(fromPropertyList: workflow, format: .binary, options: 0)
+    }
+}

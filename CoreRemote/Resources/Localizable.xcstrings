@@ -187,6 +187,17 @@
         }
       }
     },
+    "Add to Shortcuts…": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kestirmelere Ekle…"
+          }
+        }
+      }
+    },
     "Add to group": {
       "extractionState": "manual",
       "localizations": {
@@ -205,6 +216,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "İlk SSH veya RDP bağlantını ekle."
+          }
+        }
+      }
+    },
+    "Adds a shortcut that opens this connection to the Shortcuts app.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu bağlantıyı açan bir kestirmeyi Kestirmeler uygulamasına ekler."
           }
         }
       }
@@ -513,6 +535,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "CoreRemote’un başka bir uygulamanın penceresini küçültebilmesi için Erişilebilirlik izni gerekir."
+          }
+        }
+      }
+    },
+    "Couldn't Connect": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlanılamadı"
+          }
+        }
+      }
+    },
+    "Couldn't Create Shortcut": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kestirme Oluşturulamadı"
           }
         }
       }
@@ -1316,6 +1360,17 @@
         }
       }
     },
+    "Preparing the shortcut…": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kestirme hazırlanıyor…"
+          }
+        }
+      }
+    },
     "Production server": {
       "extractionState": "manual",
       "localizations": {
@@ -1697,6 +1752,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Şifre Anahtar Zinciri’nde saklanır ve bağlanırken FreeRDP’ye iletilir."
+          }
+        }
+      }
+    },
+    "The shortcut couldn't be signed. Signing needs an internet connection and an iCloud account.\n\n%@": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kestirme imzalanamadı. İmzalama için internet bağlantısı ve iCloud hesabı gerekir.\n\n%@"
           }
         }
       }

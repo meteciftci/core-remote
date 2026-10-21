@@ -48,6 +48,9 @@ targets:
             UTTypeConformsTo: [public.json]
             UTTypeTagSpecification:
               public.filename-extension: [coreremote]
+        CFBundleURLTypes:
+          - CFBundleURLName: com.meteciftci.CoreRemote.connect
+            CFBundleURLSchemes: [coreremote]
         CFBundleDocumentTypes:
           - CFBundleTypeName: CoreRemote Backup
             CFBundleTypeRole: Viewer

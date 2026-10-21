@@ -104,7 +104,7 @@ enum LaunchProblemAlert {
         let alert = NSAlert()
         switch problem {
         case .failed(let name, let message):
-            alert.messageText = String(localized: "Couldn't connect to “\(name)”")
+            alert.messageText = name.isEmpty ? String(localized: "Couldn't Connect") : String(localized: "Couldn't connect to “\(name)”")
             alert.informativeText = message
             alert.runModal()
         case .missingClient(let client):
