@@ -56,7 +56,7 @@ final class ConnectionLauncher {
 
     func connect(_ connection: Connection) async throws {
         switch connection.type {
-        case .ssh: try await connectSSH(connection.target)
+        case .ssh: try await runInTerminal(connection.target, program: .ssh)
         case .rdp: try await connectRDP(connection.target)
         }
     }
@@ -68,9 +68,36 @@ final class ConnectionLauncher {
         show(String(localized: "SSH command copied"))
     }
 
+    /// Opens an SSH connection's files in a file transfer app, or `sftp` in the terminal.
+    /// Failures are kept in `launchProblem`, like `open(_:)`.
+    func openFileTransfer(_ connection: Connection) async {
+        do {
+            try await transferFiles(connection.target)
+        } catch {
+            launchProblem = .failed(name: connection.name, message: error.localizedDescription)
+        }
+    }
+
     // MARK: - SSH
 
-    private func connectSSH(_ target: ConnectionTarget) async throws {
+    private func transferFiles(_ target: ConnectionTarget) async throws {
+        guard let app = FileTransferApp.resolve(.selected) else {
+            try await runInTerminal(target, program: .sftp)
+            return
+        }
+        guard let link = SFTPLink.url(for: target) else {
+            throw LaunchError.scriptFailed(String(localized: "The host name can't be used in a link."))
+        }
+        if let password = passwords.password(for: target.id) {
+            Clipboard.copyConcealed(password, clearAfter: Self.clipboardClearDelay)
+            show(String(localized: "Password copied — clears in 30 seconds"))
+        }
+        let configuration = NSWorkspace.OpenConfiguration()
+        configuration.activates = true
+        try await NSWorkspace.shared.open([link], withApplicationAt: app.url, configuration: configuration)
+    }
+
+    private func runInTerminal(_ target: ConnectionTarget, program: SSHProgram) async throws {
         let terminal = TerminalApp.current
         guard let terminalURL = terminal.url else {
             throw LaunchError.terminalMissing(terminal)
@@ -88,6 +115,7 @@ final class ConnectionLauncher {
         let scriptURL = try LaunchFiles.write(
             SSHCommand.script(
                 for: target,
+                program: program,
                 askpass: askpass,
                 failureMessage: String(localized: "Connection closed. Exit code:"),
                 closePrompt: String(localized: "Press any key to close this window.")

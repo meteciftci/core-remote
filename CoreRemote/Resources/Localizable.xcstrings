@@ -1,6 +1,17 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "\"File Transfer\" in an SSH connection's menu opens its files here. Automatic picks an installed file transfer app, or sftp in the terminal if there is none. Apps get the server and user name; the saved password is copied to the clipboard for 30 seconds.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH bağlantısının menüsündeki “Dosya Aktarımı” dosyaları burada açar. Otomatik, kurulu bir dosya aktarım uygulamasını seçer; yoksa terminalde sftp açılır. Uygulamaya sunucu ve kullanıcı adı gider; kayıtlı şifre 30 saniyeliğine panoya kopyalanır."
+          }
+        }
+      }
+    },
     "%@": {
       "extractionState": "manual",
       "localizations": {
@@ -282,6 +293,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kimlik Doğrulama"
+          }
+        }
+      }
+    },
+    "Automatic": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otomatik"
           }
         }
       }
@@ -755,6 +777,28 @@
         }
       }
     },
+    "File Transfer": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dosya Aktarımı"
+          }
+        }
+      }
+    },
+    "File transfer": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dosya aktarımı"
+          }
+        }
+      }
+    },
     "FreeRDP receives the saved password directly and doesn't show Windows App's confirmation dialogs.": {
       "extractionState": "manual",
       "localizations": {
@@ -1136,6 +1180,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bu filtreye uyan bağlantı yok."
+          }
+        }
+      }
+    },
+    "No file transfer app such as Cyberduck is installed": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cyberduck gibi bir dosya aktarım uygulaması kurulu değil"
           }
         }
       }
@@ -1745,6 +1800,17 @@
         }
       }
     },
+    "The host name can't be used in a link.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunucu adı bir bağlantı adresinde kullanılamıyor."
+          }
+        }
+      }
+    },
     "The passphrase is incorrect.": {
       "extractionState": "manual",
       "localizations": {
@@ -1928,6 +1994,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "prod, linux, dc"
+          }
+        }
+      }
+    },
+    "sftp in the SSH terminal": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH terminalinde sftp"
           }
         }
       }

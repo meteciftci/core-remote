@@ -42,6 +42,7 @@ struct ContentView: View {
                 onEdit: openEditor,
                 onNewGroup: { requestGroupName(for: nil) },
                 onCopyCommand: launcher.copySSHCommand,
+                onFileTransfer: { connection in Task { await launcher.openFileTransfer(connection) } },
                 onImport: { showsImporter = true },
                 onExport: { showsExportOptions = true },
                 onImportSSHConfig: importSSHConfig,
