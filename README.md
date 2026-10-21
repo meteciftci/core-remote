@@ -18,6 +18,8 @@ open CoreRemote.xcodeproj
 
 `CoreRemote.xcodeproj` is generated from `project.yml` and is not checked in.
 
+The app is signed with an Apple Development certificate (`DEVELOPMENT_TEAM` in `project.yml`) so Keychain and Accessibility permissions survive rebuilds. To build under another account, change the team ID there.
+
 Run the tests from the command line:
 
 ```bash

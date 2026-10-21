@@ -11,6 +11,8 @@ final class Connection {
     var username: String
     /// Absolute path to an SSH private key. Ignored for RDP.
     var keyFilePath: String?
+    /// RDP only: connect even when the server certificate can't be verified.
+    var ignoreCertificateErrors: Bool = false
     var isFavorite: Bool
     var createdAt: Date
     var group: ConnectionGroup?
@@ -28,6 +30,7 @@ final class Connection {
         port: Int? = nil,
         username: String,
         keyFilePath: String? = nil,
+        ignoreCertificateErrors: Bool = false,
         isFavorite: Bool = false,
         createdAt: Date = .now,
         group: ConnectionGroup? = nil
@@ -39,6 +42,7 @@ final class Connection {
         self.port = port ?? type.defaultPort
         self.username = username
         self.keyFilePath = keyFilePath
+        self.ignoreCertificateErrors = ignoreCertificateErrors
         self.isFavorite = isFavorite
         self.createdAt = createdAt
         self.group = group
@@ -57,7 +61,8 @@ final class Connection {
             type: type,
             port: port,
             username: username,
-            keyFilePath: keyFilePath
+            keyFilePath: keyFilePath,
+            ignoreCertificateErrors: ignoreCertificateErrors
         )
     }
 }
@@ -71,4 +76,5 @@ nonisolated struct ConnectionTarget: Equatable, Sendable {
     var port: Int
     var username: String
     var keyFilePath: String?
+    var ignoreCertificateErrors = false
 }

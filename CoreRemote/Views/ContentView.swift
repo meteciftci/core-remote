@@ -12,7 +12,7 @@ struct ContentView: View {
     @State private var sidebarSelection: SidebarItem? = .all
     @State private var editor: EditorRequest?
     @State private var alert: AlertContent?
-    @State private var showsWindowsAppMissing = false
+    @State private var missingClient: RDPClient?
 
     @State private var groupNameRequest: GroupNameRequest?
     @State private var groupName = ""
@@ -28,7 +28,6 @@ struct ContentView: View {
         NavigationSplitView {
             SidebarView(
                 selection: $sidebarSelection,
-                onNewGroup: { requestGroupName(for: nil) },
                 onRenameGroup: { requestGroupName(for: $0) }
             )
         } detail: {
@@ -37,21 +36,12 @@ struct ContentView: View {
                 title: title(for: filter),
                 onConnect: connect,
                 onEdit: { editor = EditorRequest(connection: $0) },
-                onCopyCommand: launcher.copySSHCommand
+                onNewGroup: { requestGroupName(for: nil) },
+                onCopyCommand: launcher.copySSHCommand,
+                onImport: { showsImporter = true },
+                onExport: { showsExportOptions = true }
             )
             .id(filter)
-            .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    Menu {
-                        Button("Import…", systemImage: "square.and.arrow.down") { showsImporter = true }
-                        Button("Export…", systemImage: "square.and.arrow.up") { showsExportOptions = true }
-                            .disabled(connections.isEmpty)
-                    } label: {
-                        Label("Backup", systemImage: "arrow.up.arrow.down.circle")
-                    }
-                    .help("Import or export connections")
-                }
-            }
         }
         .overlay(alignment: .bottom) { toast }
         .focusedSceneValue(\.appActions, AppActions(
@@ -100,16 +90,27 @@ struct ContentView: View {
         } message: {
             Text(alert?.message ?? "")
         }
-        .alert("Windows App is required", isPresented: $showsWindowsAppMissing) {
-            Button("Open App Store") { openURL(WindowsApp.appStoreURL) }
+        .alert(
+            String(localized: "\(missingClient?.title ?? "") is required"),
+            isPresented: Binding(get: { missingClient != nil }, set: { if !$0 { missingClient = nil } }),
+            presenting: missingClient
+        ) { client in
+            if client == .windowsApp {
+                Button("Open App Store") { openURL(WindowsApp.appStoreURL) }
+            }
             Button("Copy brew Command") {
                 NSPasteboard.general.clearContents()
-                NSPasteboard.general.setString(WindowsApp.brewCommand, forType: .string)
+                NSPasteboard.general.setString(client.brewCommand, forType: .string)
                 launcher.show(String(localized: "Command copied"))
             }
             Button("Cancel", role: .cancel) {}
-        } message: {
-            Text("RDP connections open in Microsoft Windows App. Install it from the App Store, or with Homebrew:\n\n\(WindowsApp.brewCommand)")
+        } message: { client in
+            switch client {
+            case .windowsApp:
+                Text("RDP connections open in Microsoft Windows App. Install it from the App Store, or with Homebrew:\n\n\(client.brewCommand)")
+            case .freeRDP:
+                Text("RDP connections are set to open in FreeRDP. Install it with Homebrew, or choose Windows App in Settings:\n\n\(client.brewCommand)")
+            }
         }
     }
 
@@ -134,8 +135,8 @@ struct ContentView: View {
         Task {
             do {
                 try await launcher.connect(connection)
-            } catch LaunchError.windowsAppMissing {
-                showsWindowsAppMissing = true
+            } catch LaunchError.clientMissing(let client) {
+                missingClient = client
             } catch {
                 alert = AlertContent(
                     title: String(localized: "Couldn't connect to “\(connection.name)”"),

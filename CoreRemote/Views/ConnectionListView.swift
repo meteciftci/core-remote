@@ -6,7 +6,10 @@ struct ConnectionListView: View {
     var title: String
     var onConnect: (Connection) -> Void
     var onEdit: (Connection?) -> Void
+    var onNewGroup: () -> Void
     var onCopyCommand: (Connection) -> Void
+    var onImport: () -> Void
+    var onExport: () -> Void
 
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Connection.name, order: .forward) private var allConnections: [Connection]
@@ -35,6 +38,16 @@ struct ConnectionListView: View {
             .searchable(text: $searchText, placement: .toolbar, prompt: Text("Search name, host or user"))
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
+                    Menu {
+                        Button("Import…", systemImage: "square.and.arrow.down", action: onImport)
+                        Button("Export…", systemImage: "square.and.arrow.up", action: onExport)
+                            .disabled(allConnections.isEmpty)
+                    } label: {
+                        Label("Backup", systemImage: "arrow.up.arrow.down.circle")
+                    }
+                    .help("Import or export connections")
+                }
+                ToolbarItemGroup(placement: .primaryAction) {
                     Button {
                         selectedConnections.first.map(onConnect)
                     } label: {
@@ -42,14 +55,16 @@ struct ConnectionListView: View {
                     }
                     .disabled(selectedConnections.count != 1)
                     .help("Connect (Return)")
-                }
-                ToolbarItem(placement: .primaryAction) {
                     Button {
                         onEdit(nil)
                     } label: {
-                        Label("New Connection", systemImage: "plus")
+                        Label("New Connection", systemImage: "link.badge.plus")
                     }
                     .help("New Connection (⌘N)")
+                    Button(action: onNewGroup) {
+                        Label("New Group", systemImage: "folder.badge.plus")
+                    }
+                    .help("New Group (⇧⌘N)")
                 }
             }
             .confirmationDialog(
@@ -142,6 +157,7 @@ struct ConnectionListView: View {
             port: connection.port,
             username: connection.username,
             keyFilePath: connection.keyFilePath,
+            ignoreCertificateErrors: connection.ignoreCertificateErrors,
             isFavorite: connection.isFavorite,
             group: connection.group
         )

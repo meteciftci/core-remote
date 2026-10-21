@@ -13,12 +13,31 @@ struct ConnectionEditor: View {
 
     @State private var draft = ConnectionDraft()
     @State private var errorMessage: String?
+    @State private var showsNewGroup = false
+    @State private var newGroupName = ""
     @FocusState private var focusedField: Field?
 
     private enum Field { case name, host }
 
+    /// Picker tag for the "New Group…" item; choosing it asks for a name instead of selecting.
+    private static let newGroupTag = UUID()
+
     private var typeBinding: Binding<ConnectionType> {
         Binding(get: { draft.type }, set: { draft.setType($0) })
+    }
+
+    private var groupBinding: Binding<UUID?> {
+        Binding(
+            get: { draft.groupID },
+            set: { id in
+                if id == Self.newGroupTag {
+                    newGroupName = ""
+                    showsNewGroup = true
+                } else {
+                    draft.groupID = id
+                }
+            }
+        )
     }
 
     var body: some View {
@@ -80,6 +99,8 @@ struct ConnectionEditor: View {
                                 Button("Choose…", action: chooseKeyFile)
                             }
                         }
+                    } else {
+                        Toggle("Ignore certificate warnings", isOn: $draft.ignoreCertificateErrors)
                     }
                 } header: {
                     Text("Authentication")
@@ -92,12 +113,14 @@ struct ConnectionEditor: View {
                 }
 
                 Section {
-                    Picker("Group", selection: $draft.groupID) {
+                    Picker("Group", selection: groupBinding) {
                         Text("None").tag(UUID?.none)
                         if !groups.isEmpty { Divider() }
                         ForEach(groups) { group in
                             Text(verbatim: group.name).tag(UUID?.some(group.id))
                         }
+                        Divider()
+                        Text("New Group…").tag(UUID?.some(Self.newGroupTag))
                     }
                     Toggle("Favorite", isOn: $draft.isFavorite)
                 }
@@ -128,6 +151,25 @@ struct ConnectionEditor: View {
         }
         .frame(width: 480)
         .onAppear(perform: load)
+        .alert("New Group", isPresented: $showsNewGroup) {
+            TextField("Group name", text: $newGroupName)
+            Button("Cancel", role: .cancel) {}
+            Button("Save", action: createGroup)
+                .disabled(newGroupName.trimmingCharacters(in: .whitespaces).isEmpty)
+        }
+    }
+
+    private func createGroup() {
+        let name = newGroupName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty else { return }
+        if let existing = groups.first(where: { $0.name.localizedCaseInsensitiveCompare(name) == .orderedSame }) {
+            draft.groupID = existing.id
+            return
+        }
+        let group = ConnectionGroup(name: name)
+        modelContext.insert(group)
+        try? modelContext.save()
+        draft.groupID = group.id
     }
 
     private func load() {

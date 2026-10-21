@@ -12,6 +12,28 @@
         }
       }
     },
+    "%@ is not installed": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ kurulu değil"
+          }
+        }
+      }
+    },
+    "%@ is required": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ gerekli"
+          }
+        }
+      }
+    },
     "%lld added, %lld skipped (already present), %lld new groups.": {
       "extractionState": "manual",
       "localizations": {
@@ -92,6 +114,17 @@
         }
       }
     },
+    "Accessibility access": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erişilebilirlik izni"
+          }
+        }
+      }
+    },
     "Add Connection": {
       "extractionState": "manual",
       "localizations": {
@@ -132,6 +165,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tüm Bağlantılar"
+          }
+        }
+      }
+    },
+    "Allowed": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İzin verildi"
           }
         }
       }
@@ -275,6 +319,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "brew Komutunu Kopyala"
+          }
+        }
+      }
+    },
+    "CoreRemote needs Accessibility access to minimize another app's window.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CoreRemote’un başka bir uygulamanın penceresini küçültebilmesi için Erişilebilirlik izni gerekir."
           }
         }
       }
@@ -473,6 +528,17 @@
         }
       }
     },
+    "FreeRDP receives the saved password directly and doesn't show Windows App's confirmation dialogs.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "FreeRDP kayıtlı şifreyi doğrudan alır ve Windows App’in onay pencerelerini göstermez."
+          }
+        }
+      }
+    },
     "Group": {
       "extractionState": "manual",
       "localizations": {
@@ -513,6 +579,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Host"
+          }
+        }
+      }
+    },
+    "Ignore certificate warnings": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sertifika uyarılarını yoksay"
           }
         }
       }
@@ -616,6 +693,17 @@
         }
       }
     },
+    "Minimize the Windows App window after connecting": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlandıktan sonra Windows App penceresini küçült"
+          }
+        }
+      }
+    },
     "Name": {
       "extractionState": "manual",
       "localizations": {
@@ -656,6 +744,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yeni Grup"
+          }
+        }
+      }
+    },
+    "New Group (⇧⌘N)": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeni Grup (⇧⌘N)"
+          }
+        }
+      }
+    },
+    "New Group…": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeni Grup…"
           }
         }
       }
@@ -722,6 +832,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "App Store’u Aç"
+          }
+        }
+      }
+    },
+    "Open System Settings…": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem Ayarları’nı Aç…"
           }
         }
       }
@@ -821,6 +942,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Canlı sunucu"
+          }
+        }
+      }
+    },
+    "RDP client": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RDP istemcisi"
+          }
+        }
+      }
+    },
+    "RDP connections are set to open in FreeRDP. Install it with Homebrew, or choose Windows App in Settings:\n\n%@": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RDP bağlantıları FreeRDP ile açılacak şekilde ayarlı. Homebrew ile kurun ya da Ayarlar’dan Windows App’i seçin:\n\n%@"
           }
         }
       }
@@ -1056,24 +1199,13 @@
         }
       }
     },
-    "Windows App is not installed": {
+    "Windows App asks for the password itself; CoreRemote copies it to the clipboard for 30 seconds.": {
       "extractionState": "manual",
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Windows App kurulu değil"
-          }
-        }
-      }
-    },
-    "Windows App is required": {
-      "extractionState": "manual",
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Windows App gerekli"
+            "value": "Windows App şifreyi kendisi sorar; CoreRemote şifreyi 30 saniyeliğine panoya kopyalar."
           }
         }
       }
