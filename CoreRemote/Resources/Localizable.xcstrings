@@ -667,17 +667,6 @@
         }
       }
     },
-    "Every connection is available in the Shortcuts app as \"Connect to <name>\", ready to run, add to the menu bar, give a keyboard shortcut or say to Siri.": {
-      "extractionState": "manual",
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Her bağlantı Kestirmeler uygulamasında “<ad> bağlantısını aç” olarak hazır bulunur: çalıştırabilir, menü çubuğuna ekleyebilir, klavye kısayolu atayabilir ya da Siri’ye söyleyebilirsiniz."
-          }
-        }
-      }
-    },
     "Export Connections": {
       "extractionState": "manual",
       "localizations": {
@@ -1547,6 +1536,17 @@
         }
       }
     },
+    "Search a connection's name in Spotlight to connect. In the Shortcuts app, add CoreRemote's \"Connect\" action to a new shortcut and pick a connection.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlanmak için Spotlight’ta bağlantının adını arayın. Kestirmeler’de yeni bir kestirmeye CoreRemote’un “Bağlan” eylemini ekleyip bir bağlantı seçin."
+          }
+        }
+      }
+    },
     "Search name, host or user": {
       "extractionState": "manual",
       "localizations": {
@@ -1635,13 +1635,13 @@
         }
       }
     },
-    "Shortcuts and Siri": {
+    "Shortcuts and Spotlight": {
       "extractionState": "manual",
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kestirmeler ve Siri"
+            "value": "Kestirmeler ve Spotlight"
           }
         }
       }
