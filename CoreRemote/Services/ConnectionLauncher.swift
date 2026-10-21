@@ -96,23 +96,13 @@ final class ConnectionLauncher {
             permissions: 0o700
         )
 
-        let configuration = NSWorkspace.OpenConfiguration()
-        configuration.activates = true
         switch terminal {
         case .iTerm2:
             try ITerm2Session.open(script: scriptURL)
-        case .warp:
-            // The script deletes itself; the Tab Config only has to outlive Warp reading it.
-            let stem = "coreremote-\(UUID().uuidString.lowercased())"
-            let tabConfig = try LaunchFiles.write(
-                WarpTabConfig.contents(title: target.name, command: scriptURL.path.shellQuoted),
-                named: "\(stem).toml",
-                in: WarpTabConfig.directory
-            )
-            LaunchFiles.remove(tabConfig, after: .seconds(30))
-            try await NSWorkspace.shared.open([WarpTabConfig.url(forConfigNamed: stem)], withApplicationAt: terminalURL, configuration: configuration)
-        case .terminal, .ghostty:
-            // Both run a `.command` file they're asked to open.
+        case .terminal:
+            // Terminal runs a `.command` file it's asked to open.
+            let configuration = NSWorkspace.OpenConfiguration()
+            configuration.activates = true
             try await NSWorkspace.shared.open([scriptURL], withApplicationAt: terminalURL, configuration: configuration)
         }
     }

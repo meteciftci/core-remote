@@ -964,17 +964,6 @@
         }
       }
     },
-    "Install another terminal": {
-      "extractionState": "manual",
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Başka bir terminal kur"
-          }
-        }
-      }
-    },
     "Invalid port": {
       "extractionState": "manual",
       "localizations": {
@@ -1800,13 +1789,13 @@
         }
       }
     },
-    "The saved password is entered automatically in every terminal. If the chosen app is removed, connections open in Terminal.": {
+    "The saved password is entered automatically in both. The first iTerm2 connection asks once for permission to control iTerm2. If iTerm2 is removed, connections open in Terminal.": {
       "extractionState": "manual",
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kayıtlı şifre her terminalde otomatik girilir. Seçilen uygulama kaldırılırsa bağlantılar Terminal’de açılır."
+            "value": "Kayıtlı şifre ikisinde de otomatik girilir. İlk iTerm2 bağlantısında iTerm2’yi denetleme izni bir kez sorulur. iTerm2 kaldırılırsa bağlantılar Terminal’de açılır."
           }
         }
       }
