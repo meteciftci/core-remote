@@ -23,6 +23,13 @@ final class Connection {
     var lastConnectedAt: Date?
     var group: ConnectionGroup?
 
+    // RDP only; `nil` uses the default from Settings. See `RDPOverrides`.
+    var rdpDisplayRaw: String?
+    var rdpMultiMonitor: Bool?
+    var rdpClipboard: Bool?
+    var rdpSharedFolder: String?
+    var rdpAudioRaw: String?
+
     var type: ConnectionType {
         get { ConnectionType(rawValue: typeRaw) ?? .ssh }
         set { typeRaw = newValue.rawValue }
@@ -58,6 +65,25 @@ final class Connection {
         self.group = group
     }
 
+    var rdpOverrides: RDPOverrides {
+        get {
+            RDPOverrides(
+                display: rdpDisplayRaw.flatMap(RDPDisplay.init(rawValue:)),
+                multiMonitor: rdpMultiMonitor,
+                clipboard: rdpClipboard,
+                sharedFolder: rdpSharedFolder,
+                audio: rdpAudioRaw.flatMap(RDPAudio.init(rawValue:))
+            )
+        }
+        set {
+            rdpDisplayRaw = newValue.display?.rawValue
+            rdpMultiMonitor = newValue.multiMonitor
+            rdpClipboard = newValue.clipboard
+            rdpSharedFolder = newValue.sharedFolder
+            rdpAudioRaw = newValue.audio?.rawValue
+        }
+    }
+
     /// `user@host:port`, shown under the name in lists.
     var summary: String {
         "\(username)@\(host):\(port)"
@@ -72,7 +98,8 @@ final class Connection {
             port: port,
             username: username,
             keyFilePath: keyFilePath,
-            ignoreCertificateErrors: ignoreCertificateErrors
+            ignoreCertificateErrors: ignoreCertificateErrors,
+            rdp: type == .rdp ? RDPDefaults.load().applying(rdpOverrides) : RDPOptions()
         )
     }
 }
@@ -98,4 +125,5 @@ nonisolated struct ConnectionTarget: Equatable, Sendable {
     var username: String
     var keyFilePath: String?
     var ignoreCertificateErrors = false
+    var rdp = RDPOptions()
 }

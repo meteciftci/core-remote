@@ -129,6 +129,8 @@ struct SettingsView: View {
                 }
             }
 
+            RDPDefaultsSection()
+
             Section {
                 KeyboardShortcuts.Recorder("Quick connect", name: .quickConnect)
             } footer: {

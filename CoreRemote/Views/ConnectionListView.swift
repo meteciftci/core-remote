@@ -177,6 +177,7 @@ struct ConnectionListView: View {
             isFavorite: connection.isFavorite,
             group: connection.group
         )
+        copy.rdpOverrides = connection.rdpOverrides
         modelContext.insert(copy)
         let store = KeychainPasswordStore.shared
         if let password = store.password(for: connection.id) {
