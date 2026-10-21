@@ -1,0 +1,79 @@
+name: CoreRemote
+options:
+  bundleIdPrefix: com.meteciftci
+  deploymentTarget:
+    macOS: "26.0"
+  developmentLanguage: en
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MACOSX_DEPLOYMENT_TARGET: "26.0"
+    SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor
+    SWIFT_APPROACHABLE_CONCURRENCY: YES
+    SWIFT_EMIT_LOC_STRINGS: YES
+    LOCALIZATION_PREFERS_STRING_CATALOGS: YES
+    CODE_SIGN_IDENTITY: "-"
+    CODE_SIGN_STYLE: Manual
+    DEVELOPMENT_TEAM: ""
+
+targets:
+  CoreRemote:
+    type: application
+    platform: macOS
+    sources:
+      - path: CoreRemote
+    info:
+      path: CoreRemote/Info.plist
+      properties:
+        CFBundleDisplayName: CoreRemote
+        CFBundleShortVersionString: "1.0.0"
+        CFBundleVersion: "1"
+        LSApplicationCategoryType: public.app-category.developer-tools
+        NSHumanReadableCopyright: "© 2026 Mete Çiftçi"
+        CFBundleLocalizations: [en, tr]
+        UTExportedTypeDeclarations:
+          - UTTypeIdentifier: com.meteciftci.coreremote.backup
+            UTTypeDescription: CoreRemote Backup
+            UTTypeConformsTo: [public.json]
+            UTTypeTagSpecification:
+              public.filename-extension: [coreremote]
+        CFBundleDocumentTypes:
+          - CFBundleTypeName: CoreRemote Backup
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Owner
+            LSItemContentTypes: [com.meteciftci.coreremote.backup]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.meteciftci.CoreRemote
+        PRODUCT_NAME: CoreRemote
+        ENABLE_APP_SANDBOX: NO
+        ENABLE_HARDENED_RUNTIME: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        COMBINE_HIDPI_IMAGES: YES
+
+  CoreRemoteTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: CoreRemoteTests
+    dependencies:
+      - target: CoreRemote
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.meteciftci.CoreRemoteTests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/CoreRemote.app/Contents/MacOS/CoreRemote"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+
+schemes:
+  CoreRemote:
+    build:
+      targets:
+        CoreRemote: all
+        CoreRemoteTests: [test]
+    test:
+      targets:
+        - CoreRemoteTests
