@@ -31,22 +31,19 @@ struct SettingsView: View {
                 }
                 .pickerStyle(.radioGroup)
 
-                let missing = TerminalApp.allCases.filter { !installedTerminals.contains($0) }
-                if !missing.isEmpty {
-                    LabeledContent("Install another terminal") {
-                        Menu("Copy brew Command") {
-                            ForEach(missing) { app in
-                                Button(app.title) {
-                                    NSPasteboard.general.clearContents()
-                                    NSPasteboard.general.setString(app.brewCommand ?? "", forType: .string)
-                                }
-                            }
+                if !installedTerminals.contains(.iTerm2), let brewCommand = TerminalApp.iTerm2.brewCommand {
+                    LabeledContent {
+                        Button("Copy brew Command") {
+                            NSPasteboard.general.clearContents()
+                            NSPasteboard.general.setString(brewCommand, forType: .string)
                         }
-                        .fixedSize()
+                    } label: {
+                        Label("\(TerminalApp.iTerm2.title) is not installed", systemImage: "info.circle")
+                            .foregroundStyle(.secondary)
                     }
                 }
             } footer: {
-                Text("The saved password is entered automatically in every terminal. If the chosen app is removed, connections open in Terminal.")
+                Text("The saved password is entered automatically in both. The first iTerm2 connection asks once for permission to control iTerm2. If iTerm2 is removed, connections open in Terminal.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

@@ -33,8 +33,8 @@ nonisolated enum SSHCommand {
     }
 
     /// The script a terminal app runs. When ssh itself fails (exit code 255: refused, timed out,
-    /// wrong password), it waits for a key so the error stays readable. iTerm2, Ghostty and Warp
-    /// close the window as soon as the script ends.
+    /// wrong password), it waits for a key so the error stays readable. iTerm2 closes the window
+    /// as soon as the script ends.
     static func script(
         for target: ConnectionTarget,
         askpass: AskpassEnvironment?,
