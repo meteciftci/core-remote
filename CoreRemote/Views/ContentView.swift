@@ -10,6 +10,7 @@ struct ContentView: View {
     @Query(sort: \ConnectionGroup.name) private var groups: [ConnectionGroup]
 
     @Environment(ConnectionLauncher.self) private var launcher
+    @State private var reachability = ReachabilityMonitor()
     @State private var sidebarSelection: SidebarItem? = .all
     @State private var editor: EditorRequest?
     @State private var alert: AlertContent?
@@ -43,8 +44,10 @@ struct ContentView: View {
                 onExport: { showsExportOptions = true }
             )
             .id(filter)
+            .environment(reachability)
         }
         .overlay(alignment: .bottom) { toast }
+        .modifier(ReachabilityRefresh(monitor: reachability, connections: connections))
         // Launches from the menu bar report here too, so this also runs when the window opens.
         .onChange(of: launcher.launchProblem, initial: true) {
             guard let problem = launcher.launchProblem else { return }

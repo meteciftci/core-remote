@@ -14,6 +14,7 @@ A simple SSH and RDP connection manager for macOS. Save your connections and ope
 - **Recent**: The 10 connections you opened last are listed in the sidebar, and each row shows when you last connected. History can be cleared in Settings.
 - **Menu bar**: Connect to favorites, the last 5 connections and groups straight from the menu bar. CoreRemote keeps running there after you close its window; the icon can be hidden in Settings.
 - **Quick connect**: Press **⌃⌥Space** in any app to open a search box, type a name, host or user and press Return to connect. The shortcut can be changed in Settings.
+- **Server status**: While the window is open, each server's port is tried every minute and its row shows a green (reachable) or red (unreachable) dot, with the reason on hover. Can be turned off in Settings.
 - **Backup**: Export your connections to a `.coreremote` file and import them on another Mac. Passwords are only included in passphrase-encrypted backups.
 - **Liquid Glass** interface, in English and Turkish.
 

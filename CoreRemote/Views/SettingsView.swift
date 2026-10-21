@@ -10,6 +10,7 @@ struct SettingsView: View {
     @State private var installed: Set<RDPClient> = []
     @State private var confirmsClearHistory = false
     @AppStorage(MenuBarContent.visibilityKey) private var showsMenuBarIcon = true
+    @AppStorage(ReachabilityMonitor.storageKey) private var checksReachability = true
 
     @Environment(\.modelContext) private var modelContext
     @Query(filter: #Predicate<Connection> { $0.lastConnectedAt != nil }) private var recentConnections: [Connection]
@@ -80,6 +81,14 @@ struct SettingsView: View {
                 Toggle("Show in menu bar", isOn: $showsMenuBarIcon)
             } footer: {
                 Text("Connect to favorites, recent connections and groups from the menu bar. CoreRemote keeps running there after you close its window.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Section {
+                Toggle("Show server status", isOn: $checksReachability)
+            } footer: {
+                Text("While the window is open, CoreRemote tries each server's port every minute and shows a green or red dot.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

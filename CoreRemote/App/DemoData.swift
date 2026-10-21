@@ -15,6 +15,15 @@ enum DemoData {
 
     private static var arguments: [String] { ProcessInfo.processInfo.arguments }
 
+    /// Made-up server status, since the demo hosts don't exist.
+    static func reachability(for host: String) -> ReachabilityMonitor.Status {
+        switch host {
+        case "db-01.example.com": .unreachable(reason: String(localized: "Connection refused"))
+        case "192.0.2.15": .unreachable(reason: String(localized: "Timed out"))
+        default: .reachable(latency: .milliseconds(host.count * 3))
+        }
+    }
+
     static func makeContainer() throws -> ModelContainer {
         let container = try ModelContainer(
             for: Connection.self, ConnectionGroup.self,
