@@ -1078,6 +1078,28 @@
         }
       }
     },
+    "Settings": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayarlar"
+          }
+        }
+      }
+    },
+    "Settings (⌘,)": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayarlar (⌘,)"
+          }
+        }
+      }
+    },
     "Terminal could not be found": {
       "extractionState": "manual",
       "localizations": {
@@ -1129,6 +1151,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Şifre Anahtar Zinciri’nde saklanır ve ssh sorduğunda otomatik girilir."
+          }
+        }
+      }
+    },
+    "The password is kept in your Keychain and passed to FreeRDP when you connect.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Şifre Anahtar Zinciri’nde saklanır ve bağlanırken FreeRDP’ye iletilir."
           }
         }
       }

@@ -1,27 +1,111 @@
 # CoreRemote
 
-A macOS 26+ app for saving SSH and RDP connections and opening them with a double-click.
+**Türkçe** | [English](README.en.md)
 
-- **SSH** opens in Terminal. A saved password is kept in the Keychain and handed to `ssh` through `SSH_ASKPASS` (a one-time `0600` file that the helper deletes on first read). New host keys are accepted automatically (`StrictHostKeyChecking=accept-new`); changed keys are still rejected.
-- **RDP** opens in [Microsoft Windows App](https://apps.apple.com/app/id1295203466) (`brew install --cask windows-app`) via a generated `.rdp` file. The saved password is copied to the clipboard and cleared after 30 seconds.
-- **Backup**: export and import `.coreremote` files. Passwords are only included when the file is encrypted with a passphrase (AES-GCM, PBKDF2-SHA256).
+macOS için sade bir SSH ve RDP bağlantı yöneticisi. Bağlantılarınızı kaydedin, çift tıklayarak bağlanın.
 
-## Build
+![Ana pencere](docs/screenshots/tr/main.png)
 
-Requires Xcode 26 or later and [XcodeGen](https://github.com/yonaskolb/XcodeGen).
+## Özellikler
+
+- **SSH**: Bağlantı Terminal'de açılır. Kayıtlı şifre otomatik girilir; isteğe bağlı SSH anahtar dosyası seçilebilir.
+- **RDP**: Varsayılan istemci [FreeRDP](https://www.freerdp.com)'dir ve şifreyi doğrudan alır. İsterseniz Ayarlar'dan [Microsoft Windows App](https://apps.apple.com/app/id1295203466) seçilebilir.
+- **Gruplar ve favoriler**: Bağlantıları gruplara ayırın, sık kullandıklarınızı favorilere ekleyin, ad, host veya kullanıcıya göre arayın.
+- **Yedekleme**: Bağlantılarınızı `.coreremote` dosyasına dışa aktarın, başka bir Mac'e içe aktarın. Şifreler yalnızca parolayla şifrelenmiş yedeğe eklenir.
+- **Liquid Glass** arayüzü, Türkçe ve İngilizce dil desteği.
+
+![Bağlantı formu](docs/screenshots/tr/editor.png)
+
+## Güvenlik
+
+- Şifreler yalnızca bu Mac'in **Anahtar Zinciri**'nde saklanır. Bulut senkronizasyonu yoktur; hiçbir veri cihazdan çıkmaz.
+- **SSH** şifresi `SSH_ASKPASS` ile iletilir. Şifre, yalnızca sizin okuyabildiğiniz tek kullanımlık bir dosyaya yazılır ve ilk okumada silinir. Komut satırında veya terminal geçmişinde görünmez.
+- **FreeRDP** şifreyi standart girdiden (`/args-from:stdin`) alır, bu yüzden işlem listesinde görünmez.
+- **Windows App** dışarıdan şifre kabul etmez. Şifre panoya kopyalanır ve 30 saniye sonra silinir.
+- **Sunucu anahtarları**: SSH yeni sunucu anahtarlarını ilk bağlantıda kabul eder, değişmiş anahtarları reddeder (`StrictHostKeyChecking=accept-new`). FreeRDP sertifikalarda aynı mantığı izler (`/cert:tofu`).
+
+## Gereksinimler
+
+- macOS 26 (Tahoe) veya üzeri
+- RDP için FreeRDP:
+  ```bash
+  brew install freerdp
+  ```
+  ya da Microsoft Windows App:
+  ```bash
+  brew install --cask windows-app
+  ```
+
+## Kurulum
+
+### Hazır sürüm
+
+1. [Releases](https://github.com/meteciftci/core-remote/releases) sayfasından son `CoreRemote-x.y.z.zip` dosyasını indirin, açın ve `CoreRemote.app`'i **Uygulamalar** klasörüne taşıyın.
+2. Uygulama Apple tarafından onaylanmadığı (notarize edilmediği) için macOS ilk açılışta engeller. İki yoldan biriyle açabilirsiniz:
+   - Uygulamaya **sağ tıklayıp Aç**'ı seçin. Açılmazsa **Sistem Ayarları → Gizlilik ve Güvenlik** bölümünde **Yine de Aç**'a basın.
+   - Ya da Terminal'de karantina işaretini kaldırın:
+     ```bash
+     xattr -dr com.apple.quarantine /Applications/CoreRemote.app
+     ```
+
+Hazır sürüm yerel imzalıdır. Bu yüzden her güncellemeden sonra macOS, Anahtar Zinciri ve Erişilebilirlik izinlerini bir kez daha sorar.
+
+### Kaynak koddan derleme
+
+Xcode 26 veya üzeri ile [XcodeGen](https://github.com/yonaskolb/XcodeGen) gerekir.
 
 ```bash
 brew install xcodegen
+git clone https://github.com/meteciftci/core-remote.git
+cd core-remote
 xcodegen generate
 open CoreRemote.xcodeproj
 ```
 
-`CoreRemote.xcodeproj` is generated from `project.yml` and is not checked in.
+`CoreRemote.xcodeproj`, `project.yml` dosyasından üretilir ve depoya eklenmez. Yeni bir dosya ekledikten sonra `xcodegen generate` komutunu tekrar çalıştırın.
 
-The app is signed with an Apple Development certificate (`DEVELOPMENT_TEAM` in `project.yml`) so Keychain and Accessibility permissions survive rebuilds. To build under another account, change the team ID there.
-
-Run the tests from the command line:
+Testleri komut satırından çalıştırmak için:
 
 ```bash
 xcodebuild -project CoreRemote.xcodeproj -scheme CoreRemote test
 ```
+
+#### Örnek veriler
+
+Debug derlemesi `-DemoData` argümanıyla açılırsa gerçek bağlantılar yerine yalnızca hafızada tutulan örnek bağlantılar gösterilir. README ekran görüntüleri bu şekilde alınmıştır; `-DemoEditor` ve `-DemoSettings` ilgili ekranı da açar.
+
+```bash
+open build/Build/Products/Debug/CoreRemote.app --args -DemoData
+```
+
+#### İmza
+
+Varsayılan olarak uygulama yerel imzayla ("Sign to Run Locally") derlenir; Apple hesabı gerekmez. Bu durumda macOS her derlemeden sonra Anahtar Zinciri ve Erişilebilirlik izinlerini yeniden sorar. İzinlerin kalıcı olması için Apple Development sertifikanızla imzalayın:
+
+```bash
+cp Config/Local.xcconfig.example Config/Local.xcconfig
+```
+
+Ardından `Config/Local.xcconfig` içindeki `DEVELOPMENT_TEAM` değerini kendi ekip ID'nizle değiştirin. Bu dosya git'e eklenmez.
+
+## Kullanım
+
+| Kısayol | İşlem |
+| --- | --- |
+| Çift tıklama veya Return | Seçili bağlantıya bağlan |
+| ⌘N | Yeni bağlantı |
+| ⇧⌘N | Yeni grup |
+| ⌘F | Ara |
+| ⇧⌘I / ⇧⌘E | İçe aktar / Dışa aktar |
+| ⌘, | Ayarlar |
+
+![Ayarlar](docs/screenshots/tr/settings.png)
+
+## Bilinen kısıtlar
+
+- FreeRDP 3.x, açılışta ekranları ölçmek için kısa süreliğine tam ekran bir pencere açar. Bu yüzden bağlanırken ekran bir an siyaha döner.
+- RDP oturumunu pencerenin çarpısıyla kapatmak oturumu kapatmaz, yalnızca bağlantıyı keser. Oturumu sonlandırmak için Windows'ta **Oturumu kapat**'ı kullanın.
+
+## Lisans
+
+[MIT](LICENSE)
