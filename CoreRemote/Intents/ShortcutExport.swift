@@ -33,9 +33,9 @@ enum ConnectURL {
     }
 }
 
-/// Makes a one-step shortcut that runs CoreRemote's hidden "Connect by ID" action for a
-/// connection, signs it with macOS's `shortcuts` tool and opens it, so Kestirmeler only asks to
-/// confirm adding it. macOS has no API to add a shortcut directly, and it refuses unsigned files.
+/// Makes a one-step shortcut that runs CoreRemote's "Connect" action for a connection, signs it
+/// with macOS's `shortcuts` tool and opens it, so Kestirmeler only asks to confirm adding it.
+/// macOS has no API to add a shortcut directly, and it refuses unsigned files.
 enum ShortcutExport {
     enum ExportError: LocalizedError {
         case signingFailed(String)
@@ -49,10 +49,12 @@ enum ShortcutExport {
     }
 
     static let shortcutsTool = URL(filePath: "/usr/bin/shortcuts")
-    nonisolated static let intentIdentifier = "ConnectByIDIntent"
+    nonisolated static let intentIdentifier = "ConnectIntent"
 
-    /// The unsigned shortcut, as a property list. `teamID` is nil for ad-hoc signed builds.
-    nonisolated static func workflow(for id: UUID, bundleID: String, teamID: String?) -> [String: Any] {
+    /// The unsigned shortcut, as a property list. The `target` dictionary is how Kestirmeler stores
+    /// a picked `ConnectionEntity` (read from a shortcut made by hand in the app). `teamID` is nil
+    /// for ad-hoc signed builds.
+    nonisolated static func workflow(for entity: ConnectionEntity, bundleID: String, teamID: String?) -> [String: Any] {
         var descriptor: [String: Any] = [
             "AppIntentIdentifier": intentIdentifier,
             "BundleIdentifier": bundleID,
@@ -65,11 +67,17 @@ enum ShortcutExport {
                     "WFWorkflowActionIdentifier": "\(bundleID).\(intentIdentifier)",
                     "WFWorkflowActionParameters": [
                         "AppIntentDescriptor": descriptor,
-                        "connectionID": id.uuidString,
+                        "UUID": UUID().uuidString,
+                        "target": [
+                            "identifier": entity.id.uuidString,
+                            "title": ["key": entity.name],
+                            "subtitle": ["key": entity.summary],
+                            "symbol": ["systemName": entity.symbol],
+                        ],
                     ],
                 ],
             ],
-            "WFWorkflowClientVersion": "2607.0.2",
+            "WFWorkflowClientVersion": "5037.0.19",
             "WFWorkflowIcon": [
                 "WFWorkflowIconStartColor": 431_817_727, // blue
                 "WFWorkflowIconGlyphNumber": 59_511,
@@ -106,7 +114,11 @@ enum ShortcutExport {
         let unsigned = directory.appending(path: "unsigned.shortcut")
         let signed = directory.appending(path: fileName)
 
-        let workflow = workflow(for: connection.id, bundleID: Bundle.main.bundleIdentifier ?? "com.meteciftci.CoreRemote", teamID: teamIdentifier)
+        let workflow = workflow(
+            for: ConnectionEntity(connection),
+            bundleID: Bundle.main.bundleIdentifier ?? "com.meteciftci.CoreRemote",
+            teamID: teamIdentifier
+        )
         let data = try PropertyListSerialization.data(fromPropertyList: workflow, format: .binary, options: 0)
         try data.write(to: unsigned)
         try await sign(unsigned, to: signed)
