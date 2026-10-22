@@ -8,6 +8,7 @@ struct ConnectionListView: View {
     var onEdit: (Connection?) -> Void
     var onNewGroup: () -> Void
     var onCopyCommand: (Connection) -> Void
+    var onCopyPassword: (Connection) -> Void
     var onFileTransfer: (Connection) -> Void
     var onImport: () -> Void
     var onExport: () -> Void
@@ -143,6 +144,7 @@ struct ConnectionListView: View {
             }
             .listStyle(.inset)
             .alternatingRowBackgrounds()
+            .focusedSceneValue(\.selectedConnection, selectedConnection)
             .contextMenu(forSelectionType: UUID.self) { ids in
                 menu(for: connections.filter { ids.contains($0.id) })
             } primaryAction: { ids in
@@ -164,6 +166,8 @@ struct ConnectionListView: View {
                 Button("File Transfer", systemImage: "folder") { onFileTransfer(connection) }
                 Button("Copy SSH Command", systemImage: "doc.on.doc") { onCopyCommand(connection) }
             }
+            Button("Copy Password", systemImage: "key") { onCopyPassword(connection) }
+                .keyboardShortcut("c", modifiers: [.command, .shift])
 
             Divider()
             Button(
@@ -177,6 +181,12 @@ struct ConnectionListView: View {
         if !items.isEmpty {
             Button("Delete…", systemImage: "trash", role: .destructive) { pendingDeletion = items }
         }
+    }
+
+    /// The one selected connection, for Edit › Copy Password.
+    private var selectedConnection: Connection? {
+        guard selection.count == 1 else { return nil }
+        return connections.first { selection.contains($0.id) }
     }
 
     private var deletionTitle: String {

@@ -7,6 +7,7 @@ struct SettingsView: View {
     @AppStorage(TerminalApp.storageKey) private var terminalApp: TerminalApp = TerminalApp.defaultApp
     @State private var installedTerminals: Set<TerminalApp> = [.terminal]
     @AppStorage(FileTransferClient.storageKey) private var fileTransferClient = ""
+    @AppStorage(ConnectionLauncher.copiesPasswordAfterSSHKey) private var copiesPasswordAfterSSH = false
     @State private var fileTransferApps: [FileTransferApp] = []
     @AppStorage(RDPClient.storageKey) private var rdpClient: RDPClient = RDPClient.defaultClient
     @AppStorage(WindowsApp.minimizeStorageKey) private var minimizesMainWindow = true
@@ -122,6 +123,14 @@ struct SettingsView: View {
                 }
             } footer: {
                 Text("The saved password is entered automatically in both. The first iTerm2 connection asks once for permission to control iTerm2. If iTerm2 is removed, connections open in Terminal.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Section {
+                Toggle("Copy the password after connecting", isOn: $copiesPasswordAfterSSH)
+            } footer: {
+                Text("Paste it when sudo asks. Clipboard managers are told not to keep it, and it is cleared after 90 seconds. \"Copy Password\" in a connection's menu (⇧⌘C) copies it at any time.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
