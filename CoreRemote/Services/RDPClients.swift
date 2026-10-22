@@ -172,6 +172,18 @@ nonisolated enum FreeRDP {
         return arguments
     }
 
+    static var failureLogURL: URL {
+        URL.libraryDirectory.appending(path: "Logs/CoreRemote/freerdp-last-error.log")
+    }
+
+    /// Copies the log of a session that ended with an error, replacing the previous one.
+    static func keepFailureLog(_ url: URL) {
+        let destination = failureLogURL
+        try? FileManager.default.createDirectory(at: destination.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try? FileManager.default.removeItem(at: destination)
+        try? FileManager.default.copyItem(at: url, to: destination)
+    }
+
     /// `/drive:<name>,<path>` for a shared folder. FreeRDP splits the value at commas, so a path
     /// with a comma can't be shared.
     static func drive(for folder: String?) -> String? {

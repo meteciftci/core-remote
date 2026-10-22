@@ -188,8 +188,13 @@ final class ConnectionLauncher {
         environment["SDL_VIDEO_MAC_FULLSCREEN_SPACES"] = "0"
         process.environment = environment
 
-        // FreeRDP reports connection problems in its own window, so the log is only kept while it runs.
-        process.terminationHandler = { _ in
+        // FreeRDP reports connection problems in its own window, so the log is only kept when it
+        // fails, as ~/Library/Logs/CoreRemote/freerdp-last-error.log. The password goes through
+        // stdin and isn't in it.
+        process.terminationHandler = { process in
+            if process.terminationStatus != 0 {
+                FreeRDP.keepFailureLog(logURL)
+            }
             try? FileManager.default.removeItem(at: logURL)
         }
 
