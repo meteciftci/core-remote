@@ -171,7 +171,11 @@ enum ConnectionImporter {
                 group: group
             )
         }
-        connections.forEach(context.insert)
+        let start = ConnectionOrder.nextIndex(in: context)
+        for (offset, connection) in connections.enumerated() {
+            connection.sortIndex = start + offset
+            context.insert(connection)
+        }
         try context.save()
         return connections
     }

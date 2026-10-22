@@ -46,6 +46,13 @@ struct SidebarView: View {
                 row(.all, title: Text("All Connections"), symbol: "square.stack.3d.up")
                 row(.favorites, title: Text("Favorites"), symbol: "star")
                 row(.recent, title: Text("Recent"), symbol: "clock")
+                ForEach(groups) { group in
+                    row(.group(group.id), title: Text(verbatim: group.name), symbol: "folder")
+                        .contextMenu {
+                            Button("Rename…") { onRenameGroup(group) }
+                            Button("Delete Group", role: .destructive) { delete(group) }
+                        }
+                }
             }
 
             Section("Types") {
@@ -60,16 +67,6 @@ struct SidebarView: View {
                     ForEach(tags, id: \.tag) { entry in
                         row(.tag(entry.tag), title: Text(verbatim: "#\(entry.tag)"), symbol: "tag")
                     }
-                }
-            }
-
-            Section("Groups") {
-                ForEach(groups) { group in
-                    row(.group(group.id), title: Text(verbatim: group.name), symbol: "folder")
-                        .contextMenu {
-                            Button("Rename…") { onRenameGroup(group) }
-                            Button("Delete Group", role: .destructive) { delete(group) }
-                        }
                 }
             }
         }

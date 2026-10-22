@@ -256,6 +256,7 @@ enum BackupStore {
             profilesByID[item.id] = profile
         }
 
+        var nextSortIndex = ConnectionOrder.nextIndex(in: context)
         for item in payload.connections {
             guard !existingIDs.contains(item.id) else {
                 summary.skipped += 1
@@ -285,6 +286,8 @@ enum BackupStore {
                 )
             }
             connection.credentialProfile = item.credentialProfile.flatMap { profilesByID[$0] }
+            connection.sortIndex = nextSortIndex
+            nextSortIndex += 1
             context.insert(connection)
             if let password = item.password {
                 try passwords.setPassword(password, for: item.id)
