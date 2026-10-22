@@ -47,6 +47,20 @@ enum AppSchema {
     static let models: [any PersistentModel.Type] = [Connection.self, ConnectionGroup.self, CredentialProfile.self]
 
     static func container(inMemory: Bool = false) throws -> ModelContainer {
-        try ModelContainer(for: Schema(models), configurations: ModelConfiguration(isStoredInMemoryOnly: inMemory))
+        if inMemory {
+            return try ModelContainer(for: Schema(models), configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+        }
+        return try container(at: StoreLocation.url, legacy: StoreLocation.legacyURL)
+    }
+
+    /// Opens the store at `url`, first moving a store left at `legacy` by an older version.
+    static func container(at url: URL, legacy: URL) throws -> ModelContainer {
+        let migrated = try StoreLocation.migrateLegacyStore(from: legacy, to: url)
+        try FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+        let container = try ModelContainer(for: Schema(models), configurations: ModelConfiguration(url: url))
+        if migrated {
+            StoreLocation.removeLegacyStore(at: legacy)
+        }
+        return container
     }
 }

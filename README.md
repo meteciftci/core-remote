@@ -59,6 +59,8 @@ brew install meteciftci/tap/coreremote
 
 Güncellemek için `brew upgrade coreremote`. Uygulama Apple tarafından onaylanmadığı için cask, kurulumdan sonra karantina işaretini kaldırır; bu sayede macOS açılışta engellemez. Bu tap'ten kurarak buna onay vermiş olursunuz.
 
+`brew uninstall --zap coreremote` uygulamayla birlikte bağlantıları, ayarları ve günlükleri de siler. Anahtar Zinciri'ndeki şifreler kalır; onları Anahtar Zinciri Erişimi'nde "CoreRemote" diye aratıp silebilirsiniz.
+
 ### Hazır sürüm
 
 1. [Releases](https://github.com/meteciftci/core-remote/releases) sayfasından son `CoreRemote-x.y.z.zip` dosyasını indirin, açın ve `CoreRemote.app`'i **Uygulamalar** klasörüne taşıyın.

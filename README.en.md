@@ -59,6 +59,8 @@ brew install meteciftci/tap/coreremote
 
 Update with `brew upgrade coreremote`. Because the app isn't notarized by Apple, the cask removes the quarantine flag after installing, so macOS doesn't block it on launch. Installing from this tap is how you agree to that.
 
+`brew uninstall --zap coreremote` also removes connections, settings and logs. Passwords stay in the Keychain; search for "CoreRemote" in Keychain Access to delete them.
+
 ### Prebuilt release
 
 1. Download the latest `CoreRemote-x.y.z.zip` from the [Releases](https://github.com/meteciftci/core-remote/releases) page, unzip it, and move `CoreRemote.app` to your **Applications** folder.
