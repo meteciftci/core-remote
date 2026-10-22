@@ -38,8 +38,8 @@ targets:
       properties:
         CFBundleDisplayName: CoreRemote
         NSAppleEventsUsageDescription: CoreRemote opens SSH connections in a new iTerm2 window.
-        CFBundleShortVersionString: "1.3.2"
-        CFBundleVersion: "6"
+        CFBundleShortVersionString: "1.3.3"
+        CFBundleVersion: "7"
         LSApplicationCategoryType: public.app-category.developer-tools
         NSHumanReadableCopyright: "© 2026 Mete Çiftçi"
         CFBundleLocalizations: [en, tr]
