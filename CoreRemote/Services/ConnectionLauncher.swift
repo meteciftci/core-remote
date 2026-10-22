@@ -29,12 +29,18 @@ final class ConnectionLauncher {
     private(set) var notice: String?
 
     private let passwords: PasswordStore
+    private let pasteboard: NSPasteboard
     private var noticeTask: Task<Void, Never>?
 
     static let clipboardClearDelay: Duration = .seconds(30)
+    /// Longer than `clipboardClearDelay`: sudo usually asks a while after the login.
+    static let passwordClearDelay: Duration = .seconds(90)
+    /// Settings › SSH: copy the password once an SSH connection opens, for sudo.
+    static let copiesPasswordAfterSSHKey = "copyPasswordAfterSSH"
 
-    init(passwords: PasswordStore = KeychainPasswordStore.shared) {
+    init(passwords: PasswordStore = KeychainPasswordStore.shared, pasteboard: NSPasteboard = .general) {
         self.passwords = passwords
+        self.pasteboard = pasteboard
     }
 
     /// A problem from the last launch, waiting for the main window to show it.
@@ -56,7 +62,11 @@ final class ConnectionLauncher {
 
     func connect(_ connection: Connection) async throws {
         switch connection.type {
-        case .ssh: try await runInTerminal(connection.target, program: .ssh)
+        case .ssh:
+            try await runInTerminal(connection.target, program: .ssh)
+            if UserDefaults.standard.bool(forKey: Self.copiesPasswordAfterSSHKey) {
+                copyPassword(for: connection.target, reportsMissing: false)
+            }
         case .rdp: try await connectRDP(connection.target)
         }
     }
@@ -66,6 +76,20 @@ final class ConnectionLauncher {
         pasteboard.clearContents()
         pasteboard.setString(SSHCommand.commandLine(for: connection.target), forType: .string)
         show(String(localized: "SSH command copied"))
+    }
+
+    /// Copies the saved password, such as for sudo after logging in, and clears it 90 seconds later.
+    func copyPassword(for connection: Connection) {
+        copyPassword(for: connection.target, reportsMissing: true)
+    }
+
+    private func copyPassword(for target: ConnectionTarget, reportsMissing: Bool) {
+        guard let password = passwords.password(for: target.keychainID) else {
+            if reportsMissing { show(String(localized: "No password is saved for this connection")) }
+            return
+        }
+        Clipboard.copyConcealed(password, clearAfter: Self.passwordClearDelay, on: pasteboard)
+        show(String(localized: "Password copied — clears in 90 seconds"))
     }
 
     /// Opens an SSH connection's files in a file transfer app, or `sftp` in the terminal.
@@ -89,7 +113,7 @@ final class ConnectionLauncher {
             throw LaunchError.scriptFailed(String(localized: "The host name can't be used in a link."))
         }
         if let password = passwords.password(for: target.keychainID) {
-            Clipboard.copyConcealed(password, clearAfter: Self.clipboardClearDelay)
+            Clipboard.copyConcealed(password, clearAfter: Self.clipboardClearDelay, on: pasteboard)
             show(String(localized: "Password copied — clears in 30 seconds"))
         }
         let configuration = NSWorkspace.OpenConfiguration()
@@ -154,7 +178,7 @@ final class ConnectionLauncher {
         LaunchFiles.remove(fileURL, after: .seconds(120))
 
         if let password = passwords.password(for: target.keychainID) {
-            Clipboard.copyConcealed(password, clearAfter: Self.clipboardClearDelay)
+            Clipboard.copyConcealed(password, clearAfter: Self.clipboardClearDelay, on: pasteboard)
             show(String(localized: "Password copied — clears in 30 seconds"))
         }
 
@@ -228,8 +252,7 @@ final class ConnectionLauncher {
 enum Clipboard {
     /// Copies a secret, marked so clipboard managers skip it,
     /// and clears it later unless something else was copied in the meantime.
-    static func copyConcealed(_ string: String, clearAfter delay: Duration) {
-        let pasteboard = NSPasteboard.general
+    static func copyConcealed(_ string: String, clearAfter delay: Duration, on pasteboard: NSPasteboard = .general) {
         pasteboard.clearContents()
         pasteboard.setString(string, forType: .string)
         pasteboard.setString("", forType: NSPasteboard.PasteboardType("org.nspasteboard.ConcealedType"))

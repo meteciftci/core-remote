@@ -8,7 +8,7 @@ A simple SSH and RDP connection manager for macOS. Save your connections and ope
 
 ## Features
 
-- **SSH**: Connections open in Terminal or iTerm2, chosen in Settings. A saved password is entered for you; an SSH key file can be chosen per connection. "File Transfer" in a connection's menu opens the server in an app such as Cyberduck, Transmit or ForkLift, or with sftp in the terminal if none is installed.
+- **SSH**: Connections open in Terminal or iTerm2, chosen in Settings. A saved password is entered for you; an SSH key file can be chosen per connection. "File Transfer" in a connection's menu opens the server in an app such as Cyberduck, Transmit or ForkLift, or with sftp in the terminal if none is installed. When sudo needs the password, "Copy Password" in a connection's menu (⇧⌘C) copies it, or Settings > SSH can copy it after every connection.
 - **RDP**: The default client is [FreeRDP](https://www.freerdp.com), which receives the password directly. [Microsoft Windows App](https://apps.apple.com/app/id1295203466) can be chosen in Settings instead. Display (window size or full screen, all screens), clipboard, shared folder and sound have defaults in Settings and can be changed per connection; resizing the window updates the resolution or, for older servers, scales the picture. A shared folder works with FreeRDP only. When FreeRDP can't connect, an alert says why (account locked, wrong password, server unreachable and so on).
 - **Groups, favorites and order**: Sort connections into groups, mark the ones you use most, and search by name, host or user. Order the list by hand (drag and drop), by name or by last connection.
 - **Credential profiles**: Define a shared user name and password, such as a domain account, once in Settings > Credentials and use it for several connections. When the password changes, update it in one place. Passwords stay in the Keychain; backups include profile names and user names, not their passwords.
@@ -34,6 +34,7 @@ A simple SSH and RDP connection manager for macOS. Save your connections and ope
 - **SSH** passwords are handed over through `SSH_ASKPASS`. The password is written to a one-time file that only you can read, and the file is deleted on first read. It never appears on the command line or in shell history.
 - **FreeRDP** reads the password from standard input (`/args-from:stdin`), so it doesn't show up in the process list.
 - **Windows App** doesn't accept a password from outside. The password is copied to the clipboard and cleared after 30 seconds.
+- **Copy Password** (for sudo) keeps the password on the clipboard for 90 seconds. Copied passwords are marked as concealed (`org.nspasteboard.ConcealedType`) so clipboard managers leave them out of their history; anything you copy in the meantime is left alone.
 - **Host keys**: SSH accepts new host keys on first connection and rejects changed ones (`StrictHostKeyChecking=accept-new`). FreeRDP follows the same rule for certificates (`/cert:tofu`).
 
 ## Requirements

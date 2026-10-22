@@ -594,6 +594,17 @@
         }
       }
     },
+    "Copy Password": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Şifreyi Kopyala"
+          }
+        }
+      }
+    },
     "Copy SSH Command": {
       "extractionState": "manual",
       "localizations": {
@@ -612,6 +623,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "brew Komutunu Kopyala"
+          }
+        }
+      }
+    },
+    "Copy the password after connecting": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlandıktan sonra şifreyi panoya kopyala"
           }
         }
       }
@@ -1404,6 +1426,17 @@
         }
       }
     },
+    "No password is saved for this connection": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu bağlantı için kayıtlı şifre yok"
+          }
+        }
+      }
+    },
     "No username": {
       "extractionState": "manual",
       "localizations": {
@@ -1646,6 +1679,17 @@
         }
       }
     },
+    "Password copied — clears in 90 seconds": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Şifre kopyalandı — 90 saniye sonra silinecek"
+          }
+        }
+      }
+    },
     "Passwords are not included. The file is not encrypted.": {
       "extractionState": "manual",
       "localizations": {
@@ -1653,6 +1697,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Şifreler dahil edilmez. Dosya şifrelenmez."
+          }
+        }
+      }
+    },
+    "Paste it when sudo asks. Clipboard managers are told not to keep it, and it is cleared after 90 seconds. \"Copy Password\" in a connection's menu (⇧⌘C) copies it at any time.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "sudo şifre istediğinde yapıştırın. Pano yöneticilerine şifreyi saklamamaları bildirilir ve 90 saniye sonra panodan silinir. Bağlantının menüsündeki \"Şifreyi Kopyala\" (⇧⌘C) istediğiniz zaman kopyalar."
           }
         }
       }

@@ -7,6 +7,7 @@ import SwiftUI
 struct CoreRemoteApp: App {
     @NSApplicationDelegateAdaptor private var appDelegate: AppDelegate
     @FocusedValue(\.appActions) private var actions
+    @FocusedValue(\.selectedConnection) private var selectedConnection
     @AppStorage(MenuBarContent.visibilityKey) private var showsMenuBarIcon = true
     @State private var launcher: ConnectionLauncher
 
@@ -74,6 +75,14 @@ struct CoreRemoteApp: App {
                 Button("Import .rdp Files…") { actions?.importRDPFiles() }
                     .disabled(actions == nil)
             }
+            CommandGroup(after: .pasteboard) {
+                Divider()
+                Button("Copy Password") {
+                    if let selectedConnection { launcher.copyPassword(for: selectedConnection) }
+                }
+                .keyboardShortcut("c", modifiers: [.command, .shift])
+                .disabled(selectedConnection == nil)
+            }
         }
 
         WindowGroup(id: EditorWindow.id, for: EditorTarget.self) { $target in
@@ -130,4 +139,6 @@ struct AppActions {
 
 extension FocusedValues {
     @Entry var appActions: AppActions?
+    /// The connection selected in the main window's list, if exactly one is.
+    @Entry var selectedConnection: Connection?
 }

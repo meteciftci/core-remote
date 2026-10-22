@@ -8,7 +8,7 @@ macOS için sade bir SSH ve RDP bağlantı yöneticisi. Bağlantılarınızı ka
 
 ## Özellikler
 
-- **SSH**: Bağlantı Terminal ya da iTerm2'de açılır; hangisinin kullanılacağı Ayarlar'da seçilir. Kayıtlı şifre otomatik girilir; isteğe bağlı SSH anahtar dosyası seçilebilir. Bağlantı menüsündeki "Dosya Aktarımı" sunucuyu Cyberduck, Transmit ya da ForkLift gibi bir uygulamada, bunlar yoksa terminalde sftp ile açar.
+- **SSH**: Bağlantı Terminal ya da iTerm2'de açılır; hangisinin kullanılacağı Ayarlar'da seçilir. Kayıtlı şifre otomatik girilir; isteğe bağlı SSH anahtar dosyası seçilebilir. Bağlantı menüsündeki "Dosya Aktarımı" sunucuyu Cyberduck, Transmit ya da ForkLift gibi bir uygulamada, bunlar yoksa terminalde sftp ile açar. sudo için şifre gerekiyorsa bağlantı menüsündeki "Şifreyi Kopyala" (⇧⌘C) kullanılabilir ya da Ayarlar > SSH'den şifrenin her bağlantıdan sonra panoya kopyalanması açılabilir.
 - **RDP**: Varsayılan istemci [FreeRDP](https://www.freerdp.com)'dir ve şifreyi doğrudan alır. İsterseniz Ayarlar'dan [Microsoft Windows App](https://apps.apple.com/app/id1295203466) seçilebilir. Görüntü (pencere boyutu ya da tam ekran, tüm ekranlar), pano, paylaşılan klasör ve ses Ayarlar'da varsayılan olarak, her bağlantıda da ayrı ayrı seçilebilir; pencere boyutlandırılınca çözünürlük güncellenir ya da (eski sunucular için) görüntü ölçeklenir. Paylaşılan klasör yalnızca FreeRDP'de çalışır. FreeRDP bağlanamazsa sebebi (hesap kilitli, yanlış şifre, sunucuya ulaşılamıyor gibi) bir uyarıyla gösterilir.
 - **Gruplar, favoriler ve sıralama**: Bağlantıları gruplara ayırın, sık kullandıklarınızı favorilere ekleyin, ad, host veya kullanıcıya göre arayın. Liste elle (sürükleyip bırakarak), ada ya da son bağlantıya göre sıralanabilir.
 - **Kimlik bilgisi profilleri**: Bir domain hesabı gibi ortak kullanıcı adı ve şifreyi Ayarlar > Kimlik Bilgileri'nde bir kez tanımlayıp birden fazla bağlantıda kullanın. Şifre değişince tek yerden güncellenir. Şifreler yalnızca Anahtar Zinciri'nde durur; yedeğe profil adı ve kullanıcı adı girer, şifre girmez.
@@ -34,6 +34,7 @@ macOS için sade bir SSH ve RDP bağlantı yöneticisi. Bağlantılarınızı ka
 - **SSH** şifresi `SSH_ASKPASS` ile iletilir. Şifre, yalnızca sizin okuyabildiğiniz tek kullanımlık bir dosyaya yazılır ve ilk okumada silinir. Komut satırında veya terminal geçmişinde görünmez.
 - **FreeRDP** şifreyi standart girdiden (`/args-from:stdin`) alır, bu yüzden işlem listesinde görünmez.
 - **Windows App** dışarıdan şifre kabul etmez. Şifre panoya kopyalanır ve 30 saniye sonra silinir.
+- **Şifreyi Kopyala** (sudo için) şifreyi panoya 90 saniyeliğine koyar. Panoya kopyalanan şifreler, pano yöneticilerinin geçmişe almaması için gizli olarak işaretlenir (`org.nspasteboard.ConcealedType`); bu sürede başka bir şey kopyaladıysanız ona dokunulmaz.
 - **Sunucu anahtarları**: SSH yeni sunucu anahtarlarını ilk bağlantıda kabul eder, değişmiş anahtarları reddeder (`StrictHostKeyChecking=accept-new`). FreeRDP sertifikalarda aynı mantığı izler (`/cert:tofu`).
 
 ## Gereksinimler
