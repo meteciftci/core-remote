@@ -106,10 +106,7 @@ struct RDPOverridesStorageTests {
     }
 
     @Test func backupRoundTripsOverrides() throws {
-        let container = try ModelContainer(
-            for: Connection.self, ConnectionGroup.self,
-            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-        )
+        let container = try AppSchema.container(inMemory: true)
         let connection = Connection(name: "Win", host: "win", type: .rdp, username: "admin")
         let overrides = RDPOverrides(display: .window1920x1200, multiMonitor: false, sharedFolder: "/tmp/share", audio: .server)
         connection.rdpOverrides = overrides

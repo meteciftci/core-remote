@@ -150,7 +150,7 @@ nonisolated enum RDPFileParser {
 enum ConnectionImporter {
     /// Candidates that match an existing connection (or an earlier candidate) by host, port and user.
     static func duplicateIDs(in candidates: [ImportCandidate], existing: [Connection]) -> Set<UUID> {
-        var seen = Set(existing.map { ImportCandidate.duplicateKey(host: $0.host, port: $0.port, username: $0.username) })
+        var seen = Set(existing.map { ImportCandidate.duplicateKey(host: $0.host, port: $0.port, username: $0.effectiveUsername) })
         var duplicates = Set<UUID>()
         for candidate in candidates where !seen.insert(candidate.duplicateKey).inserted {
             duplicates.insert(candidate.id)

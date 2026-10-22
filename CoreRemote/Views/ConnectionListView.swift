@@ -25,7 +25,7 @@ struct ConnectionListView: View {
         let query = searchText.trimmingCharacters(in: .whitespaces)
         return filter.filter(allConnections).filter { connection in
             guard !query.isEmpty else { return true }
-            let fields = [connection.name, connection.host, connection.username, connection.group?.name ?? "", connection.notes]
+            let fields = [connection.name, connection.host, connection.effectiveUsername, connection.group?.name ?? "", connection.notes]
             return (fields + connection.tags).contains { $0.localizedStandardContains(query) }
         }
     }
@@ -178,6 +178,7 @@ struct ConnectionListView: View {
             group: connection.group
         )
         copy.rdpOverrides = connection.rdpOverrides
+        copy.credentialProfile = connection.credentialProfile
         modelContext.insert(copy)
         let store = KeychainPasswordStore.shared
         if let password = store.password(for: connection.id) {

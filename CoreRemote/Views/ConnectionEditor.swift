@@ -10,6 +10,11 @@ struct ConnectionEditor: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Query(sort: \ConnectionGroup.name) private var groups: [ConnectionGroup]
+    @Query(sort: \CredentialProfile.name) private var profiles: [CredentialProfile]
+
+    private var selectedProfile: CredentialProfile? {
+        draft.credentialProfileID.flatMap { id in profiles.first { $0.id == id } }
+    }
 
     @State private var draft = ConnectionDraft()
     @State private var errorMessage: String?
@@ -79,12 +84,28 @@ struct ConnectionEditor: View {
                 }
 
                 Section {
-                    TextField("Username", text: $draft.username, prompt: Text("Required"))
-                        .textContentType(.username)
-                        .autocorrectionDisabled()
-                    SecureField("Password", text: $draft.password, prompt: Text("Optional"))
-                        .textContentType(.password)
-                    if draft.type == .ssh {
+                    Picker("Credentials", selection: $draft.credentialProfileID) {
+                        Text("This connection only").tag(UUID?.none)
+                        if !profiles.isEmpty { Divider() }
+                        ForEach(profiles) { profile in
+                            Text(verbatim: profile.name).tag(UUID?.some(profile.id))
+                        }
+                    }
+                    if let profile = selectedProfile {
+                        LabeledContent("Username", value: profile.username)
+                        if draft.type == .ssh, let key = profile.keyFilePath {
+                            LabeledContent("Key File", value: (key as NSString).abbreviatingWithTildeInPath)
+                        }
+                    } else {
+                        TextField("Username", text: $draft.username, prompt: Text("Required"))
+                            .textContentType(.username)
+                            .autocorrectionDisabled()
+                        SecureField("Password", text: $draft.password, prompt: Text("Optional"))
+                            .textContentType(.password)
+                    }
+                    if draft.type == .rdp {
+                        Toggle("Ignore certificate warnings", isOn: $draft.ignoreCertificateErrors)
+                    } else if selectedProfile == nil {
                         LabeledContent("Key File") {
                             HStack {
                                 Text(draft.keyFilePath.isEmpty ? String(localized: "None") : (draft.keyFilePath as NSString).abbreviatingWithTildeInPath)
@@ -99,13 +120,13 @@ struct ConnectionEditor: View {
                                 Button("Choose…", action: chooseKeyFile)
                             }
                         }
-                    } else {
-                        Toggle("Ignore certificate warnings", isOn: $draft.ignoreCertificateErrors)
                     }
                 } header: {
                     Text("Authentication")
                 } footer: {
-                    Text(draft.type == .ssh
+                    Text(selectedProfile != nil
+                         ? "The profile's user name and password are used. Change them in Settings > Credentials."
+                         : draft.type == .ssh
                          ? "The password is kept in your Keychain and entered for you when ssh asks."
                          : RDPClient.current == .freeRDP
                          ? "The password is kept in your Keychain and passed to FreeRDP when you connect."
@@ -220,12 +241,12 @@ struct ConnectionEditor: View {
         guard draft.isValid else { return }
         let target = connection ?? Connection(name: "", host: "", type: draft.type, username: "")
         do {
-            try KeychainPasswordStore.shared.setPassword(draft.password, for: target.id)
+            try KeychainPasswordStore.shared.setPassword(draft.ownPassword, for: target.id)
         } catch {
             errorMessage = error.localizedDescription
             return
         }
-        draft.apply(to: target, group: groups.first { $0.id == draft.groupID })
+        draft.apply(to: target, group: groups.first { $0.id == draft.groupID }, profile: selectedProfile)
         if connection == nil {
             modelContext.insert(target)
         }

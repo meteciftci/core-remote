@@ -30,11 +30,23 @@ nonisolated struct BackupPayload: Codable, Equatable, Sendable {
         var tags: [String]?
         var isFavorite: Bool
         var group: String?
+        /// The `Profile` this connection logs in with.
+        var credentialProfile: UUID?
         var password: String?
+    }
+
+    /// A credential profile without its password, which stays in the Keychain.
+    struct Profile: Codable, Equatable, Sendable {
+        var id: UUID
+        var name: String
+        var username: String
+        var keyFilePath: String?
     }
 
     var groups: [String]
     var connections: [Item]
+    /// Missing in files from before profiles existed.
+    var profiles: [Profile]? = nil
 
     var hasPasswords: Bool { connections.contains { $0.password != nil } }
 }
@@ -174,7 +186,11 @@ enum BackupStore {
         includePasswords: Bool,
         passwords: PasswordStore
     ) -> BackupPayload {
-        BackupPayload(
+        let profiles = Dictionary(
+            connections.compactMap(\.credentialProfile).map { ($0.id, $0) },
+            uniquingKeysWith: { first, _ in first }
+        ).values.sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
+        return BackupPayload(
             groups: groups.map(\.name).sorted(),
             connections: connections.map { connection in
                 BackupPayload.Item(
@@ -195,8 +211,12 @@ enum BackupStore {
                     tags: connection.tags.isEmpty ? nil : connection.tags,
                     isFavorite: connection.isFavorite,
                     group: connection.group?.name,
+                    credentialProfile: connection.credentialProfile?.id,
                     password: includePasswords ? passwords.password(for: connection.id) : nil
                 )
+            },
+            profiles: profiles.isEmpty ? nil : profiles.map {
+                BackupPayload.Profile(id: $0.id, name: $0.name, username: $0.username, keyFilePath: $0.keyFilePath)
             }
         )
     }
@@ -223,6 +243,17 @@ enum BackupStore {
 
         for name in payload.groups {
             _ = group(named: name)
+        }
+
+        // Profiles are matched by ID; one that's already here keeps its current values.
+        var profilesByID: [UUID: CredentialProfile] = [:]
+        for profile in try context.fetch(FetchDescriptor<CredentialProfile>()) {
+            profilesByID[profile.id] = profile
+        }
+        for item in payload.profiles ?? [] where profilesByID[item.id] == nil {
+            let profile = CredentialProfile(id: item.id, name: item.name, username: item.username, keyFilePath: item.keyFilePath)
+            context.insert(profile)
+            profilesByID[item.id] = profile
         }
 
         for item in payload.connections {
@@ -253,6 +284,7 @@ enum BackupStore {
                     audio: item.rdpAudio.flatMap(RDPAudio.init(rawValue:))
                 )
             }
+            connection.credentialProfile = item.credentialProfile.flatMap { profilesByID[$0] }
             context.insert(connection)
             if let password = item.password {
                 try passwords.setPassword(password, for: item.id)

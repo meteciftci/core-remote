@@ -22,6 +22,9 @@ final class Connection {
     /// When the connection was last opened; `nil` if never (or after clearing history).
     var lastConnectedAt: Date?
     var group: ConnectionGroup?
+    /// When set, the profile's user name, password and key file are used instead of this
+    /// connection's own.
+    var credentialProfile: CredentialProfile?
 
     // RDP only; `nil` uses the default from Settings. See `RDPOverrides`.
     var rdpDisplayRaw: String?
@@ -84,9 +87,25 @@ final class Connection {
         }
     }
 
+    /// The user name a session logs in with: the profile's, or the connection's own.
+    var effectiveUsername: String {
+        credentialProfile?.username ?? username
+    }
+
+    var effectiveKeyFilePath: String? {
+        guard type == .ssh else { return nil }
+        if let profile = credentialProfile { return profile.keyFilePath }
+        return keyFilePath
+    }
+
+    /// The Keychain entry holding the password: the profile's, or the connection's own.
+    var passwordID: UUID {
+        credentialProfile?.id ?? id
+    }
+
     /// `user@host:port`, shown under the name in lists.
     var summary: String {
-        "\(username)@\(host):\(port)"
+        "\(effectiveUsername)@\(host):\(port)"
     }
 
     var target: ConnectionTarget {
@@ -96,8 +115,9 @@ final class Connection {
             host: host,
             type: type,
             port: port,
-            username: username,
-            keyFilePath: keyFilePath,
+            username: effectiveUsername,
+            keyFilePath: effectiveKeyFilePath,
+            passwordID: passwordID,
             ignoreCertificateErrors: ignoreCertificateErrors,
             rdp: type == .rdp ? RDPDefaults.load().applying(rdpOverrides) : RDPOptions()
         )
@@ -124,6 +144,10 @@ nonisolated struct ConnectionTarget: Equatable, Sendable {
     var port: Int
     var username: String
     var keyFilePath: String?
+    /// Where the password is kept; `nil` means under `id`.
+    var passwordID: UUID?
     var ignoreCertificateErrors = false
     var rdp = RDPOptions()
+
+    var keychainID: UUID { passwordID ?? id }
 }

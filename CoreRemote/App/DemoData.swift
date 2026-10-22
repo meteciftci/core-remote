@@ -43,10 +43,7 @@ enum DemoData {
     }
 
     static func makeContainer() throws -> ModelContainer {
-        let container = try ModelContainer(
-            for: Connection.self, ConnectionGroup.self,
-            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-        )
+        let container = try AppSchema.container(inMemory: true)
         insert(into: container.mainContext)
         return container
     }
@@ -72,6 +69,11 @@ enum DemoData {
             Connection(name: "Raspberry Pi", host: "raspberrypi.local", type: .ssh, username: "pi"),
         ]
         connections.forEach(context.insert)
+
+        let domainAdmin = CredentialProfile(name: "Domain Admin", username: "EXAMPLE\\admin")
+        context.insert(domainAdmin)
+        context.insert(CredentialProfile(name: "Linux Deploy", username: "deploy", keyFilePath: "~/.ssh/id_ed25519"))
+        connections[2].credentialProfile = domainAdmin
         connections[0].lastConnectedAt = .now.addingTimeInterval(-5 * 60)
         connections[2].lastConnectedAt = .now.addingTimeInterval(-2 * 3600)
         connections[3].lastConnectedAt = .now.addingTimeInterval(-26 * 3600)

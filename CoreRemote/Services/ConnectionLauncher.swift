@@ -88,7 +88,7 @@ final class ConnectionLauncher {
         guard let link = SFTPLink.url(for: target) else {
             throw LaunchError.scriptFailed(String(localized: "The host name can't be used in a link."))
         }
-        if let password = passwords.password(for: target.id) {
+        if let password = passwords.password(for: target.keychainID) {
             Clipboard.copyConcealed(password, clearAfter: Self.clipboardClearDelay)
             show(String(localized: "Password copied — clears in 30 seconds"))
         }
@@ -104,7 +104,7 @@ final class ConnectionLauncher {
         }
 
         var askpass: AskpassEnvironment?
-        if let password = passwords.password(for: target.id) {
+        if let password = passwords.password(for: target.keychainID) {
             let helper = try AskpassHelper.install()
             let passwordFile = try LaunchFiles.write(password, named: "\(UUID().uuidString).pass")
             // The helper deletes it on first use; this covers logins that never ask (e.g. key auth).
@@ -153,7 +153,7 @@ final class ConnectionLauncher {
         )
         LaunchFiles.remove(fileURL, after: .seconds(120))
 
-        if let password = passwords.password(for: target.id) {
+        if let password = passwords.password(for: target.keychainID) {
             Clipboard.copyConcealed(password, clearAfter: Self.clipboardClearDelay)
             show(String(localized: "Password copied — clears in 30 seconds"))
         }
@@ -199,7 +199,7 @@ final class ConnectionLauncher {
         }
 
         try process.run()
-        let arguments = FreeRDP.arguments(for: target, password: passwords.password(for: target.id))
+        let arguments = FreeRDP.arguments(for: target, password: passwords.password(for: target.keychainID))
         input.fileHandleForWriting.write(Data((arguments.joined(separator: "\n") + "\n").utf8))
         try? input.fileHandleForWriting.close()
         try? log.close()

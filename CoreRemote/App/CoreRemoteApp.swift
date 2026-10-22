@@ -34,7 +34,7 @@ struct CoreRemoteApp: App {
                 return try DemoData.makeContainer()
             }
             #endif
-            return try ModelContainer(for: Connection.self, ConnectionGroup.self)
+            return try AppSchema.container()
         } catch {
             fatalError("Could not open the connection store: \(error)")
         }

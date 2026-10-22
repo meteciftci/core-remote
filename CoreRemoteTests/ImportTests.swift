@@ -115,10 +115,7 @@ struct ConnectionImporterTests {
     }
 
     @Test func addsConnectionsToGroup() throws {
-        let container = try ModelContainer(
-            for: Connection.self, ConnectionGroup.self,
-            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-        )
+        let container = try AppSchema.container(inMemory: true)
         let context = ModelContext(container)
         let group = ConnectionGroup(name: "Imported")
         context.insert(group)
