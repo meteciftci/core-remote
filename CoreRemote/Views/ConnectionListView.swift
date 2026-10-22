@@ -77,7 +77,7 @@ struct ConnectionListView: View {
                         Button("Import from SSH Config…", systemImage: "terminal", action: onImportSSHConfig)
                         Button("Import .rdp Files…", systemImage: "display", action: onImportRDPFiles)
                     } label: {
-                        Label("Backup", systemImage: "arrow.up.arrow.down.circle")
+                        Label("Backup", systemImage: "archivebox")
                     }
                     .help("Import or export connections")
                 }
