@@ -374,6 +374,17 @@
         }
       }
     },
+    "Change resolution": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çözünürlüğü değiştir"
+          }
+        }
+      }
+    },
     "Checking…": {
       "extractionState": "manual",
       "localizations": {
@@ -799,13 +810,13 @@
         }
       }
     },
-    "Each RDP connection can change these in its editor. All screens needs full screen. A shared folder appears as a drive on the server and works with FreeRDP only.": {
+    "Each RDP connection can change these in its editor. Changing the resolution needs Windows 8.1 or Server 2012 R2 or later; if the window doesn't resize, choose Scale picture. All screens needs full screen. A shared folder appears as a drive on the server and works with FreeRDP only.": {
       "extractionState": "manual",
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Her RDP bağlantısı bunları kendi düzenleme penceresinde değiştirebilir. Tüm ekranlar yalnızca tam ekranda kullanılır. Paylaşılan klasör sunucuda bir sürücü olarak görünür ve yalnızca FreeRDP’de çalışır."
+            "value": "Her RDP bağlantısı bunları kendi düzenleme penceresinde değiştirebilir. Çözünürlüğü değiştirmek Windows 8.1 ya da Server 2012 R2 ve sonrasını gerektirir; pencere boyutlanmıyorsa Görüntüyü ölçekle’yi seçin. Tüm ekranlar yalnızca tam ekranda kullanılır. Paylaşılan klasör sunucuda bir sürücü olarak görünür ve yalnızca FreeRDP’de çalışır."
           }
         }
       }
@@ -938,6 +949,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "FreeRDP kayıtlı şifreyi doğrudan alır ve Windows App’in onay pencerelerini göstermez."
+          }
+        }
+      }
+    },
+    "FreeRDP stopped with %@. The full log is in ~/Library/Logs/CoreRemote/freerdp-last-error.log.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "FreeRDP %@ hatasıyla durdu. Kaydın tamamı ~/Library/Logs/CoreRemote/freerdp-last-error.log dosyasında."
           }
         }
       }
@@ -1910,6 +1932,17 @@
         }
       }
     },
+    "Scale picture": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Görüntüyü ölçekle"
+          }
+        }
+      }
+    },
     "Search a connection's name in Spotlight to connect. In the Shortcuts app, add CoreRemote's \"Connect\" action to a new shortcut and pick a connection.": {
       "extractionState": "manual",
       "localizations": {
@@ -2152,6 +2185,28 @@
         }
       }
     },
+    "The account is disabled or has expired.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hesap devre dışı ya da süresi dolmuş."
+          }
+        }
+      }
+    },
+    "The account is locked, usually after too many wrong passwords. Wait for it to unlock or ask an administrator, and check that the saved password is current.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hesap kilitli; bu genellikle çok sayıda yanlış şifre denemesinden sonra olur. Kilidin açılmasını bekleyin ya da bir yöneticiye başvurun ve kayıtlı şifrenin güncel olduğunu kontrol edin."
+          }
+        }
+      }
+    },
     "The file is encrypted with your passphrase. Without it the backup can't be opened.": {
       "extractionState": "manual",
       "localizations": {
@@ -2181,6 +2236,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Parola hatalı."
+          }
+        }
+      }
+    },
+    "The password has expired. Change it on the server, then save the new one in CoreRemote.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Şifrenin süresi dolmuş. Sunucuda değiştirin, ardından yeni şifreyi CoreRemote’a kaydedin."
           }
         }
       }
@@ -2247,6 +2313,72 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kayıtlı şifre ikisinde de otomatik girilir. İlk iTerm2 bağlantısında iTerm2’yi denetleme izni bir kez sorulur. iTerm2 kaldırılırsa bağlantılar Terminal’de açılır."
+          }
+        }
+      }
+    },
+    "The server and FreeRDP couldn't agree on a secure connection.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunucu ile FreeRDP güvenli bir bağlantı üzerinde anlaşamadı."
+          }
+        }
+      }
+    },
+    "The server couldn't be reached. Check the host, port and your network or VPN.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunucuya ulaşılamadı. Host’u, portu ve ağ ya da VPN bağlantınızı kontrol edin."
+          }
+        }
+      }
+    },
+    "The server name couldn't be found. Check the host and your network or VPN.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunucu adı bulunamadı. Host’u ve ağ ya da VPN bağlantınızı kontrol edin."
+          }
+        }
+      }
+    },
+    "The server's certificate has changed since the last connection. If that's expected, delete its entry in ~/.config/freerdp/server and connect again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunucunun sertifikası son bağlantıdan bu yana değişmiş. Bu beklenen bir değişiklikse ~/.config/freerdp/server içindeki kaydını silip yeniden bağlanın."
+          }
+        }
+      }
+    },
+    "The user name or password is wrong. Check them in the connection or its credential profile.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kullanıcı adı ya da şifre yanlış. Bağlantıda ya da kullandığı kimlik bilgisi profilinde kontrol edin."
+          }
+        }
+      }
+    },
+    "This account isn't allowed to sign in over Remote Desktop.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu hesabın Uzak Masaüstü ile oturum açma izni yok."
           }
         }
       }
@@ -2368,6 +2500,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kullanıcı adı"
+          }
+        }
+      }
+    },
+    "When resized": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boyutlanınca"
           }
         }
       }

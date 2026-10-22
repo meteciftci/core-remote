@@ -191,11 +191,18 @@ final class ConnectionLauncher {
         // FreeRDP reports connection problems in its own window, so the log is only kept when it
         // fails, as ~/Library/Logs/CoreRemote/freerdp-last-error.log. The password goes through
         // stdin and isn't in it.
-        process.terminationHandler = { process in
+        process.terminationHandler = { [weak self] process in
+            var failure: FreeRDPFailure?
             if process.terminationStatus != 0 {
                 FreeRDP.keepFailureLog(logURL)
+                failure = (try? String(contentsOf: logURL, encoding: .utf8)).flatMap(FreeRDPFailure.parse(log:))
             }
             try? FileManager.default.removeItem(at: logURL)
+            guard let failure else { return }
+            Task { @MainActor in
+                guard let self else { return }
+                LaunchProblemAlert.run(.failed(name: target.name, message: failure.message), launcher: self)
+            }
         }
 
         try process.run()

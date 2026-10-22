@@ -31,6 +31,23 @@ nonisolated enum RDPDisplay: String, CaseIterable, Identifiable, Sendable {
     }
 }
 
+/// What resizing an RDP window does.
+nonisolated enum RDPResize: String, CaseIterable, Identifiable, Sendable {
+    /// The server changes the desktop to the new size. Needs Windows 8.1 / Server 2012 R2 or later.
+    case resolution
+    /// The picture is stretched to the window; works with any server.
+    case scale
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .resolution: String(localized: "Change resolution")
+        case .scale: String(localized: "Scale picture")
+        }
+    }
+}
+
 /// Where an RDP session's sound plays.
 nonisolated enum RDPAudio: String, CaseIterable, Identifiable, Sendable {
     case mac
@@ -51,6 +68,7 @@ nonisolated enum RDPAudio: String, CaseIterable, Identifiable, Sendable {
 /// The RDP settings a session opens with.
 nonisolated struct RDPOptions: Equatable, Sendable {
     var display = RDPDisplay.window1280x800
+    var resize = RDPResize.resolution
     /// All screens; only used in full screen.
     var multiMonitor = false
     var clipboard = true
@@ -63,6 +81,7 @@ nonisolated struct RDPOptions: Equatable, Sendable {
     func applying(_ overrides: RDPOverrides) -> RDPOptions {
         var options = self
         if let display = overrides.display { options.display = display }
+        if let resize = overrides.resize { options.resize = resize }
         if let multiMonitor = overrides.multiMonitor { options.multiMonitor = multiMonitor }
         if let clipboard = overrides.clipboard { options.clipboard = clipboard }
         if let sharedFolder = overrides.sharedFolder { options.sharedFolder = sharedFolder.isEmpty ? nil : sharedFolder }
@@ -74,6 +93,7 @@ nonisolated struct RDPOptions: Equatable, Sendable {
 /// One connection's own RDP settings. `nil` uses the default from Settings.
 nonisolated struct RDPOverrides: Equatable, Sendable {
     var display: RDPDisplay?
+    var resize: RDPResize?
     var multiMonitor: Bool?
     var clipboard: Bool?
     /// `""` shares no folder even when Settings has a default one.
@@ -86,6 +106,7 @@ nonisolated struct RDPOverrides: Equatable, Sendable {
 /// The defaults from Settings, kept in `UserDefaults`.
 nonisolated enum RDPDefaults {
     static let displayKey = "rdpDisplay"
+    static let resizeKey = "rdpResize"
     static let multiMonitorKey = "rdpMultiMonitor"
     static let clipboardKey = "rdpClipboard"
     static let sharedFolderKey = "rdpSharedFolder"
@@ -96,6 +117,7 @@ nonisolated enum RDPDefaults {
         let folder = defaults.string(forKey: sharedFolderKey) ?? ""
         return RDPOptions(
             display: defaults.string(forKey: displayKey).flatMap(RDPDisplay.init(rawValue:)) ?? standard.display,
+            resize: defaults.string(forKey: resizeKey).flatMap(RDPResize.init(rawValue:)) ?? standard.resize,
             multiMonitor: defaults.object(forKey: multiMonitorKey) as? Bool ?? standard.multiMonitor,
             clipboard: defaults.object(forKey: clipboardKey) as? Bool ?? standard.clipboard,
             sharedFolder: folder.isEmpty ? nil : folder,

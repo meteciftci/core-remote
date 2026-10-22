@@ -108,7 +108,7 @@ struct RDPOverridesStorageTests {
     @Test func backupRoundTripsOverrides() throws {
         let container = try AppSchema.container(inMemory: true)
         let connection = Connection(name: "Win", host: "win", type: .rdp, username: "admin")
-        let overrides = RDPOverrides(display: .window1920x1200, multiMonitor: false, sharedFolder: "/tmp/share", audio: .server)
+        let overrides = RDPOverrides(display: .window1920x1200, resize: .scale, multiMonitor: false, sharedFolder: "/tmp/share", audio: .server)
         connection.rdpOverrides = overrides
         let payload = BackupStore.payload(connections: [connection], groups: [], includePasswords: false, passwords: InMemoryPasswordStore())
 
@@ -116,5 +116,45 @@ struct RDPOverridesStorageTests {
         _ = try BackupStore.importPayload(payload, into: context, passwords: InMemoryPasswordStore())
         let imported = try #require(try context.fetch(FetchDescriptor<Connection>()).first)
         #expect(imported.rdpOverrides == overrides)
+    }
+}
+
+struct RDPResizeTests {
+    @Test func scaleUsesSmartSizingInsteadOfDynamicResolution() {
+        let args = FreeRDP.arguments(for: rdpTarget(RDPOptions(resize: .scale)), password: nil)
+        #expect(args.contains("+smart-sizing"))
+        #expect(!args.contains("+dynamic-resolution"))
+
+        let contents = RDPFile.contents(for: rdpTarget(RDPOptions(resize: .scale)))
+        #expect(contents.contains("smart sizing:i:1\r\n"))
+        #expect(contents.contains("dynamic resolution:i:0\r\n"))
+    }
+
+    @Test func overrideWins() {
+        #expect(RDPOptions().applying(RDPOverrides(resize: .scale)).resize == .scale)
+    }
+}
+
+struct FreeRDPFailureTests {
+    @Test func readsTheLastConnectionError() {
+        let log = """
+            [WARN][com.freerdp.crypto] - [verify_cb]: Certificate verification failure 'self-signed certificate (18)'
+            [ERROR][com.freerdp.core] - [nla_recv_pdu]: ERRCONNECT_ACCOUNT_LOCKED_OUT [0x00020018]
+            [ERROR][com.freerdp.client.SDL] - [handleShow]: ERRCONNECT_ACCOUNT_LOCKED_OUT [0x00020018]
+            """
+        #expect(FreeRDPFailure.parse(log: log) == .accountLocked)
+        #expect(FreeRDPFailure.parse(log: "x ERRCONNECT_DNS_NAME_NOT_FOUND y") == .hostNotFound)
+        #expect(FreeRDPFailure.parse(log: "ERRCONNECT_CONNECT_FAILED [0x00020006]") == .unreachable)
+        #expect(FreeRDPFailure.parse(log: "ERRCONNECT_LOGON_FAILURE") == .wrongCredentials)
+        #expect(FreeRDPFailure.parse(log: "ERRCONNECT_TARGET_BOOTING") == .other("ERRCONNECT_TARGET_BOOTING"))
+    }
+
+    @Test func ignoresCancelledAndCleanLogs() {
+        #expect(FreeRDPFailure.parse(log: "ERRCONNECT_CONNECT_CANCELLED") == nil)
+        #expect(FreeRDPFailure.parse(log: "[WARN] nothing to see") == nil)
+    }
+
+    @Test func detectsChangedCertificates() {
+        #expect(FreeRDPFailure.parse(log: "!!!Certificate for dc:3389 (RDP-Server) has changed!!!") == .certificateChanged)
     }
 }

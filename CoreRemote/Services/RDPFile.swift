@@ -11,7 +11,8 @@ nonisolated enum RDPFile {
             "screen mode id:i:\(options.display == .fullScreen ? 2 : 1)",
             // On by default, and it overrides the screen mode.
             "use multimon:i:\(options.usesAllScreens ? 1 : 0)",
-            "dynamic resolution:i:1",
+            "dynamic resolution:i:\(options.resize == .resolution ? 1 : 0)",
+            "smart sizing:i:\(options.resize == .scale ? 1 : 0)",
             "session bpp:i:32",
             "redirectclipboard:i:\(options.clipboard ? 1 : 0)",
             "audiomode:i:\(options.audio.rdpFileValue)",

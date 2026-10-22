@@ -22,6 +22,7 @@ nonisolated struct BackupPayload: Codable, Equatable, Sendable {
         var ignoreCertificateErrors: Bool?
         /// RDP settings of this connection; missing means the defaults from Settings.
         var rdpDisplay: String?
+        var rdpResize: String?
         var rdpMultiMonitor: Bool?
         var rdpClipboard: Bool?
         var rdpSharedFolder: String?
@@ -203,6 +204,7 @@ enum BackupStore {
                     keyFilePath: connection.keyFilePath,
                     ignoreCertificateErrors: connection.ignoreCertificateErrors,
                     rdpDisplay: connection.rdpDisplayRaw,
+                    rdpResize: connection.rdpResizeRaw,
                     rdpMultiMonitor: connection.rdpMultiMonitor,
                     rdpClipboard: connection.rdpClipboard,
                     rdpSharedFolder: connection.rdpSharedFolder,
@@ -279,6 +281,7 @@ enum BackupStore {
             if item.type == .rdp {
                 connection.rdpOverrides = RDPOverrides(
                     display: item.rdpDisplay.flatMap(RDPDisplay.init(rawValue:)),
+                    resize: item.rdpResize.flatMap(RDPResize.init(rawValue:)),
                     multiMonitor: item.rdpMultiMonitor,
                     clipboard: item.rdpClipboard,
                     sharedFolder: item.rdpSharedFolder,
