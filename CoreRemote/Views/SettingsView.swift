@@ -22,6 +22,13 @@ struct SettingsView: View {
     private var hasHistory: Bool { !recentConnections.isEmpty }
 
     var body: some View {
+        TabView {
+            Tab("General", systemImage: "gearshape") { general }
+            Tab("Credentials", systemImage: "person.badge.key") { CredentialsSettings() }
+        }
+    }
+
+    private var general: some View {
         Form {
             Section {
                 Picker("SSH terminal", selection: $terminalApp) {

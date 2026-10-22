@@ -9,6 +9,8 @@ struct ConnectionDraft: Equatable {
     var username = ""
     var password = ""
     var keyFilePath = ""
+    /// A shared profile replaces the user name, password and key file below.
+    var credentialProfileID: UUID?
     var ignoreCertificateErrors = false
     var rdp = RDPOverrides()
     var notes = ""
@@ -27,6 +29,7 @@ struct ConnectionDraft: Equatable {
         username = connection.username
         self.password = password ?? ""
         keyFilePath = connection.keyFilePath ?? ""
+        credentialProfileID = connection.credentialProfile?.id
         ignoreCertificateErrors = connection.ignoreCertificateErrors
         rdp = connection.rdpOverrides
         notes = connection.notes
@@ -62,11 +65,16 @@ struct ConnectionDraft: Equatable {
         !trimmedHost.isEmpty && !trimmedHost.contains(where: \.isWhitespace)
     }
 
+    var usesProfile: Bool { credentialProfileID != nil }
+
     var isValid: Bool {
-        !trimmedName.isEmpty && isHostValid && !trimmedUsername.isEmpty && isPortValid
+        !trimmedName.isEmpty && isHostValid && (usesProfile || !trimmedUsername.isEmpty) && isPortValid
     }
 
-    func apply(to connection: Connection, group: ConnectionGroup?) {
+    /// The password to keep under the connection's own Keychain entry; none with a profile.
+    var ownPassword: String? { usesProfile ? nil : password }
+
+    func apply(to connection: Connection, group: ConnectionGroup?, profile: CredentialProfile? = nil) {
         connection.name = trimmedName
         connection.host = trimmedHost
         connection.type = type
@@ -79,5 +87,6 @@ struct ConnectionDraft: Equatable {
         connection.tags = Tags.normalize(tagsText)
         connection.isFavorite = isFavorite
         connection.group = group
+        connection.credentialProfile = profile
     }
 }

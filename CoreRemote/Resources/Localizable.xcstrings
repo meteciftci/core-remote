@@ -176,6 +176,17 @@
         }
       }
     },
+    "%lld connections use it. They keep its user name, but their password has to be entered again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu profili %lld bağlantı kullanıyor. Bağlantılar kullanıcı adını korur, ancak şifrelerinin yeniden girilmesi gerekir."
+          }
+        }
+      }
+    },
     "192.168.1.10 or server.example.com": {
       "extractionState": "manual",
       "localizations": {
@@ -183,6 +194,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "192.168.1.10 veya sunucu.ornek.com"
+          }
+        }
+      }
+    },
+    "A profile keeps one user name and password, such as a domain account, for several connections. Change the password here once and every connection uses the new one.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profil, örneğin bir domain hesabı gibi tek bir kullanıcı adı ve şifreyi birden fazla bağlantı için saklar. Şifreyi burada bir kez değiştirin, tüm bağlantılar yenisini kullanır."
           }
         }
       }
@@ -205,6 +227,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bağlantı Ekle"
+          }
+        }
+      }
+    },
+    "Add Profile": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profil Ekle"
           }
         }
       }
@@ -605,6 +638,17 @@
         }
       }
     },
+    "Couldn't Delete the Profile": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profil Silinemedi"
+          }
+        }
+      }
+    },
     "Couldn't connect to “%@”": {
       "extractionState": "manual",
       "localizations": {
@@ -612,6 +656,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "“%@” bağlantısı kurulamadı"
+          }
+        }
+      }
+    },
+    "Credentials": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kimlik Bilgileri"
           }
         }
       }
@@ -678,6 +733,17 @@
         }
       }
     },
+    "Delete Profile": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profili Sil"
+          }
+        }
+      }
+    },
     "Delete “%@”?": {
       "extractionState": "manual",
       "localizations": {
@@ -707,6 +773,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Görüntü"
+          }
+        }
+      }
+    },
+    "Domain account": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Domain hesabı"
           }
         }
       }
@@ -872,6 +949,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tam Ekran"
+          }
+        }
+      }
+    },
+    "General": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Genel"
           }
         }
       }
@@ -1224,6 +1312,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Eşleşme Yok"
+          }
+        }
+      }
+    },
+    "No Profiles": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profil Yok"
           }
         }
       }
@@ -2031,6 +2130,28 @@
         }
       }
     },
+    "The password is kept in your Keychain. The key file is used by SSH connections only.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Şifre Anahtar Zinciri’nde saklanır. Anahtar dosyası yalnızca SSH bağlantılarında kullanılır."
+          }
+        }
+      }
+    },
+    "The profile's user name and password are used. Change them in Settings > Credentials.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profilin kullanıcı adı ve şifresi kullanılır. Bunları Ayarlar > Kimlik Bilgileri’nden değiştirin."
+          }
+        }
+      }
+    },
     "The saved password is entered automatically in both. The first iTerm2 connection asks once for permission to control iTerm2. If iTerm2 is removed, connections open in Terminal.": {
       "extractionState": "manual",
       "localizations": {
@@ -2071,6 +2192,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bu bağlantı artık yok."
+          }
+        }
+      }
+    },
+    "This connection only": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yalnızca bu bağlantı"
           }
         }
       }

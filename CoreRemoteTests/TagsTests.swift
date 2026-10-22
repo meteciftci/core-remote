@@ -43,10 +43,7 @@ struct TagsTests {
     }
 
     @Test func backupKeepsNotesAndTags() throws {
-        let container = try ModelContainer(
-            for: Connection.self, ConnectionGroup.self,
-            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-        )
+        let container = try AppSchema.container(inMemory: true)
         let connection = Connection(name: "A", host: "a", type: .ssh, username: "u", notes: "n", tags: ["x", "y"])
         let payload = BackupStore.payload(connections: [connection], groups: [], includePasswords: false, passwords: InMemoryPasswordStore())
         let decoded = try Backup.decode(try Backup.encode(payload, passphrase: nil), passphrase: nil)

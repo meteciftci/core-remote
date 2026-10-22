@@ -6,10 +6,7 @@ import Testing
 @MainActor
 struct IntentTests {
     private func makeContext() throws -> ModelContext {
-        let container = try ModelContainer(
-            for: Connection.self, ConnectionGroup.self,
-            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-        )
+        let container = try AppSchema.container(inMemory: true)
         return ModelContext(container)
     }
 

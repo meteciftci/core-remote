@@ -33,7 +33,7 @@ enum QuickConnectSearch {
             return 1
         }
         if name.localizedStandardContains(query) { return 2 }
-        let others = [connection.host, connection.username, connection.group?.name ?? "", connection.notes] + connection.tags
+        let others = [connection.host, connection.effectiveUsername, connection.group?.name ?? "", connection.notes] + connection.tags
         if others.contains(where: { $0.localizedStandardContains(query) }) { return 3 }
         return nil
     }
