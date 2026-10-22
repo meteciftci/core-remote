@@ -248,6 +248,7 @@ struct ConnectionEditor: View {
         }
         draft.apply(to: target, group: groups.first { $0.id == draft.groupID }, profile: selectedProfile)
         if connection == nil {
+            target.sortIndex = ConnectionOrder.nextIndex(in: modelContext)
             modelContext.insert(target)
         }
         try? modelContext.save()

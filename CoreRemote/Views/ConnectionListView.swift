@@ -20,10 +20,21 @@ struct ConnectionListView: View {
     @State private var selection = Set<UUID>()
     @State private var searchText = ""
     @State private var pendingDeletion: [Connection] = []
+    @AppStorage(ConnectionSort.storageKey) private var sort = ConnectionSort.manual
+
+    /// Recent keeps its own newest-first order.
+    private var sorted: [Connection] {
+        filter == .recent ? allConnections : ConnectionOrder.sorted(allConnections, by: sort)
+    }
+
+    /// Rows can be dragged in the manual order, unless a search or Recent decides the order.
+    private var canReorder: Bool {
+        sort == .manual && filter != .recent && searchText.trimmingCharacters(in: .whitespaces).isEmpty
+    }
 
     private var connections: [Connection] {
         let query = searchText.trimmingCharacters(in: .whitespaces)
-        return filter.filter(allConnections).filter { connection in
+        return filter.filter(sorted).filter { connection in
             guard !query.isEmpty else { return true }
             let fields = [connection.name, connection.host, connection.effectiveUsername, connection.group?.name ?? "", connection.notes]
             return (fields + connection.tags).contains { $0.localizedStandardContains(query) }
@@ -45,6 +56,17 @@ struct ConnectionListView: View {
                         Label("Settings", systemImage: "gearshape")
                     }
                     .help("Settings (⌘,)")
+                }
+                ToolbarItem(placement: .primaryAction) {
+                    Menu {
+                        Picker("Sort By", selection: $sort) {
+                            ForEach(ConnectionSort.allCases) { Text(verbatim: $0.title).tag($0) }
+                        }
+                        .pickerStyle(.inline)
+                    } label: {
+                        Label("Sort", systemImage: "arrow.up.arrow.down")
+                    }
+                    .help(sort == .manual ? String(localized: "Sort: Manual. Drag connections to reorder them.") : String(localized: "Sort: \(sort.title)"))
                 }
                 ToolbarItem(placement: .primaryAction) {
                     Menu {
@@ -117,6 +139,7 @@ struct ConnectionListView: View {
                     ConnectionRow(connection: connection, status: reachability.status(for: connection))
                         .tag(connection.id)
                 }
+                .onMove(perform: moveAction)
             }
             .listStyle(.inset)
             .alternatingRowBackgrounds()
@@ -163,6 +186,21 @@ struct ConnectionListView: View {
         return String(localized: "Delete \(pendingDeletion.count) connections?")
     }
 
+    private var moveAction: ((IndexSet, Int) -> Void)? {
+        canReorder ? { move(from: $0, to: $1) } : nil
+    }
+
+    private func move(from source: IndexSet, to destination: Int) {
+        let order = ConnectionOrder.reorder(
+            all: ConnectionOrder.sorted(allConnections, by: .manual).map(\.id),
+            visible: connections.map(\.id),
+            from: source,
+            to: destination
+        )
+        ConnectionOrder.apply(order, to: allConnections)
+        try? modelContext.save()
+    }
+
     private func duplicate(_ connection: Connection) {
         let copy = Connection(
             name: String(localized: "\(connection.name) Copy"),
@@ -179,6 +217,7 @@ struct ConnectionListView: View {
         )
         copy.rdpOverrides = connection.rdpOverrides
         copy.credentialProfile = connection.credentialProfile
+        copy.sortIndex = ConnectionOrder.nextIndex(in: modelContext)
         modelContext.insert(copy)
         let store = KeychainPasswordStore.shared
         if let password = store.password(for: connection.id) {

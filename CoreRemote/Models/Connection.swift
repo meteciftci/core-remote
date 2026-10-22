@@ -19,6 +19,9 @@ final class Connection {
     var tags: [String] = []
     var isFavorite: Bool
     var createdAt: Date
+    /// Position in the manual list order; ties (such as connections from before manual order
+    /// existed) fall back to the name. See `ConnectionOrder`.
+    var sortIndex: Int = 0
     /// When the connection was last opened; `nil` if never (or after clearing history).
     var lastConnectedAt: Date?
     var group: ConnectionGroup?
