@@ -50,6 +50,14 @@ macOS için sade bir SSH ve RDP bağlantı yöneticisi. Bağlantılarınızı ka
 
 ## Kurulum
 
+### Homebrew
+
+```bash
+brew install meteciftci/tap/coreremote
+```
+
+Güncellemek için `brew upgrade coreremote`. Uygulama Apple tarafından onaylanmadığı için cask, kurulumdan sonra karantina işaretini kaldırır; bu sayede macOS açılışta engellemez. Bu tap'ten kurarak buna onay vermiş olursunuz.
+
 ### Hazır sürüm
 
 1. [Releases](https://github.com/meteciftci/core-remote/releases) sayfasından son `CoreRemote-x.y.z.zip` dosyasını indirin, açın ve `CoreRemote.app`'i **Uygulamalar** klasörüne taşıyın.
