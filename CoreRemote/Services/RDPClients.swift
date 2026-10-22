@@ -194,6 +194,37 @@ nonisolated enum FreeRDP {
     }
 }
 
+/// FreeRDP's SDL client makes right Shift its shortcut key by default: right Shift+M minimizes the
+/// window and right Shift+D disconnects, so typing a capital letter with that Shift does that
+/// instead. Its config file moves the shortcuts to left Control+Option+Shift; FreeRDP only acts
+/// when every listed key is down.
+nonisolated enum FreeRDPHotkeys {
+    static let modifierKey = "SDL_KeyModMask"
+    static let modifiers = ["KMOD_LCTRL", "KMOD_LALT", "KMOD_LSHIFT"]
+
+    static func configURL(environment: [String: String] = ProcessInfo.processInfo.environment) -> URL {
+        let base = environment["XDG_CONFIG_HOME"].flatMap { $0.isEmpty ? nil : URL(filePath: $0) }
+            ?? FileManager.default.homeDirectoryForCurrentUser.appending(path: ".config")
+        return base.appending(path: "freerdp/sdl-freerdp.json")
+    }
+
+    /// Sets the modifiers unless the file already picks its own. Other settings in the file are
+    /// kept, and a file that isn't a JSON object is left alone.
+    static func ensureConfigured(at url: URL = configURL()) throws {
+        var settings: [String: Any] = [:]
+        if FileManager.default.fileExists(atPath: url.path) {
+            guard let data = try? Data(contentsOf: url),
+                  let existing = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                  existing[modifierKey] == nil else { return }
+            settings = existing
+        }
+        settings[modifierKey] = modifiers
+        try FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+        let data = try JSONSerialization.data(withJSONObject: settings, options: [.prettyPrinted, .sortedKeys])
+        try data.write(to: url, options: .atomic)
+    }
+}
+
 /// Why a FreeRDP session failed, read from its log.
 nonisolated enum FreeRDPFailure: Equatable, Sendable {
     case accountLocked

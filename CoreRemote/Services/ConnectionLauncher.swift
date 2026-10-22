@@ -195,6 +195,8 @@ final class ConnectionLauncher {
 
     private func connectFreeRDP(_ target: ConnectionTarget) throws {
         guard let executable = FreeRDP.executableURL else { throw LaunchError.clientMissing(.freeRDP) }
+        // Keeps right Shift for capital letters; without the file it minimizes or disconnects.
+        try? FreeRDPHotkeys.ensureConfigured()
 
         let logURL = try LaunchFiles.write("", named: "\(UUID().uuidString).freerdp.log")
         let log = try FileHandle(forWritingTo: logURL)
