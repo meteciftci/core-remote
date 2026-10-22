@@ -1690,6 +1690,17 @@
         }
       }
     },
+    "RDP": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RDP"
+          }
+        }
+      }
+    },
     "RDP Sessions": {
       "extractionState": "manual",
       "localizations": {
@@ -1818,6 +1829,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Zorunlu"
+          }
+        }
+      }
+    },
+    "SSH": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH"
           }
         }
       }

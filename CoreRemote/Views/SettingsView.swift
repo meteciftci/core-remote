@@ -24,11 +24,80 @@ struct SettingsView: View {
     var body: some View {
         TabView {
             Tab("General", systemImage: "gearshape") { general }
+            Tab("SSH", systemImage: "terminal") { ssh }
+            Tab("RDP", systemImage: "display") { rdp }
             Tab("Credentials", systemImage: "person.badge.key") { CredentialsSettings() }
+        }
+        .confirmationDialog("Clear connection history?", isPresented: $confirmsClearHistory) {
+            Button("Clear History", role: .destructive) {
+                try? Connection.clearHistory(in: modelContext)
+            }
+        }
+        .task {
+            // Access and installs can change while Settings is open.
+            while !Task.isCancelled {
+                isAccessibilityTrusted = WindowsAppWindowMinimizer.isTrusted
+                installed = Set(RDPClient.allCases.filter(\.isInstalled))
+                installedTerminals = Set(TerminalApp.allCases.filter(\.isInstalled))
+                fileTransferApps = FileTransferApp.installed
+                try? await Task.sleep(for: .seconds(2))
+            }
         }
     }
 
     private var general: some View {
+        Form {
+            Section {
+                KeyboardShortcuts.Recorder("Quick connect", name: .quickConnect)
+            } footer: {
+                Text("Opens a search box from any app: type a name, host or user and press Return to connect.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Section {
+                LabeledContent("Shortcuts and Spotlight") {
+                    Button("Open Shortcuts", systemImage: "square.2.layers.3d", action: ShortcutsApp.open)
+                }
+            } footer: {
+                Text("Search a connection's name in Spotlight to connect. In the Shortcuts app, add CoreRemote's \"Connect\" action to a new shortcut and pick a connection.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Section {
+                Toggle("Show in menu bar", isOn: $showsMenuBarIcon)
+            } footer: {
+                Text("Connect to favorites, recent connections and groups from the menu bar. CoreRemote keeps running there after you close its window.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Section {
+                Toggle("Show server status", isOn: $checksReachability)
+            } footer: {
+                Text("While the window is open, CoreRemote tries each server's port every minute and shows a green or red dot.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Section {
+                LabeledContent("Recent connections") {
+                    Button("Clear History…") { confirmsClearHistory = true }
+                        .disabled(!hasHistory)
+                }
+            } footer: {
+                Text("Removes the Recent list and last-connected times. Connections aren't deleted.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .formStyle(.grouped)
+        .frame(width: 480)
+        .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private var ssh: some View {
         Form {
             Section {
                 Picker("SSH terminal", selection: $terminalApp) {
@@ -86,6 +155,14 @@ struct SettingsView: View {
                     .foregroundStyle(.secondary)
             }
 
+        }
+        .formStyle(.grouped)
+        .frame(width: 480)
+        .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private var rdp: some View {
+        Form {
             Section {
                 Picker("RDP client", selection: $rdpClient) {
                     ForEach(RDPClient.allCases) { client in
@@ -137,69 +214,9 @@ struct SettingsView: View {
             }
 
             RDPDefaultsSection()
-
-            Section {
-                KeyboardShortcuts.Recorder("Quick connect", name: .quickConnect)
-            } footer: {
-                Text("Opens a search box from any app: type a name, host or user and press Return to connect.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-
-            Section {
-                LabeledContent("Shortcuts and Spotlight") {
-                    Button("Open Shortcuts", systemImage: "square.2.layers.3d", action: ShortcutsApp.open)
-                }
-            } footer: {
-                Text("Search a connection's name in Spotlight to connect. In the Shortcuts app, add CoreRemote's \"Connect\" action to a new shortcut and pick a connection.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-
-            Section {
-                Toggle("Show in menu bar", isOn: $showsMenuBarIcon)
-            } footer: {
-                Text("Connect to favorites, recent connections and groups from the menu bar. CoreRemote keeps running there after you close its window.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-
-            Section {
-                Toggle("Show server status", isOn: $checksReachability)
-            } footer: {
-                Text("While the window is open, CoreRemote tries each server's port every minute and shows a green or red dot.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-
-            Section {
-                LabeledContent("Recent connections") {
-                    Button("Clear History…") { confirmsClearHistory = true }
-                        .disabled(!hasHistory)
-                }
-            } footer: {
-                Text("Removes the Recent list and last-connected times. Connections aren't deleted.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-        }
-        .confirmationDialog("Clear connection history?", isPresented: $confirmsClearHistory) {
-            Button("Clear History", role: .destructive) {
-                try? Connection.clearHistory(in: modelContext)
-            }
         }
         .formStyle(.grouped)
         .frame(width: 480)
         .fixedSize(horizontal: false, vertical: true)
-        .task {
-            // Access and installs can change while Settings is open.
-            while !Task.isCancelled {
-                isAccessibilityTrusted = WindowsAppWindowMinimizer.isTrusted
-                installed = Set(RDPClient.allCases.filter(\.isInstalled))
-                installedTerminals = Set(TerminalApp.allCases.filter(\.isInstalled))
-                fileTransferApps = FileTransferApp.installed
-                try? await Task.sleep(for: .seconds(2))
-            }
-        }
     }
 }
