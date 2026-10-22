@@ -158,3 +158,44 @@ struct FreeRDPFailureTests {
         #expect(FreeRDPFailure.parse(log: "!!!Certificate for dc:3389 (RDP-Server) has changed!!!") == .certificateChanged)
     }
 }
+
+struct FreeRDPHotkeysTests {
+    private let folder = FileManager.default.temporaryDirectory.appending(path: "FreeRDPHotkeysTests-\(UUID().uuidString)")
+    private var config: URL { folder.appending(path: "freerdp/sdl-freerdp.json") }
+
+    private func read() throws -> [String: Any] {
+        try #require(try JSONSerialization.jsonObject(with: Data(contentsOf: config)) as? [String: Any])
+    }
+
+    @Test func createsTheConfigWithLeftModifiers() throws {
+        defer { try? FileManager.default.removeItem(at: folder) }
+        try FreeRDPHotkeys.ensureConfigured(at: config)
+        #expect(try read()["SDL_KeyModMask"] as? [String] == ["KMOD_LCTRL", "KMOD_LALT", "KMOD_LSHIFT"])
+    }
+
+    @Test func keepsOtherSettingsAndTheUsersOwnModifiers() throws {
+        defer { try? FileManager.default.removeItem(at: folder) }
+        try FileManager.default.createDirectory(at: config.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try Data(#"{"SDL_Fullscreen": "SDL_SCANCODE_F"}"#.utf8).write(to: config)
+        try FreeRDPHotkeys.ensureConfigured(at: config)
+        #expect(try read()["SDL_Fullscreen"] as? String == "SDL_SCANCODE_F")
+        #expect(try read()["SDL_KeyModMask"] as? [String] == FreeRDPHotkeys.modifiers)
+
+        try Data(#"{"SDL_KeyModMask": ["KMOD_RGUI"]}"#.utf8).write(to: config)
+        try FreeRDPHotkeys.ensureConfigured(at: config)
+        #expect(try read()["SDL_KeyModMask"] as? [String] == ["KMOD_RGUI"])
+    }
+
+    @Test func leavesFilesItCannotReadAlone() throws {
+        defer { try? FileManager.default.removeItem(at: folder) }
+        try FileManager.default.createDirectory(at: config.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try Data("not json".utf8).write(to: config)
+        try FreeRDPHotkeys.ensureConfigured(at: config)
+        #expect(try String(contentsOf: config, encoding: .utf8) == "not json")
+    }
+
+    @Test func followsXDGConfigHome() {
+        #expect(FreeRDPHotkeys.configURL(environment: ["XDG_CONFIG_HOME": "/tmp/xdg"]).path == "/tmp/xdg/freerdp/sdl-freerdp.json")
+        #expect(FreeRDPHotkeys.configURL(environment: [:]).path.hasSuffix("/.config/freerdp/sdl-freerdp.json"))
+    }
+}
