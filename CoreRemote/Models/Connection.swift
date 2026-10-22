@@ -31,6 +31,7 @@ final class Connection {
 
     // RDP only; `nil` uses the default from Settings. See `RDPOverrides`.
     var rdpDisplayRaw: String?
+    var rdpResizeRaw: String?
     var rdpMultiMonitor: Bool?
     var rdpClipboard: Bool?
     var rdpSharedFolder: String?
@@ -75,6 +76,7 @@ final class Connection {
         get {
             RDPOverrides(
                 display: rdpDisplayRaw.flatMap(RDPDisplay.init(rawValue:)),
+                resize: rdpResizeRaw.flatMap(RDPResize.init(rawValue:)),
                 multiMonitor: rdpMultiMonitor,
                 clipboard: rdpClipboard,
                 sharedFolder: rdpSharedFolder,
@@ -83,6 +85,7 @@ final class Connection {
         }
         set {
             rdpDisplayRaw = newValue.display?.rawValue
+            rdpResizeRaw = newValue.resize?.rawValue
             rdpMultiMonitor = newValue.multiMonitor
             rdpClipboard = newValue.clipboard
             rdpSharedFolder = newValue.sharedFolder

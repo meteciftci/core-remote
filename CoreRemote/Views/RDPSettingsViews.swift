@@ -4,6 +4,7 @@ import SwiftUI
 /// The RDP defaults in Settings.
 struct RDPDefaultsSection: View {
     @AppStorage(RDPDefaults.displayKey) private var display = RDPOptions().display
+    @AppStorage(RDPDefaults.resizeKey) private var resize = RDPOptions().resize
     @AppStorage(RDPDefaults.multiMonitorKey) private var multiMonitor = RDPOptions().multiMonitor
     @AppStorage(RDPDefaults.clipboardKey) private var clipboard = RDPOptions().clipboard
     @AppStorage(RDPDefaults.sharedFolderKey) private var sharedFolder = ""
@@ -13,6 +14,9 @@ struct RDPDefaultsSection: View {
         Section {
             Picker("Display", selection: $display) {
                 ForEach(RDPDisplay.allCases) { Text(verbatim: $0.title).tag($0) }
+            }
+            Picker("When resized", selection: $resize) {
+                ForEach(RDPResize.allCases) { Text(verbatim: $0.title).tag($0) }
             }
             Toggle("Use all screens", isOn: $multiMonitor)
                 .disabled(display != .fullScreen)
@@ -26,7 +30,7 @@ struct RDPDefaultsSection: View {
         } header: {
             Text("RDP Sessions")
         } footer: {
-            Text("Each RDP connection can change these in its editor. All screens needs full screen. A shared folder appears as a drive on the server and works with FreeRDP only.")
+            Text("Each RDP connection can change these in its editor. Changing the resolution needs Windows 8.1 or Server 2012 R2 or later; if the window doesn't resize, choose Scale picture. All screens needs full screen. A shared folder appears as a drive on the server and works with FreeRDP only.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
@@ -38,6 +42,7 @@ struct RDPOverridesSection: View {
     @Binding var overrides: RDPOverrides
 
     @AppStorage(RDPDefaults.displayKey) private var defaultDisplayRaw = ""
+    @AppStorage(RDPDefaults.resizeKey) private var defaultResizeRaw = ""
     @AppStorage(RDPDefaults.multiMonitorKey) private var defaultMultiMonitor = RDPOptions().multiMonitor
     @AppStorage(RDPDefaults.clipboardKey) private var defaultClipboard = RDPOptions().clipboard
     @AppStorage(RDPDefaults.sharedFolderKey) private var defaultSharedFolder = ""
@@ -48,12 +53,17 @@ struct RDPOverridesSection: View {
 
     var body: some View {
         // Reading the stored defaults keeps the "Default (…)" labels current while Settings changes them.
-        let _ = (defaultDisplayRaw, defaultMultiMonitor, defaultClipboard, defaultSharedFolder, defaultAudioRaw)
+        let _ = (defaultDisplayRaw, defaultResizeRaw, defaultMultiMonitor, defaultClipboard, defaultSharedFolder, defaultAudioRaw)
         Section {
             Picker("Display", selection: $overrides.display) {
                 Text("Default (\(defaults.display.title))").tag(RDPDisplay?.none)
                 Divider()
                 ForEach(RDPDisplay.allCases) { Text(verbatim: $0.title).tag(RDPDisplay?.some($0)) }
+            }
+            Picker("When resized", selection: $overrides.resize) {
+                Text("Default (\(defaults.resize.title))").tag(RDPResize?.none)
+                Divider()
+                ForEach(RDPResize.allCases) { Text(verbatim: $0.title).tag(RDPResize?.some($0)) }
             }
             Picker("Use all screens", selection: $overrides.multiMonitor) {
                 Text("Default (\(onOff(defaults.multiMonitor)))").tag(Bool?.none)
