@@ -2,13 +2,15 @@ import AppKit
 import SwiftUI
 
 /// Keeps the latest reachability result per `host:port`, so connections that share a server
-/// are checked once.
+/// are checked once. For a serial connection it tells whether the device is plugged in.
 @Observable
 final class ReachabilityMonitor {
     enum Status: Equatable {
         case checking
         case reachable(latency: Duration)
         case unreachable(reason: String)
+        /// A serial connection's device is plugged in.
+        case deviceConnected
     }
 
     static let storageKey = "checksReachability"
@@ -29,17 +31,29 @@ final class ReachabilityMonitor {
     /// servers seen for the first time show as checking.
     func refresh(_ connections: [Connection]) async {
         var targets: [String: (host: String, port: Int)] = [:]
+        var devices: [String: String] = [:]
         for connection in connections {
-            targets[Self.key(host: connection.host, port: connection.port)] = (connection.host, connection.port)
+            let key = Self.key(host: connection.host, port: connection.port)
+            if connection.type.usesNetwork {
+                targets[key] = (connection.host, connection.port)
+            } else {
+                devices[key] = connection.host
+            }
         }
         #if DEBUG
         if DemoData.isEnabled {
             statuses = targets.mapValues { DemoData.reachability(for: $0.host) }
+                .merging(devices.mapValues { _ in .deviceConnected }) { $1 }
             return
         }
         #endif
 
         statuses = statuses.filter { targets[$0.key] != nil }
+        for (key, path) in devices {
+            statuses[key] = SerialDevices.isPresent(path)
+                ? .deviceConnected
+                : .unreachable(reason: String(localized: "Not connected"))
+        }
         for key in targets.keys where statuses[key] == nil {
             statuses[key] = .checking
         }

@@ -68,71 +68,75 @@ struct ConnectionEditor: View {
                     .pickerStyle(.segmented)
                 }
 
-                Section {
-                    TextField("Host", text: $draft.host, prompt: Text("192.168.1.10 or server.example.com"))
-                        .focused($focusedField, equals: .host)
-                        .textContentType(.URL)
-                        .autocorrectionDisabled()
-                    TextField("Port", value: $draft.port, format: .number.grouping(.never), prompt: Text(verbatim: "\(draft.type.defaultPort)"))
-                    if draft.port != nil, !draft.isPortValid {
-                        Text("Port must be between 1 and 65535.")
-                            .font(.caption)
-                            .foregroundStyle(.red)
-                    }
-                } header: {
-                    Text("Server")
-                }
-
-                Section {
-                    Picker("Credentials", selection: $draft.credentialProfileID) {
-                        Text("This connection only").tag(UUID?.none)
-                        if !profiles.isEmpty { Divider() }
-                        ForEach(profiles) { profile in
-                            Text(verbatim: profile.name).tag(UUID?.some(profile.id))
-                        }
-                    }
-                    if let profile = selectedProfile {
-                        LabeledContent("Username", value: profile.username)
-                        if draft.type == .ssh, let key = profile.keyFilePath {
-                            LabeledContent("Key File", value: (key as NSString).abbreviatingWithTildeInPath)
-                        }
-                    } else {
-                        TextField("Username", text: $draft.username, prompt: Text("Required"))
-                            .textContentType(.username)
+                if draft.type.usesNetwork {
+                    Section {
+                        TextField("Host", text: $draft.host, prompt: Text("192.168.1.10 or server.example.com"))
+                            .focused($focusedField, equals: .host)
+                            .textContentType(.URL)
                             .autocorrectionDisabled()
-                        SecureField("Password", text: $draft.password, prompt: Text("Optional"))
-                            .textContentType(.password)
+                        TextField("Port", value: $draft.port, format: .number.grouping(.never), prompt: Text(verbatim: "\(draft.type.defaultPort)"))
+                        if draft.port != nil, !draft.isPortValid {
+                            Text("Port must be between 1 and 65535.")
+                                .font(.caption)
+                                .foregroundStyle(.red)
+                        }
+                    } header: {
+                        Text("Server")
                     }
-                    if draft.type == .rdp {
-                        Toggle("Ignore certificate warnings", isOn: $draft.ignoreCertificateErrors)
-                    } else if selectedProfile == nil {
-                        LabeledContent("Key File") {
-                            HStack {
-                                Text(draft.keyFilePath.isEmpty ? String(localized: "None") : (draft.keyFilePath as NSString).abbreviatingWithTildeInPath)
-                                    .foregroundStyle(draft.keyFilePath.isEmpty ? .secondary : .primary)
-                                    .lineLimit(1)
-                                    .truncationMode(.middle)
-                                if !draft.keyFilePath.isEmpty {
-                                    Button("Clear", systemImage: "xmark.circle.fill") { draft.keyFilePath = "" }
-                                        .labelStyle(.iconOnly)
-                                        .buttonStyle(.borderless)
-                                }
-                                Button("Choose…", action: chooseKeyFile)
+
+                    Section {
+                        Picker("Credentials", selection: $draft.credentialProfileID) {
+                            Text("This connection only").tag(UUID?.none)
+                            if !profiles.isEmpty { Divider() }
+                            ForEach(profiles) { profile in
+                                Text(verbatim: profile.name).tag(UUID?.some(profile.id))
                             }
                         }
+                        if let profile = selectedProfile {
+                            LabeledContent("Username", value: profile.username)
+                            if draft.type == .ssh, let key = profile.keyFilePath {
+                                LabeledContent("Key File", value: (key as NSString).abbreviatingWithTildeInPath)
+                            }
+                        } else {
+                            TextField("Username", text: $draft.username, prompt: Text("Required"))
+                                .textContentType(.username)
+                                .autocorrectionDisabled()
+                            SecureField("Password", text: $draft.password, prompt: Text("Optional"))
+                                .textContentType(.password)
+                        }
+                        if draft.type == .rdp {
+                            Toggle("Ignore certificate warnings", isOn: $draft.ignoreCertificateErrors)
+                        } else if selectedProfile == nil {
+                            LabeledContent("Key File") {
+                                HStack {
+                                    Text(draft.keyFilePath.isEmpty ? String(localized: "None") : (draft.keyFilePath as NSString).abbreviatingWithTildeInPath)
+                                        .foregroundStyle(draft.keyFilePath.isEmpty ? .secondary : .primary)
+                                        .lineLimit(1)
+                                        .truncationMode(.middle)
+                                    if !draft.keyFilePath.isEmpty {
+                                        Button("Clear", systemImage: "xmark.circle.fill") { draft.keyFilePath = "" }
+                                            .labelStyle(.iconOnly)
+                                            .buttonStyle(.borderless)
+                                    }
+                                    Button("Choose…", action: chooseKeyFile)
+                                }
+                            }
+                        }
+                    } header: {
+                        Text("Authentication")
+                    } footer: {
+                        Text(selectedProfile != nil
+                             ? "The profile's user name and password are used. Change them in Settings > Credentials."
+                             : draft.type == .ssh
+                             ? "The password is kept in your Keychain and entered for you when ssh asks."
+                             : RDPClient.current == .freeRDP
+                             ? "The password is kept in your Keychain and passed to FreeRDP when you connect."
+                             : "The password is kept in your Keychain and copied to the clipboard for 30 seconds when you connect.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
                     }
-                } header: {
-                    Text("Authentication")
-                } footer: {
-                    Text(selectedProfile != nil
-                         ? "The profile's user name and password are used. Change them in Settings > Credentials."
-                         : draft.type == .ssh
-                         ? "The password is kept in your Keychain and entered for you when ssh asks."
-                         : RDPClient.current == .freeRDP
-                         ? "The password is kept in your Keychain and passed to FreeRDP when you connect."
-                         : "The password is kept in your Keychain and copied to the clipboard for 30 seconds when you connect.")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                } else {
+                    SerialSection(device: $draft.host, options: $draft.serial)
                 }
 
                 if draft.type == .rdp {

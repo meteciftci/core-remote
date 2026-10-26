@@ -2,7 +2,7 @@
 
 **Türkçe** | [English](README.en.md)
 
-macOS için sade bir SSH ve RDP bağlantı yöneticisi. Bağlantılarınızı kaydedin, çift tıklayarak bağlanın.
+macOS için sade bir SSH, RDP ve seri (COM) bağlantı yöneticisi. Bağlantılarınızı kaydedin, çift tıklayarak bağlanın.
 
 ![Ana pencere](docs/screenshots/tr/main.png)
 
@@ -10,13 +10,14 @@ macOS için sade bir SSH ve RDP bağlantı yöneticisi. Bağlantılarınızı ka
 
 - **SSH**: Bağlantı Terminal ya da iTerm2'de açılır; hangisinin kullanılacağı Ayarlar'da seçilir. Kayıtlı şifre otomatik girilir; isteğe bağlı SSH anahtar dosyası seçilebilir. Bağlantı menüsündeki "Dosya Aktarımı" sunucuyu Cyberduck, Transmit ya da ForkLift gibi bir uygulamada, bunlar yoksa terminalde sftp ile açar. sudo için şifre gerekiyorsa bağlantı menüsündeki "Şifreyi Kopyala" (⇧⌘C) kullanılabilir ya da Ayarlar > SSH'den şifrenin her bağlantıdan sonra panoya kopyalanması açılabilir.
 - **RDP**: Varsayılan istemci [FreeRDP](https://www.freerdp.com)'dir ve şifreyi doğrudan alır. İsterseniz Ayarlar'dan [Microsoft Windows App](https://apps.apple.com/app/id1295203466) seçilebilir. Görüntü (pencere boyutu ya da tam ekran, tüm ekranlar), pano, paylaşılan klasör ve ses Ayarlar'da varsayılan olarak, her bağlantıda da ayrı ayrı seçilebilir; pencere boyutlandırılınca çözünürlük güncellenir ya da (eski sunucular için) görüntü ölçeklenir. Paylaşılan klasör yalnızca FreeRDP'de çalışır. FreeRDP bağlanamazsa sebebi (hesap kilitli, yanlış şifre, sunucuya ulaşılamıyor gibi) bir uyarıyla gösterilir. FreeRDP'nin kısayolları sol Control + Option + Shift ile çalışır (M küçültür, Enter tam ekran, D bağlantıyı keser); böylece sağ Shift ile büyük harf yazmak kısayolu tetiklemez. Bunun için `~/.config/freerdp/sdl-freerdp.json` dosyası, kendi ayarınız yoksa oluşturulur.
+- **Seri (COM)**: Switch, router ya da sunucu konsollarına PuTTY'deki gibi USB-seri kabloyla bağlanın. Aygıt, takılı `/dev/cu.*` aygıtları listesinden seçilir ya da elle yazılır. Hız (300'den 921600'e hazır değerler ya da elle girilen değer), veri biti, parite, durma biti ve akış kontrolü (RTS/CTS, XON/XOFF) bağlantı başına ayarlanır. Bağlantı, seçili terminal uygulamasında CoreRemote'un kendi seri konsoluyla açılır: **Ctrl-A Q** bağlantıyı kapatır, **Ctrl-A B** break sinyali gönderir, **Ctrl-A Ctrl-A** ise Ctrl-A gönderir. Ek bir kurulum gerekmez.
 - **Gruplar, favoriler ve sıralama**: Bağlantıları gruplara ayırın, sık kullandıklarınızı favorilere ekleyin, ad, host veya kullanıcıya göre arayın. Liste elle (sürükleyip bırakarak), ada ya da son bağlantıya göre sıralanabilir.
 - **Kimlik bilgisi profilleri**: Bir domain hesabı gibi ortak kullanıcı adı ve şifreyi Ayarlar > Kimlik Bilgileri'nde bir kez tanımlayıp birden fazla bağlantıda kullanın. Şifre değişince tek yerden güncellenir. Şifreler yalnızca Anahtar Zinciri'nde durur; yedeğe profil adı ve kullanıcı adı girer, şifre girmez.
 - **Notlar ve etiketler**: Her bağlantıya not ve `prod`, `linux` gibi etiketler ekleyin. Etiketler kenar çubuğunda listelenir; arama notları ve etiketleri de kapsar.
 - **Son Kullanılanlar**: En son açtığınız 10 bağlantı kenar çubuğunda listelenir; her satırda ne zaman bağlandığınız görünür. Geçmiş Ayarlar'dan temizlenebilir.
 - **Menü çubuğu**: Favorilere, son 5 bağlantıya ve gruplara menü çubuğundan tek tıkla bağlanın. Pencere kapatılınca CoreRemote menü çubuğunda çalışmaya devam eder; simge Ayarlar'dan gizlenebilir.
 - **Hızlı bağlan**: Hangi uygulamada olursanız olun **⌃⌥Space** ile bir arama kutusu açın, ad, host veya kullanıcı yazıp Return ile bağlanın. Kısayol Ayarlar'dan değiştirilebilir.
-- **Sunucu durumu**: Pencere açıkken her sunucunun portu dakikada bir denenir; satırda yeşil (ulaşılabilir) ya da kırmızı (ulaşılamıyor) bir nokta görünür, üzerine gelince nedeni yazar. Ayarlar'dan kapatılabilir.
+- **Sunucu durumu**: Pencere açıkken her sunucunun portu dakikada bir denenir; satırda yeşil (ulaşılabilir) ya da kırmızı (ulaşılamıyor) bir nokta görünür, üzerine gelince nedeni yazar. Seri bağlantılarda nokta, aygıtın takılı olup olmadığını gösterir. Ayarlar'dan kapatılabilir.
 - **Spotlight ve Kestirmeler**: Bağlantının adını Spotlight'ta arayıp seçince bağlanır. Kestirmeler'de CoreRemote'un "Bağlan" eylemiyle her bağlantı için kestirme oluşturabilir, menü çubuğuna ekleyebilir ya da klavye kısayolu atayabilirsiniz.
 - **İçe aktarma**: `~/.ssh/config` içindeki Host girdilerini ya da `.rdp` dosyalarını (seçerek veya pencereye sürükleyip bırakarak) içe aktarın. Önce bir önizleme gösterilir; zaten var olan bağlantılar seçili gelmez.
 - **Yedekleme**: Bağlantılarınızı `.coreremote` dosyasına dışa aktarın, başka bir Mac'e içe aktarın. Şifreler yalnızca parolayla şifrelenmiş yedeğe eklenir.
@@ -95,7 +96,7 @@ xcodebuild -project CoreRemote.xcodeproj -scheme CoreRemote test
 
 #### Örnek veriler
 
-Debug derlemesi `-DemoData` argümanıyla açılırsa gerçek bağlantılar yerine yalnızca hafızada tutulan örnek bağlantılar gösterilir. README ekran görüntüleri bu şekilde alınmıştır; `-DemoEditor` ve `-DemoSettings` ilgili ekranı da açar.
+Debug derlemesi `-DemoData` argümanıyla açılırsa gerçek bağlantılar yerine yalnızca hafızada tutulan örnek bağlantılar gösterilir. README ekran görüntüleri bu şekilde alınmıştır; `-DemoEditor` ve `-DemoSettings` ilgili ekranı da açar; `-DemoSerial` eklenirse editör seri bağlantıyı gösterir.
 
 ```bash
 open build/Build/Products/Debug/CoreRemote.app --args -DemoData

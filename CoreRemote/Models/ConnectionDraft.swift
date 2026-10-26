@@ -13,6 +13,8 @@ struct ConnectionDraft: Equatable {
     var credentialProfileID: UUID?
     var ignoreCertificateErrors = false
     var rdp = RDPOverrides()
+    /// Serial only; `host` holds the device path.
+    var serial = SerialOptions()
     var notes = ""
     /// Comma-separated, as typed in the editor.
     var tagsText = ""
@@ -32,6 +34,7 @@ struct ConnectionDraft: Equatable {
         credentialProfileID = connection.credentialProfile?.id
         ignoreCertificateErrors = connection.ignoreCertificateErrors
         rdp = connection.rdpOverrides
+        serial = connection.serial
         notes = connection.notes
         tagsText = connection.tags.joined(separator: ", ")
         isFavorite = connection.isFavorite
@@ -65,28 +68,40 @@ struct ConnectionDraft: Equatable {
         !trimmedHost.isEmpty && !trimmedHost.contains(where: \.isWhitespace)
     }
 
-    var usesProfile: Bool { credentialProfileID != nil }
+    /// Serial connections don't log in, so they have no profile.
+    var usesProfile: Bool { type.usesNetwork && credentialProfileID != nil }
 
     var isValid: Bool {
-        !trimmedName.isEmpty && isHostValid && (usesProfile || !trimmedUsername.isEmpty) && isPortValid
+        guard !trimmedName.isEmpty, isHostValid else { return false }
+        guard type.usesNetwork else { return serial.isValid }
+        return (usesProfile || !trimmedUsername.isEmpty) && isPortValid
     }
 
-    /// The password to keep under the connection's own Keychain entry; none with a profile.
-    var ownPassword: String? { usesProfile ? nil : password }
+    /// The password to keep under the connection's own Keychain entry; none with a profile or for serial.
+    var ownPassword: String? { usesProfile || !type.usesNetwork ? nil : password }
 
     func apply(to connection: Connection, group: ConnectionGroup?, profile: CredentialProfile? = nil) {
         connection.name = trimmedName
         connection.host = trimmedHost
         connection.type = type
-        connection.port = port ?? type.defaultPort
-        connection.username = trimmedUsername
+        connection.port = type.usesNetwork ? port ?? type.defaultPort : 0
+        connection.username = type.usesNetwork ? trimmedUsername : ""
         connection.keyFilePath = trimmedKeyFilePath
         connection.ignoreCertificateErrors = type == .rdp && ignoreCertificateErrors
         connection.rdpOverrides = type == .rdp ? rdp : RDPOverrides()
+        if type == .serial {
+            connection.serial = serial
+        } else {
+            connection.serialBaudRate = nil
+            connection.serialDataBits = nil
+            connection.serialParityRaw = nil
+            connection.serialStopBits = nil
+            connection.serialFlowControlRaw = nil
+        }
         connection.notes = notes.trimmingCharacters(in: .whitespacesAndNewlines)
         connection.tags = Tags.normalize(tagsText)
         connection.isFavorite = isFavorite
         connection.group = group
-        connection.credentialProfile = profile
+        connection.credentialProfile = type.usesNetwork ? profile : nil
     }
 }

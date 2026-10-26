@@ -166,8 +166,10 @@ struct ConnectionListView: View {
                 Button("File Transfer", systemImage: "folder") { onFileTransfer(connection) }
                 Button("Copy SSH Command", systemImage: "doc.on.doc") { onCopyCommand(connection) }
             }
-            Button("Copy Password", systemImage: "key") { onCopyPassword(connection) }
-                .keyboardShortcut("c", modifiers: [.command, .shift])
+            if connection.type.usesNetwork {
+                Button("Copy Password", systemImage: "key") { onCopyPassword(connection) }
+                    .keyboardShortcut("c", modifiers: [.command, .shift])
+            }
 
             Divider()
             Button(
@@ -226,6 +228,9 @@ struct ConnectionListView: View {
             group: connection.group
         )
         copy.rdpOverrides = connection.rdpOverrides
+        if connection.type == .serial {
+            copy.serial = connection.serial
+        }
         copy.credentialProfile = connection.credentialProfile
         copy.sortIndex = ConnectionOrder.nextIndex(in: modelContext)
         modelContext.insert(copy)

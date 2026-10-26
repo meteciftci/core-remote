@@ -4,7 +4,7 @@ import SwiftData
 
 /// Sample connections for screenshots. Launch a Debug build with `-DemoData` to use an
 /// in-memory store filled with these; `-DemoEditor`, `-DemoSettings` or `-DemoQuickConnect`
-/// also opens that screen.
+/// also opens that screen. `-DemoSerial` makes the editor show the serial connection.
 enum DemoData {
     static var isEnabled: Bool { arguments.contains("-DemoData") }
     static var opensEditor: Bool { arguments.contains("-DemoEditor") }
@@ -29,7 +29,9 @@ enum DemoData {
             User admin
         """
 
-    static let editorConnectionName = "File Server"
+    static var editorConnectionName: String {
+        arguments.contains("-DemoSerial") ? "Core Switch Console" : "File Server"
+    }
 
     private static var arguments: [String] { ProcessInfo.processInfo.arguments }
 
@@ -67,7 +69,10 @@ enum DemoData {
                        keyFilePath: "~/.ssh/id_ed25519", group: lab),
             Connection(name: "Windows Desktop", host: "192.0.2.15", type: .rdp, username: "alice", tags: ["windows"], group: lab),
             Connection(name: "Raspberry Pi", host: "raspberrypi.local", type: .ssh, username: "pi"),
+            Connection(name: "Core Switch Console", host: "/dev/cu.usbserial-A10K3B2", type: .serial, username: "",
+                       tags: ["network"], group: lab),
         ]
+        connections[6].serial = SerialOptions(baudRate: 115200)
         connections.forEach(context.insert)
 
         let domainAdmin = CredentialProfile(name: "Domain Admin", username: "EXAMPLE\\admin")

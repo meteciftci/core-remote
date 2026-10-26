@@ -37,6 +37,13 @@ final class Connection {
     var rdpSharedFolder: String?
     var rdpAudioRaw: String?
 
+    // Serial only; the device path is kept in `host`. See `serial`.
+    var serialBaudRate: Int?
+    var serialDataBits: Int?
+    var serialParityRaw: String?
+    var serialStopBits: Int?
+    var serialFlowControlRaw: String?
+
     var type: ConnectionType {
         get { ConnectionType(rawValue: typeRaw) ?? .ssh }
         set { typeRaw = newValue.rawValue }
@@ -93,6 +100,26 @@ final class Connection {
         }
     }
 
+    var serial: SerialOptions {
+        get {
+            let standard = SerialOptions()
+            return SerialOptions(
+                baudRate: serialBaudRate ?? standard.baudRate,
+                dataBits: serialDataBits ?? standard.dataBits,
+                parity: serialParityRaw.flatMap(SerialParity.init(rawValue:)) ?? standard.parity,
+                stopBits: serialStopBits ?? standard.stopBits,
+                flowControl: serialFlowControlRaw.flatMap(SerialFlowControl.init(rawValue:)) ?? standard.flowControl
+            )
+        }
+        set {
+            serialBaudRate = newValue.baudRate
+            serialDataBits = newValue.dataBits
+            serialParityRaw = newValue.parity.rawValue
+            serialStopBits = newValue.stopBits
+            serialFlowControlRaw = newValue.flowControl.rawValue
+        }
+    }
+
     /// The user name a session logs in with: the profile's, or the connection's own.
     var effectiveUsername: String {
         credentialProfile?.username ?? username
@@ -109,9 +136,12 @@ final class Connection {
         credentialProfile?.id ?? id
     }
 
-    /// `user@host:port`, shown under the name in lists.
+    /// `user@host:port`, or the device and line settings for serial, shown under the name in lists.
     var summary: String {
-        "\(effectiveUsername)@\(host):\(port)"
+        switch type {
+        case .ssh, .rdp: "\(effectiveUsername)@\(host):\(port)"
+        case .serial: "\(host) · \(serial.summary)"
+        }
     }
 
     var target: ConnectionTarget {
@@ -125,7 +155,8 @@ final class Connection {
             keyFilePath: effectiveKeyFilePath,
             passwordID: passwordID,
             ignoreCertificateErrors: ignoreCertificateErrors,
-            rdp: type == .rdp ? RDPDefaults.load().applying(rdpOverrides) : RDPOptions()
+            rdp: type == .rdp ? RDPDefaults.load().applying(rdpOverrides) : RDPOptions(),
+            serial: type == .serial ? serial : SerialOptions()
         )
     }
 }
@@ -154,6 +185,7 @@ nonisolated struct ConnectionTarget: Equatable, Sendable {
     var passwordID: UUID?
     var ignoreCertificateErrors = false
     var rdp = RDPOptions()
+    var serial = SerialOptions()
 
     var keychainID: UUID { passwordID ?? id }
 }
