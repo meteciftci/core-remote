@@ -128,6 +128,7 @@ Then set `DEVELOPMENT_TEAM` in `Config/Local.xcconfig` to your team ID. That fil
 
 ## Known limitations
 
+- FreeRDP on macOS can't copy files through the clipboard; only text and pictures are copied. To move files, use a shared folder: the folder you choose appears as a drive in Windows Explorer and files can be copied both ways. Copying files through the clipboard works with Windows App.
 - FreeRDP 3.x briefly opens a fullscreen window on each display at startup to measure it, so the screen flashes black for a moment when connecting.
 - Closing an RDP window with its close button disconnects the session but doesn't sign out. Use **Sign out** in Windows to end the session.
 

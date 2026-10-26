@@ -1173,6 +1173,17 @@
         }
       }
     },
+    "FreeRDP can't copy files through the clipboard. To move files, choose a shared folder below; it appears as a drive on the server.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "FreeRDP pano üzerinden dosya kopyalayamaz. Dosya aktarmak için aşağıdan bir paylaşılan klasör seçin; klasör sunucuda bir sürücü olarak görünür."
+          }
+        }
+      }
+    },
     "FreeRDP receives the saved password directly and doesn't show Windows App's confirmation dialogs.": {
       "extractionState": "manual",
       "localizations": {
