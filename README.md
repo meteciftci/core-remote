@@ -25,6 +25,8 @@ macOS için sade bir SSH, RDP ve seri (COM) bağlantı yöneticisi. Bağlantıla
 
 ![Bağlantı formu](docs/screenshots/tr/editor.png)
 
+![Seri bağlantı formu](docs/screenshots/tr/serial.png)
+
 ![Hızlı bağlan](docs/screenshots/tr/quick-connect.png)
 
 ![İçe aktarma](docs/screenshots/tr/import.png)

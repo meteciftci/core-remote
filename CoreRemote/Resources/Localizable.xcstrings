@@ -2163,6 +2163,17 @@
         }
       }
     },
+    "Release Notes": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sürüm Notları"
+          }
+        }
+      }
+    },
     "Remove from Favorites": {
       "extractionState": "manual",
       "localizations": {
@@ -2918,6 +2929,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kullanıcı adı"
+          }
+        }
+      }
+    },
+    "Version": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sürüm"
           }
         }
       }

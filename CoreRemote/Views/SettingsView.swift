@@ -92,6 +92,16 @@ struct SettingsView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+
+            Section {
+                LabeledContent("Version") {
+                    HStack {
+                        Text(Bundle.main.versionDescription)
+                            .textSelection(.enabled)
+                        Link("Release Notes", destination: Bundle.releaseNotesURL)
+                    }
+                }
+            }
         }
         .formStyle(.grouped)
         .frame(width: 480)
