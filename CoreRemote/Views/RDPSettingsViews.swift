@@ -21,6 +21,7 @@ struct RDPDefaultsSection: View {
             Toggle("Use all screens", isOn: $multiMonitor)
                 .disabled(display != .fullScreen)
             Toggle("Share clipboard", isOn: $clipboard)
+            FreeRDPFileCopyNote()
             LabeledContent("Shared folder") {
                 FolderField(path: sharedFolder.isEmpty ? nil : sharedFolder) { sharedFolder = $0 ?? "" }
             }
@@ -31,6 +32,20 @@ struct RDPDefaultsSection: View {
             Text("RDP Sessions")
         } footer: {
             Text("Each RDP connection can change these in its editor. Changing the resolution needs Windows 8.1 or Server 2012 R2 or later; if the window doesn't resize, choose Scale picture. All screens needs full screen. A shared folder appears as a drive on the server and works with FreeRDP only.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+    }
+}
+
+/// FreeRDP's clipboard carries text and pictures but not files: copying files from the server needs
+/// FUSE, which the Homebrew build of FreeRDP for macOS doesn't have. A shared folder does the job.
+struct FreeRDPFileCopyNote: View {
+    @AppStorage(RDPClient.storageKey) private var client = RDPClient.defaultClient
+
+    var body: some View {
+        if client == .freeRDP {
+            Text("FreeRDP can't copy files through the clipboard. To move files, choose a shared folder below; it appears as a drive on the server.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
@@ -78,6 +93,7 @@ struct RDPOverridesSection: View {
                 Text("On").tag(Bool?.some(true))
                 Text("Off").tag(Bool?.some(false))
             }
+            FreeRDPFileCopyNote()
             LabeledContent("Shared folder") {
                 Menu(folderTitle) {
                     Button("Default (\(folderName(defaults.sharedFolder)))") { overrides.sharedFolder = nil }

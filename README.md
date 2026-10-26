@@ -129,6 +129,7 @@ Ardından `Config/Local.xcconfig` içindeki `DEVELOPMENT_TEAM` değerini kendi e
 ## Bilinen kısıtlar
 
 - FreeRDP 3.x, açılışta ekranları ölçmek için kısa süreliğine tam ekran bir pencere açar. Bu yüzden bağlanırken ekran bir an siyaha döner.
+- FreeRDP'nin macOS sürümü pano üzerinden dosya kopyalayamaz; yalnızca metin ve resim kopyalanır. Dosya aktarmak için paylaşılan klasör kullanın: seçtiğiniz klasör Windows Gezgini'nde bir sürücü olarak görünür ve iki yönde kopyalama yapılabilir. Windows App ile pano üzerinden dosya kopyalama çalışır.
 - RDP oturumunu pencerenin çarpısıyla kapatmak oturumu kapatmaz, yalnızca bağlantıyı keser. Oturumu sonlandırmak için Windows'ta **Oturumu kapat**'ı kullanın.
 
 ## Lisans
