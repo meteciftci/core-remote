@@ -45,6 +45,17 @@
         }
       }
     },
+    "%@ can't be opened: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ açılamadı: %@"
+          }
+        }
+      }
+    },
     "%@ could not be found": {
       "extractionState": "manual",
       "localizations": {
@@ -52,6 +63,39 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ bulunamadı"
+          }
+        }
+      }
+    },
+    "%@ doesn't support %@ baud.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@, %@ baud hızını desteklemiyor."
+          }
+        }
+      }
+    },
+    "%@ doesn't support these settings.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ bu ayarları desteklemiyor."
+          }
+        }
+      }
+    },
+    "%@ is in use by another app.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ başka bir uygulama tarafından kullanılıyor."
           }
         }
       }
@@ -74,6 +118,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ gerekli"
+          }
+        }
+      }
+    },
+    "%@ isn't connected.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ bağlı değil."
+          }
+        }
+      }
+    },
+    "%@ was disconnected.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ bağlantısı kesildi."
           }
         }
       }
@@ -495,6 +561,28 @@
         }
       }
     },
+    "Common Speeds": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yaygın Hızlar"
+          }
+        }
+      }
+    },
+    "Common speeds": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yaygın hızlar"
+          }
+        }
+      }
+    },
     "Confirm": {
       "extractionState": "manual",
       "localizations": {
@@ -557,6 +645,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bağlan…"
+          }
+        }
+      }
+    },
+    "Connected serial devices": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlı seri aygıtlar"
+          }
+        }
+      }
+    },
+    "Connected to %@ at %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ aygıtına bağlanıldı (%@)."
           }
         }
       }
@@ -638,6 +748,17 @@
         }
       }
     },
+    "CoreRemote isn't allowed to open %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CoreRemote'un %@ aygıtını açma izni yok."
+          }
+        }
+      }
+    },
     "CoreRemote looks for ~/.ssh/config, which doesn't exist or can't be read.": {
       "extractionState": "manual",
       "localizations": {
@@ -656,6 +777,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "CoreRemote’un başka bir uygulamanın penceresini küçültebilmesi için Erişilebilirlik izni gerekir."
+          }
+        }
+      }
+    },
+    "CoreRemote's console could not be found.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CoreRemote'un konsolu bulunamadı."
           }
         }
       }
@@ -700,6 +832,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kimlik Bilgileri"
+          }
+        }
+      }
+    },
+    "Ctrl-A Q quits · Ctrl-A B sends a break · Ctrl-A Ctrl-A sends Ctrl-A": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ctrl-A Q: çık · Ctrl-A B: break gönder · Ctrl-A Ctrl-A: Ctrl-A gönder"
+          }
+        }
+      }
+    },
+    "Data Bits": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veri Bitleri"
           }
         }
       }
@@ -799,6 +953,39 @@
         }
       }
     },
+    "Device": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aygıt"
+          }
+        }
+      }
+    },
+    "Device connected": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aygıt bağlı"
+          }
+        }
+      }
+    },
+    "Devices": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aygıtlar"
+          }
+        }
+      }
+    },
     "Display": {
       "extractionState": "manual",
       "localizations": {
@@ -887,6 +1074,17 @@
         }
       }
     },
+    "Even": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çift"
+          }
+        }
+      }
+    },
     "Export Connections": {
       "extractionState": "manual",
       "localizations": {
@@ -960,6 +1158,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dosya aktarımı"
+          }
+        }
+      }
+    },
+    "Flow Control": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Akış Kontrolü"
           }
         }
       }
@@ -1437,6 +1646,17 @@
         }
       }
     },
+    "No serial devices are connected": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlı seri aygıt yok"
+          }
+        }
+      }
+    },
     "No username": {
       "extractionState": "manual",
       "localizations": {
@@ -1466,6 +1686,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Seçilen dosyaların hiçbirinde sunucu adresi yok."
+          }
+        }
+      }
+    },
+    "Not connected": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlı değil"
           }
         }
       }
@@ -1510,6 +1741,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tamam"
+          }
+        }
+      }
+    },
+    "Odd": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tek"
           }
         }
       }
@@ -1624,6 +1866,17 @@
         }
       }
     },
+    "Opens in your terminal app. Press Ctrl-A, then Q to close the connection.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terminal uygulamanızda açılır. Bağlantıyı kapatmak için Ctrl-A'ya, ardından Q'ya basın."
+          }
+        }
+      }
+    },
     "Optional": {
       "extractionState": "manual",
       "localizations": {
@@ -1631,6 +1884,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "İsteğe bağlı"
+          }
+        }
+      }
+    },
+    "Parity": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parite"
           }
         }
       }
@@ -1877,6 +2141,17 @@
         }
       }
     },
+    "Refresh": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yenile"
+          }
+        }
+      }
+    },
     "Remove from Favorites": {
       "extractionState": "manual",
       "localizations": {
@@ -2049,6 +2324,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Etiketleri virgülle ayırın."
+          }
+        }
+      }
+    },
+    "Serial": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seri"
+          }
+        }
+      }
+    },
+    "Serial Port": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seri Port"
           }
         }
       }
@@ -2229,6 +2526,39 @@
         }
       }
     },
+    "Speed": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hız"
+          }
+        }
+      }
+    },
+    "Speed must be between %@ and %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hız %@ ile %@ arasında olmalı."
+          }
+        }
+      }
+    },
+    "Stop Bits": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durma Bitleri"
+          }
+        }
+      }
+    },
     "Tags": {
       "extractionState": "manual",
       "localizations": {
@@ -2372,6 +2702,17 @@
         }
       }
     },
+    "The serial settings are invalid.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seri bağlantı ayarları geçersiz."
+          }
+        }
+      }
+    },
     "The server and FreeRDP couldn't agree on a secure connection.": {
       "extractionState": "manual",
       "localizations": {
@@ -2478,6 +2819,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yalnızca bu bağlantı"
+          }
+        }
+      }
+    },
+    "This device isn't connected right now.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu aygıt şu anda bağlı değil."
           }
         }
       }

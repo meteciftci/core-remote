@@ -27,6 +27,8 @@ nonisolated struct BackupPayload: Codable, Equatable, Sendable {
         var rdpClipboard: Bool?
         var rdpSharedFolder: String?
         var rdpAudio: String?
+        /// Line settings of a serial connection, whose device path is in `host`.
+        var serial: SerialOptions?
         var notes: String?
         var tags: [String]?
         var isFavorite: Bool
@@ -209,6 +211,7 @@ enum BackupStore {
                     rdpClipboard: connection.rdpClipboard,
                     rdpSharedFolder: connection.rdpSharedFolder,
                     rdpAudio: connection.rdpAudioRaw,
+                    serial: connection.type == .serial ? connection.serial : nil,
                     notes: connection.notes.isEmpty ? nil : connection.notes,
                     tags: connection.tags.isEmpty ? nil : connection.tags,
                     isFavorite: connection.isFavorite,
@@ -287,6 +290,9 @@ enum BackupStore {
                     sharedFolder: item.rdpSharedFolder,
                     audio: item.rdpAudio.flatMap(RDPAudio.init(rawValue:))
                 )
+            }
+            if item.type == .serial {
+                connection.serial = item.serial ?? SerialOptions()
             }
             connection.credentialProfile = item.credentialProfile.flatMap { profilesByID[$0] }
             connection.sortIndex = nextSortIndex

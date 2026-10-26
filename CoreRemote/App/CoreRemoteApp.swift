@@ -3,7 +3,6 @@ import AppKit
 import SwiftData
 import SwiftUI
 
-@main
 struct CoreRemoteApp: App {
     @NSApplicationDelegateAdaptor private var appDelegate: AppDelegate
     @FocusedValue(\.appActions) private var actions
@@ -81,7 +80,7 @@ struct CoreRemoteApp: App {
                     if let selectedConnection { launcher.copyPassword(for: selectedConnection) }
                 }
                 .keyboardShortcut("c", modifiers: [.command, .shift])
-                .disabled(selectedConnection == nil)
+                .disabled(selectedConnection?.type.usesNetwork != true)
             }
         }
 

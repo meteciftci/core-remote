@@ -2,7 +2,7 @@
 
 [Türkçe](README.md) | **English**
 
-A simple SSH and RDP connection manager for macOS. Save your connections and open them with a double-click.
+A simple SSH, RDP and serial (COM) connection manager for macOS. Save your connections and open them with a double-click.
 
 ![Main window](docs/screenshots/en/main.png)
 
@@ -10,13 +10,14 @@ A simple SSH and RDP connection manager for macOS. Save your connections and ope
 
 - **SSH**: Connections open in Terminal or iTerm2, chosen in Settings. A saved password is entered for you; an SSH key file can be chosen per connection. "File Transfer" in a connection's menu opens the server in an app such as Cyberduck, Transmit or ForkLift, or with sftp in the terminal if none is installed. When sudo needs the password, "Copy Password" in a connection's menu (⇧⌘C) copies it, or Settings > SSH can copy it after every connection.
 - **RDP**: The default client is [FreeRDP](https://www.freerdp.com), which receives the password directly. [Microsoft Windows App](https://apps.apple.com/app/id1295203466) can be chosen in Settings instead. Display (window size or full screen, all screens), clipboard, shared folder and sound have defaults in Settings and can be changed per connection; resizing the window updates the resolution or, for older servers, scales the picture. A shared folder works with FreeRDP only. When FreeRDP can't connect, an alert says why (account locked, wrong password, server unreachable and so on). FreeRDP's shortcuts use left Control + Option + Shift (M minimizes, Enter toggles full screen, D disconnects), so typing a capital letter with right Shift doesn't trigger them. This is set in `~/.config/freerdp/sdl-freerdp.json`, which is created unless you already chose your own keys there.
+- **Serial (COM)**: Connect to switch, router or server consoles over a USB serial cable, as in PuTTY. Pick the device from the plugged-in `/dev/cu.*` devices or type its path. Speed (presets from 300 to 921600, or any value), data bits, parity, stop bits and flow control (RTS/CTS, XON/XOFF) are set per connection. The connection opens in your terminal app with CoreRemote's own serial console: **Ctrl-A Q** closes it, **Ctrl-A B** sends a break and **Ctrl-A Ctrl-A** sends Ctrl-A. Nothing else needs to be installed.
 - **Groups, favorites and order**: Sort connections into groups, mark the ones you use most, and search by name, host or user. Order the list by hand (drag and drop), by name or by last connection.
 - **Credential profiles**: Define a shared user name and password, such as a domain account, once in Settings > Credentials and use it for several connections. When the password changes, update it in one place. Passwords stay in the Keychain; backups include profile names and user names, not their passwords.
 - **Notes and tags**: Add notes and tags such as `prod` or `linux` to any connection. Tags are listed in the sidebar, and search covers notes and tags too.
 - **Recent**: The 10 connections you opened last are listed in the sidebar, and each row shows when you last connected. History can be cleared in Settings.
 - **Menu bar**: Connect to favorites, the last 5 connections and groups straight from the menu bar. CoreRemote keeps running there after you close its window; the icon can be hidden in Settings.
 - **Quick connect**: Press **⌃⌥Space** in any app to open a search box, type a name, host or user and press Return to connect. The shortcut can be changed in Settings.
-- **Server status**: While the window is open, each server's port is tried every minute and its row shows a green (reachable) or red (unreachable) dot, with the reason on hover. Can be turned off in Settings.
+- **Server status**: While the window is open, each server's port is tried every minute and its row shows a green (reachable) or red (unreachable) dot, with the reason on hover. For serial connections the dot shows whether the device is plugged in. Can be turned off in Settings.
 - **Spotlight and Shortcuts**: Search a connection's name in Spotlight and pick it to connect. In the Shortcuts app, CoreRemote's "Connect" action builds a shortcut for any connection that you can add to the menu bar or give a keyboard shortcut.
 - **Import**: Bring in Host entries from `~/.ssh/config` or `.rdp` files (pick them or drop them on the window). A preview comes first, and connections that already exist start unchecked.
 - **Backup**: Export your connections to a `.coreremote` file and import them on another Mac. Passwords are only included in passphrase-encrypted backups.
@@ -95,7 +96,7 @@ xcodebuild -project CoreRemote.xcodeproj -scheme CoreRemote test
 
 #### Sample data
 
-A Debug build launched with `-DemoData` shows in-memory sample connections instead of your real ones. The README screenshots were taken this way; `-DemoEditor` and `-DemoSettings` also open those screens.
+A Debug build launched with `-DemoData` shows in-memory sample connections instead of your real ones. The README screenshots were taken this way; `-DemoEditor` and `-DemoSettings` also open those screens; add `-DemoSerial` to show the serial connection in the editor.
 
 ```bash
 open build/Build/Products/Debug/CoreRemote.app --args -DemoData

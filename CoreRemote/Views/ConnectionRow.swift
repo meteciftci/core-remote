@@ -95,7 +95,8 @@ struct TypeBadge: View {
     }
 }
 
-/// Green when the server's port answers, red when it doesn't, gray while checking.
+/// Green when the server's port answers (or a serial device is plugged in), red when it doesn't,
+/// gray while checking.
 struct StatusDot: View {
     var status: ReachabilityMonitor.Status
 
@@ -110,7 +111,7 @@ struct StatusDot: View {
     private var color: Color {
         switch status {
         case .checking: .gray
-        case .reachable: .green
+        case .reachable, .deviceConnected: .green
         case .unreachable: .red
         }
     }
@@ -123,6 +124,8 @@ struct StatusDot: View {
             String(localized: "Reachable · \(Int(latency.timeInterval * 1000)) ms")
         case .unreachable(let reason):
             String(localized: "Unreachable: \(reason)")
+        case .deviceConnected:
+            String(localized: "Device connected")
         }
     }
 }

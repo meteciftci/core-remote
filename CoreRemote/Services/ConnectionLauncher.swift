@@ -68,6 +68,7 @@ final class ConnectionLauncher {
                 copyPassword(for: connection.target, reportsMissing: false)
             }
         case .rdp: try await connectRDP(connection.target)
+        case .serial: try await connectSerial(connection.target)
         }
     }
 
@@ -147,7 +148,10 @@ final class ConnectionLauncher {
             named: LaunchFiles.fileName(for: target.name, extension: "command"),
             permissions: 0o700
         )
+        try await open(script: scriptURL, in: terminal, at: terminalURL)
+    }
 
+    private func open(script scriptURL: URL, in terminal: TerminalApp, at terminalURL: URL) async throws {
         switch terminal {
         case .iTerm2:
             try ITerm2Session.open(script: scriptURL)
@@ -157,6 +161,32 @@ final class ConnectionLauncher {
             configuration.activates = true
             try await NSWorkspace.shared.open([scriptURL], withApplicationAt: terminalURL, configuration: configuration)
         }
+    }
+
+    // MARK: - Serial
+
+    private func connectSerial(_ target: ConnectionTarget) async throws {
+        let terminal = TerminalApp.current
+        guard let terminalURL = terminal.url else {
+            throw LaunchError.terminalMissing(terminal)
+        }
+        guard SerialDevices.isPresent(target.host) else {
+            throw LaunchError.scriptFailed(String(localized: "\(target.host) isn't connected."))
+        }
+        guard let executable = Bundle.main.executablePath else {
+            throw LaunchError.scriptFailed(String(localized: "CoreRemote's console could not be found."))
+        }
+        let scriptURL = try LaunchFiles.write(
+            SerialConsole.script(
+                executable: executable,
+                device: target.host,
+                options: target.serial,
+                closePrompt: String(localized: "Press any key to close this window.")
+            ),
+            named: LaunchFiles.fileName(for: target.name, extension: "command"),
+            permissions: 0o700
+        )
+        try await open(script: scriptURL, in: terminal, at: terminalURL)
     }
 
     // MARK: - RDP
