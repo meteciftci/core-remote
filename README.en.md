@@ -25,6 +25,8 @@ A simple SSH, RDP and serial (COM) connection manager for macOS. Save your conne
 
 ![Connection editor](docs/screenshots/en/editor.png)
 
+![Serial connection form](docs/screenshots/en/serial.png)
+
 ![Quick connect](docs/screenshots/en/quick-connect.png)
 
 ![Import](docs/screenshots/en/import.png)
